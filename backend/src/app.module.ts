@@ -1,0 +1,63 @@
+import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { CloudinaryModule } from './common/cloudinary/cloudinary.module';
+import { AuthModule } from './auth/auth.module';
+import { AdminsModule } from './admins/admins.module';
+import { OffersModule } from './offers/offers.module';
+import { VisitorsModule } from './visitors/visitors.module';
+import { OrdersModule } from './orders/orders.module';
+import { ClientsModule } from './clients/clients.module';
+import { PaymentsModule } from './payments/payments.module';
+import { StatisticsModule } from './statistics/statistics.module';
+
+@Module({
+  imports: [
+    // Global configuration
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env',
+    }),
+
+    // Database configuration
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        type: 'postgres',
+        url: configService.get('DATABASE_URL'),
+        // host: configService.get('DB_HOST'),
+        // port: configService.get<number>('DB_PORT'),
+        // username: configService.get('DB_USERNAME'),
+        // password: configService.get('DB_PASSWORD'),
+        // database: configService.get('DB_DATABASE'),
+        entities: [__dirname + '/**/*.entity{.ts,.js}'],
+        synchronize: true, // DISABLE IN PRODUCTION - use migrations instead
+        logging: false,
+        ssl: {
+          rejectUnauthorized: false, // REQUIRED for Neon
+        },
+      }),
+      inject: [ConfigService],
+    }),
+
+    // Cloudinary for image uploads
+    CloudinaryModule,
+
+    // Authentication and Authorization
+    AuthModule,
+    AdminsModule,
+
+    // Feature modules
+    OffersModule,
+    VisitorsModule,
+    OrdersModule,
+    ClientsModule,
+    PaymentsModule,
+    StatisticsModule,
+  ],
+  controllers: [AppController],
+  providers: [AppService],
+})
+export class AppModule { }

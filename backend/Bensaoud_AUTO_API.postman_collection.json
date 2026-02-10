@@ -1,0 +1,668 @@
+{
+  "info": {
+    "name": "Bensaoud AUTO API",
+    "description": "Complete API collection for Bensaoud AUTO backend",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000/api",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@bensaoud.com\",\n  \"password\": \"admin123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Get Current User",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/auth/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "me"]
+            }
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/auth/logout",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "logout"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admins",
+      "item": [
+        {
+          "name": "List Admins",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/admins",
+              "host": ["{{baseUrl}}"],
+              "path": ["admins"]
+            }
+          }
+        },
+        {
+          "name": "Create Admin",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Jane Doe\",\n  \"email\": \"jane@bensaoud.com\",\n  \"password\": \"password123\",\n  \"role\": \"ADMIN\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admins",
+              "host": ["{{baseUrl}}"],
+              "path": ["admins"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Offers",
+      "item": [
+        {
+          "name": "List Offers",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/offers?page=1&limit=10&status=AVAILABLE&brand=Toyota",
+              "host": ["{{baseUrl}}"],
+              "path": ["offers"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "status",
+                  "value": "AVAILABLE"
+                },
+                {
+                  "key": "brand",
+                  "value": "Toyota"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Offer",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"brand\": \"Toyota\",\n  \"model\": \"Camry\",\n  \"year\": 2021,\n  \"km\": 35000,\n  \"price\": 22000,\n  \"location\": \"Algiers\",\n  \"ownerName\": \"Mohamed Amri\",\n  \"ownerPhone\": \"0555123456\",\n  \"ownerEmail\": \"mohamed@example.com\",\n  \"status\": \"AVAILABLE\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/offers",
+              "host": ["{{baseUrl}}"],
+              "path": ["offers"]
+            }
+          }
+        },
+        {
+          "name": "Upload Offer Images",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "images",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/offers/:id/images",
+              "host": ["{{baseUrl}}"],
+              "path": ["offers", ":id", "images"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Offer",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/offers/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["offers", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Offer",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"price\": 21000,\n  \"km\": 36000\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/offers/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["offers", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Offer",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/offers/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["offers", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Visitors",
+      "item": [
+        {
+          "name": "List Visitors",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/visitors?page=1&limit=10&status=NEW",
+              "host": ["{{baseUrl}}"],
+              "path": ["visitors"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "status",
+                  "value": "NEW"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Visitor",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Ahmed Benali\",\n  \"phone\": \"0666123456\",\n  \"email\": \"ahmed@example.com\",\n  \"carBrand\": \"Toyota\",\n  \"carModel\": \"Corolla\",\n  \"budget\": 18000,\n  \"remarks\": \"Looking for 2020 model\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/visitors",
+              "host": ["{{baseUrl}}"],
+              "path": ["visitors"]
+            }
+          }
+        },
+        {
+          "name": "Update Visitor Status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"CONTACTED\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/visitors/:id/status",
+              "host": ["{{baseUrl}}"],
+              "path": ["visitors", ":id", "status"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Orders",
+      "item": [
+        {
+          "name": "List Orders",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/orders?status=PENDING",
+              "host": ["{{baseUrl}}"],
+              "path": ["orders"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "PENDING"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"offerId\": 1,\n  \"visitorId\": 1,\n  \"clientName\": \"Ahmed Benali\",\n  \"clientPhone\": \"0666123456\",\n  \"clientEmail\": \"ahmed@example.com\",\n  \"agreedPrice\": 17500,\n  \"deposit\": 3000,\n  \"profit\": 500,\n  \"remarks\": \"Payment by bank transfer\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/orders",
+              "host": ["{{baseUrl}}"],
+              "path": ["orders"]
+            }
+          }
+        },
+        {
+          "name": "Confirm Order",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/orders/:id/confirm",
+              "host": ["{{baseUrl}}"],
+              "path": ["orders", ":id", "confirm"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Complete Order",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/orders/:id/complete",
+              "host": ["{{baseUrl}}"],
+              "path": ["orders", ":id", "complete"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Cancel Order",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/orders/:id/cancel",
+              "host": ["{{baseUrl}}"],
+              "path": ["orders", ":id", "cancel"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Clients",
+      "item": [
+        {
+          "name": "List Clients",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/clients?name=Ahmed",
+              "host": ["{{baseUrl}}"],
+              "path": ["clients"],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "Ahmed"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Client",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Fatima Mansouri\",\n  \"phone\": \"0666987654\",\n  \"email\": \"fatima@example.com\",\n  \"address\": \"15 Rue Didouche Mourad, Algiers\",\n  \"totalSpent\": 0,\n  \"remainingBalance\": 0,\n  \"notes\": \"Preferred customer\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/clients",
+              "host": ["{{baseUrl}}"],
+              "path": ["clients"]
+            }
+          }
+        },
+        {
+          "name": "Update Client Financials",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"totalSpent\": 25000,\n  \"remainingBalance\": 5000\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/clients/:id/financials",
+              "host": ["{{baseUrl}}"],
+              "path": ["clients", ":id", "financials"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Payments",
+      "item": [
+        {
+          "name": "List Payments",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/payments?status=PAID&method=CASH",
+              "host": ["{{baseUrl}}"],
+              "path": ["payments"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "PAID"
+                },
+                {
+                  "key": "method",
+                  "value": "CASH"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Payment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"orderId\": 1,\n  \"clientId\": 1,\n  \"amount\": 5000,\n  \"method\": \"CASH\",\n  \"status\": \"PAID\",\n  \"notes\": \"Initial deposit\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/payments",
+              "host": ["{{baseUrl}}"],
+              "path": ["payments"]
+            }
+          }
+        },
+        {
+          "name": "Mark Payment as Paid",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/payments/:id/mark-paid",
+              "host": ["{{baseUrl}}"],
+              "path": ["payments", ":id", "mark-paid"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Order Payments",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/payments/order/:orderId",
+              "host": ["{{baseUrl}}"],
+              "path": ["payments", "order", ":orderId"],
+              "variable": [
+                {
+                  "key": "orderId",
+                  "value": "1"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Client Payments",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/payments/client/:clientId",
+              "host": ["{{baseUrl}}"],
+              "path": ["payments", "client", ":clientId"],
+              "variable": [
+                {
+                  "key": "clientId",
+                  "value": "1"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Statistics",
+      "item": [
+        {
+          "name": "Get Overview",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/statistics/overview",
+              "host": ["{{baseUrl}}"],
+              "path": ["statistics", "overview"]
+            }
+          }
+        },
+        {
+          "name": "Get Monthly Sales",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/statistics/monthly-sales?year=2026",
+              "host": ["{{baseUrl}}"],
+              "path": ["statistics", "monthly-sales"],
+              "query": [
+                {
+                  "key": "year",
+                  "value": "2026"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Conversion Rate",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/statistics/conversion-rate",
+              "host": ["{{baseUrl}}"],
+              "path": ["statistics", "conversion-rate"]
+            }
+          }
+        },
+        {
+          "name": "Get Offers By Status",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/statistics/offers-by-status",
+              "host": ["{{baseUrl}}"],
+              "path": ["statistics", "offers-by-status"]
+            }
+          }
+        },
+        {
+          "name": "Get Revenue",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/statistics/revenue",
+              "host": ["{{baseUrl}}"],
+              "path": ["statistics", "revenue"]
+            }
+          }
+        },
+        {
+          "name": "Get Recent Activity",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/statistics/recent-activity?limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["statistics", "recent-activity"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
