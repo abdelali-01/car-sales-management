@@ -1,0 +1,211 @@
+{
+  "footer": {
+    "rights": "© {{year}} Soft Linge. All rights reserved."
+  },
+  "nav": {
+    "home": "Home",
+    "shop": "Shop",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "home": {
+    "hero": {
+      "cta": "Shop Now"
+    },
+    "categories": {
+      "title": "Shop by Category",
+      "viewAll": "View All"
+    },
+    "featured": {
+      "title": "Featured Products",
+      "viewAll": "View All Products"
+    },
+    "video": {
+      "title": "See Our Store in Action",
+      "description": "Take a virtual tour of our store and discover what makes us special",
+      "learnMore": "Learn More About Us"
+    },
+    "packs": {
+      "title": "Special Packs",
+      "description": "Exclusive bundles and packages for the best value",
+      "products": "Products",
+      "save": "Save",
+      "viewPack": "View Pack"
+    },
+    "contactCta": {
+      "title": "Have Questions or Need Help?",
+      "description": "Our team is here to assist you with any inquiries, orders, or support you need. Reach out and we'll get back to you as soon as possible!",
+      "button": "Contact Us"
+    }
+  },
+  "shop": {
+    "title": "Our Products",
+    "search": "Search products...",
+    "productsFound": "products found",
+    "noProducts": "No products found",
+    "tryAdjusting": "Try adjusting your search or filter to find what you're looking for.",
+    "filters": {
+      "title": "Filters",
+      "categories": "Categories",
+      "priceRange": "Price Range",
+      "stockStatus": "Stock Status",
+      "inStock": "In Stock",
+      "clearAll": "Clear all filters"
+    },
+    "sort": {
+      "newest": "Newest",
+      "priceLow": "Price: Low to High",
+      "priceHigh": "Price: High to Low",
+      "popular": "Popular"
+    },
+    "loading": "Loading products..."
+  },
+  "product": {
+    "addToCart": "Add to Cart",
+    "orderNow": "Order Now",
+    "quantity": "Quantity",
+    "selectQuantity": "Select how many items you want",
+    "attributes": "Select Options",
+    "selectAllAttributes": "Please select all required attributes",
+    "price": "Price",
+    "total": "Total",
+    "shipping": "Shipping Cost",
+    "selectWilaya": "Select Wilaya",
+    "outOfStock": "Out of Stock",
+    "delivery": {
+      "title": "Choose Shipping Method",
+      "home": "Home Delivery",
+      "desk": "Office Delivery",
+      "selectWilaya": "Please select your wilaya"
+    }
+  },
+  "about": {
+    "title": "About Us",
+    "mission": {
+      "title": "Our Mission",
+      "description": "At Devali, our mission is to deliver high-quality products and an unparalleled shopping experience. We believe in connecting our customers with the best and most innovative items on the market, ensuring satisfaction with every purchase.",
+      "points": [
+        "Customer-centric approach",
+        "Curated selection of premium products",
+        "Seamless and secure shopping experience"
+      ]
+    },
+    "vision": {
+      "title": "Our Vision",
+      "description": "We envision a future where everyone has easy access to cutting-edge technology and trending lifestyle products. We aim to be the leading e-commerce destination, known for our reliability, innovation, and exceptional service.",
+      "points": [
+        "Leading e-commerce destination",
+        "Reliability and innovation",
+        "Exceptional customer service"
+      ]
+    },
+    "values": {
+      "title": "Our Values",
+      "description": "Integrity, innovation, and customer satisfaction are at the core of everything we do. We are committed to transparency, continuous improvement, and building lasting relationships with our community.",
+      "points": [
+        "Integrity and transparency",
+        "Continuous innovation",
+        "Community building"
+      ]
+    }
+  },
+  "contact": {
+    "title": "Contact Us",
+    "email": {
+      "title": "Email Us",
+      "address": "info@yourstore.com",
+      "action": "Send Email"
+    },
+    "phone": {
+      "title": "Call Us",
+      "number": "+213 555 123 456",
+      "action": "Call Now"
+    },
+    "address": {
+      "title": "Visit Our Office",
+      "location": "123 Commerce St, Algiers, Algeria",
+      "action": "View on Map"
+    },
+    "form": {
+      "title": "Send Us a Message",
+      "name": "Your Name",
+      "email": "Your Email",
+      "message": "Your Message",
+      "submit": "Send Message",
+      "success": "Your message has been sent!",
+      "error": "Failed to send message."
+    },
+    "social": {
+      "title": "Connect With Us"
+    }
+  },
+  "checkout": {
+    "title": "Checkout",
+    "orderSummary": "Order Summary",
+    "shippingInfo": "Shipping Information",
+    "paymentInfo": "Payment Information",
+    "placeOrder": "Place Order",
+    "processing": "Processing...",
+    "remove": "Remove",
+    "total": "Total",
+    "shipping": "Shipping",
+    "discount": "Discount",
+    "packPrice": "Pack Price",
+    "productPrice": "Product Price",
+    "emptyCart": "Your cart is empty.",
+    "goToShop": "Go to Shop",
+    "orderDetails": "Order Details"
+  },
+  "orderForm": {
+    "title": "Order Information",
+    "name": "Full Name",
+    "phone": "Phone Number",
+    "wilaya": "Wilaya",
+    "city": "City",
+    "address": "Address",
+    "remarks": "Remarks",
+    "deliveryType": "Delivery Type",
+    "home": "Home Delivery",
+    "desk": "Office Delivery",
+    "submit": "Place Order",
+    "processing": "Processing...",
+    "phoneError": "Please enter a valid phone number",
+    "attributesError": "Please select all required attributes for all products",
+    "not_avai": "Not Available"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Success",
+    "cancel": "Cancel",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous"
+  },
+  "orderSuccess": {
+    "title": "Order Placed Successfully!",
+    "message": "Thank you for your order! We've received your request and will process it shortly.",
+    "orderConfirmed": "Order Confirmed",
+    "preparingDelivery": "Preparing for Delivery",
+    "continueShopping": "Continue Shopping",
+    "backToHome": "Back to Home"
+  },
+  "cart": {
+    "title": "Your Cart",
+    "empty": "Your cart is empty.",
+    "total": "Total:",
+    "checkout": "Checkout",
+    "clearCart": "Clear Cart"
+  },
+  "promoCode": {
+    "title": "Promo Code",
+    "placeholder": "Enter promo code",
+    "apply": "Apply",
+    "applied": "Promo code applied!",
+    "invalid": "Invalid or expired promo code."
+  }
+} 

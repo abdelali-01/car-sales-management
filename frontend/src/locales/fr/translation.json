@@ -1,0 +1,225 @@
+{
+  "footer": {
+    "rights": "© {{year}} Devali. Tous droits réservés."
+  },
+  "nav": {
+    "home": "Accueil",
+    "shop": "Boutique",
+    "about": "À propos",
+    "contact": "Contact"
+  },
+  "home": {
+    "hero": {
+      "title": "Bienvenue chez Devali",
+      "subtitle": "Découvrez des produits incroyables à des prix imbattables",
+      "cta": "Acheter Maintenant"
+    },
+    "categories": {
+      "title": "Acheter par Catégorie",
+      "viewAll": "Voir Tout"
+    },
+    "featured": {
+      "title": "Produits Vedettes",
+      "viewAll": "Voir Tous les Produits"
+    },
+    "delivery": {
+      "title": "Livraison Rapide et Fiable",
+      "description": "Nous livrons dans toutes les villes algériennes"
+    },
+    "payment": {
+      "title": "Paiement Sécurisé",
+      "description": "Plusieurs options de paiement disponibles"
+    },
+    "customers": {
+      "title": "10,000+ Clients Satisfaits",
+      "description": "Fait confiance par des milliers d'Algériens. Votre satisfaction est notre priorité."
+    },
+    "video": {
+      "title": "Découvrez Notre Magasin en Action",
+      "description": "Faites une visite virtuelle de notre magasin et découvrez ce qui nous rend spéciaux",
+      "learnMore": "En Savoir Plus Sur Nous"
+    },
+    "packs": {
+      "title": "Packs Spéciaux",
+      "description": "Ensembles et packages exclusifs pour la meilleure valeur",
+      "products": "Produits",
+      "save": "Économisez",
+      "viewPack": "Voir le Pack"
+    },
+    "contactCta": {
+      "title": "Des Questions ou Besoin d'Aide ?",
+      "description": "Notre équipe est là pour vous aider avec toutes vos demandes, commandes ou support dont vous avez besoin. Contactez-nous et nous vous répondrons dès que possible !",
+      "button": "Contactez-Nous"
+    }
+  },
+  "shop": {
+    "title": "Nos Produits",
+    "search": "Rechercher des produits...",
+    "productsFound": "produits trouvés",
+    "noProducts": "Aucun produit trouvé",
+    "tryAdjusting": "Essayez d'ajuster votre recherche ou vos filtres pour trouver ce que vous cherchez.",
+    "filters": {
+      "title": "Filtres",
+      "categories": "Catégories",
+      "priceRange": "Fourchette de Prix",
+      "stockStatus": "Statut du Stock",
+      "inStock": "En Stock",
+      "clearAll": "Effacer tous les filtres"
+    },
+    "sort": {
+      "newest": "Plus Récent",
+      "priceLow": "Prix: Croissant",
+      "priceHigh": "Prix: Décroissant",
+      "popular": "Populaire"
+    },
+    "loading": "Chargement des produits..."
+  },
+  "product": {
+    "addToCart": "Ajouter au Panier",
+    "orderNow": "Commander Maintenant",
+    "quantity": "Quantité",
+    "selectQuantity": "Sélectionnez le nombre d'articles souhaités",
+    "attributes": "Sélectionner les Options",
+    "selectAllAttributes": "Veuillez sélectionner toutes les options requises",
+    "price": "Prix",
+    "total": "Total",
+    "shipping": "Frais de Livraison",
+    "selectWilaya": "Sélectionner la Wilaya",
+    "outOfStock": "Rupture de Stock",
+    "delivery": {
+      "title": "Choisir la Méthode de Livraison",
+      "home": "Livraison à Domicile",
+      "desk": "Livraison au Bureau",
+      "selectWilaya": "Veuillez sélectionner votre wilaya"
+    }
+  },
+  "about": {
+    "title": "À Propos de Nous",
+    "mission": {
+      "title": "Notre Mission",
+      "description": "Chez Devali, notre mission est de livrer des produits de haute qualité et une expérience d'achat inégalée. Nous croyons en la connexion de nos clients avec les meilleurs et les plus innovants articles du marché, en assurant la satisfaction à chaque achat.",
+      "points": [
+        "Approche centrée sur le client",
+        "Sélection soigneuse de produits premium",
+        "Expérience d'achat fluide et sécurisée"
+      ]
+    },
+    "vision": {
+      "title": "Notre Vision",
+      "description": "Nous envisageons un avenir où chacun a un accès facile à la technologie de pointe et aux produits de style de vie tendance. Nous visons à être la destination e-commerce leader, connue pour notre fiabilité, innovation et service exceptionnel.",
+      "points": [
+        "Destination e-commerce leader",
+        "Fiabilité et innovation",
+        "Service client exceptionnel"
+      ]
+    },
+    "values": {
+      "title": "Nos Valeurs",
+      "description": "L'intégrité, l'innovation et la satisfaction client sont au cœur de tout ce que nous faisons. Nous nous engageons à la transparence, à l'amélioration continue et à construire des relations durables avec notre communauté.",
+      "points": [
+        "Intégrité et transparence",
+        "Innovation continue",
+        "Construction de communauté"
+      ]
+    }
+  },
+  "contact": {
+    "title": "Contactez-Nous",
+    "email": {
+      "title": "Envoyez-nous un Email",
+      "address": "info@yourstore.com",
+      "action": "Envoyer un Email"
+    },
+    "phone": {
+      "title": "Appelez-Nous",
+      "number": "+213 555 123 456",
+      "action": "Appeler Maintenant"
+    },
+    "address": {
+      "title": "Visitez Notre Bureau",
+      "location": "123 Rue du Commerce, Alger, Algérie",
+      "action": "Voir sur la Carte"
+    },
+    "form": {
+      "title": "Envoyez-Nous un Message",
+      "name": "Votre Nom",
+      "email": "Votre Email",
+      "message": "Votre Message",
+      "submit": "Envoyer le Message",
+      "success": "Votre message a été envoyé !",
+      "error": "Échec de l'envoi du message."
+    },
+    "social": {
+      "title": "Connectez-Vous Avec Nous"
+    }
+  },
+  "checkout": {
+    "title": "Commande",
+    "emptyCart": "Votre panier est vide.",
+    "goToShop": "Aller au Magasin",
+    "orderDetails": "Détails de la Commande",
+    "orderSummary": "Résumé de la Commande",
+    "shippingInfo": "Informations de Livraison",
+    "paymentInfo": "Informations de Paiement",
+    "placeOrder": "Passer la Commande",
+    "processing": "Traitement...",
+    "remove": "Supprimer",
+    "total": "Total",
+    "shipping": "Livraison",
+    "discount": "Réduction",
+    "packPrice": "Prix du Pack",
+    "productPrice": "Prix du Produit"
+  },
+  "orderForm": {
+    "title": "Informations de Commande",
+    "name": "Nom Complet",
+    "phone": "Numéro de Téléphone",
+    "wilaya": "Wilaya",
+    "city": "Ville",
+    "address": "Adresse",
+    "remarks": "Remarques",
+    "deliveryType": "Type de Livraison",
+    "home": "Livraison à Domicile",
+    "desk": "Livraison au Bureau",
+    "submit": "Passer la Commande",
+    "processing": "Traitement...",
+    "phoneError": "Veuillez entrer un numéro de téléphone valide",
+    "attributesError": "Veuillez sélectionner toutes les options requises pour tous les produits",
+    "not_avai": "Pas disponible"
+  },
+  "common": {
+    "loading": "Chargement...",
+    "error": "Une erreur s'est produite",
+    "success": "Succès",
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "close": "Fermer",
+    "back": "Retour",
+    "next": "Suivant",
+    "previous": "Précédent"
+  },
+  "orderSuccess": {
+    "title": "Commande Passée avec Succès !",
+    "message": "Merci pour votre commande ! Nous avons reçu votre demande et la traiterons bientôt.",
+    "orderConfirmed": "Commande va confirmé par téléphone, restez à l'écoute !",
+    "preparingDelivery": "Préparation de la Livraison",
+    "continueShopping": "Continuer les Achats",
+    "backToHome": "Retour à l'Accueil"
+  },
+  "cart": {
+    "title": "Votre Panier",
+    "empty": "Votre panier est vide.",
+    "total": "Total :",
+    "checkout": "Commander",
+    "clearCart": "Vider le Panier"
+  },
+  "promoCode": {
+    "title": "Code Promo",
+    "placeholder": "Entrez le code promo",
+    "apply": "Appliquer",
+    "applied": "Code promo appliqué !",
+    "invalid": "Code promo invalide ou expiré."
+  }
+} 

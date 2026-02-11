@@ -1,0 +1,62 @@
+import React, { ReactNode } from "react";
+
+interface ButtonProps {
+  children: ReactNode; // Button text or content
+  size?: "sm" | "md"; // Button size
+  variant?: "primary" | "outline" | "success" | "light"; // Button variant
+  startIcon?: ReactNode; // Icon before the text
+  endIcon?: ReactNode; // Icon after the text
+  onClick?: () => void; // Click handler
+  disabled?: boolean; // Disabled state
+  className?: string; // Disabled state
+  type? : "submit" | "button" ;
+}
+
+const Button: React.FC<ButtonProps> = ({
+  children,
+  size = "md",
+  variant = "primary",
+  startIcon,
+  endIcon,
+  onClick,
+  className = "",
+  disabled = false,
+  type = "submit"
+}) => {
+  // Size Classes
+  const sizeClasses = {
+    sm: "px-4 py-3 text-sm",
+    md: "px-5 py-3.5 text-sm",
+  };
+
+  // Variant Classes
+  const variantClasses = {
+    primary:
+      "bg-[#c1a36f] text-white shadow-theme-xs hover:bg-[#ba9550] disabled:bg-[#e1d2b3]",
+    outline:
+      "bg-white text-gray-700 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-400 dark:ring-gray-700 dark:hover:bg-white/[0.03] dark:hover:text-gray-300",
+    success : 
+        "bg-success-50 text-success-600 dark:bg-success-500/15 dark:text-success-500",
+    light : 
+        "bg-gray-100 text-gray-700 dark:bg-white/5 dark:text-white/80"
+  };
+
+  return (
+    <button
+      className={`inline-flex items-center justify-center font-medium gap-2 rounded-lg transition ${className} ${
+        sizeClasses[size]
+      } ${variantClasses[variant]} ${
+        disabled ? "cursor-not-allowed opacity-50" : ""
+      }`}
+      onClick={onClick}
+      disabled={disabled}
+      type={type}
+    >
+      {startIcon && <span className="flex items-center">{startIcon}</span>}
+      {children}
+      {endIcon && <span className="flex items-center">{endIcon}</span>}
+    </button>
+  );
+};
+
+export default Button;
