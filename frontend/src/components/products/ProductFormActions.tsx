@@ -17,7 +17,7 @@ export default function ProductFormActions({
     const router = useRouter();
 
     const handleCancel = () => {
-        router.push('/products');
+        router.push('/offers');
     };
 
     return (

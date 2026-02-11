@@ -311,12 +311,12 @@ const AppSidebar: React.FC = () => {
           }`}
       >
         <div className="d-flex justify-center w-full">
-          <Link href="" >
+          <Link href="/" >
             <Image
-              src={"/logo.png"}
-              alt={"Soft Linge"}
-              width={50}
-              height={50}
+              src={"/bensaoud.png"}
+              alt={"Bensaoud Auto"}
+              width={100}
+              height={100}
             />
           </Link>
         </div>
@@ -326,38 +326,38 @@ const AppSidebar: React.FC = () => {
         <nav className="mb-6">
           <div className="flex flex-col gap-4">
             {/* OVERVIEW */}
-              <div>
-                <h2
-                  className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${!isExpanded && !isHovered
-                    ? "lg:justify-center"
-                    : "justify-start"
-                    }`}
-                >
-                  {isExpanded || isHovered || isMobileOpen ? (
-                    t('sidebar.sections.overview')
-                  ) : (
-                    <HorizontaLDots />
-                  )}
-                </h2>
-                {renderMenuItems(overviewItems, "main")}
-              </div>
+            <div>
+              <h2
+                className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${!isExpanded && !isHovered
+                  ? "lg:justify-center"
+                  : "justify-start"
+                  }`}
+              >
+                {isExpanded || isHovered || isMobileOpen ? (
+                  t('sidebar.sections.overview')
+                ) : (
+                  <HorizontaLDots />
+                )}
+              </h2>
+              {renderMenuItems(overviewItems, "main")}
+            </div>
 
             {/* INVENTORY - Super & Sub-Admin only */}
-              <div>
-                <h2
-                  className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${!isExpanded && !isHovered
-                    ? "lg:justify-center"
-                    : "justify-start"
-                    }`}
-                >
-                  {isExpanded || isHovered || isMobileOpen ? (
-                    t('sidebar.sections.inventory')
-                  ) : (
-                    <HorizontaLDots />
-                  )}
-                </h2>
-                {renderMenuItems(inventoryItems, "main")}
-              </div>
+            <div>
+              <h2
+                className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${!isExpanded && !isHovered
+                  ? "lg:justify-center"
+                  : "justify-start"
+                  }`}
+              >
+                {isExpanded || isHovered || isMobileOpen ? (
+                  t('sidebar.sections.inventory')
+                ) : (
+                  <HorizontaLDots />
+                )}
+              </h2>
+              {renderMenuItems(inventoryItems, "main")}
+            </div>
 
             {/* SALES */}
             <div>
@@ -379,39 +379,39 @@ const AppSidebar: React.FC = () => {
             </div>
 
             {/* FINANCE - Super & Sub-Admin only */}
-              <div>
-                <h2
-                  className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${!isExpanded && !isHovered
-                    ? "lg:justify-center"
-                    : "justify-start"
-                    }`}
-                >
-                  {isExpanded || isHovered || isMobileOpen ? (
-                    t('sidebar.sections.finance')
-                  ) : (
-                    <HorizontaLDots />
-                  )}
-                </h2>
-                {renderMenuItems(financeItems, "others")}
-                {/* {user?.role === 'sub-super' && renderMenuItems(subAdminFinanceItems, "others")} */}
-              </div>
+            <div>
+              <h2
+                className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${!isExpanded && !isHovered
+                  ? "lg:justify-center"
+                  : "justify-start"
+                  }`}
+              >
+                {isExpanded || isHovered || isMobileOpen ? (
+                  t('sidebar.sections.finance')
+                ) : (
+                  <HorizontaLDots />
+                )}
+              </h2>
+              {renderMenuItems(financeItems, "others")}
+              {/* {user?.role === 'sub-super' && renderMenuItems(subAdminFinanceItems, "others")} */}
+            </div>
 
 
-              <div>
-                <h2
-                  className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${!isExpanded && !isHovered
-                    ? "lg:justify-center"
-                    : "justify-start"
-                    }`}
-                >
-                  {isExpanded || isHovered || isMobileOpen ? (
-                    t('sidebar.sections.administration')
-                  ) : (
-                    <HorizontaLDots />
-                  )}
-                </h2>
-                {renderMenuItems(adminItems, "others")}
-              </div>
+            <div>
+              <h2
+                className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${!isExpanded && !isHovered
+                  ? "lg:justify-center"
+                  : "justify-start"
+                  }`}
+              >
+                {isExpanded || isHovered || isMobileOpen ? (
+                  t('sidebar.sections.administration')
+                ) : (
+                  <HorizontaLDots />
+                )}
+              </h2>
+              {renderMenuItems(adminItems, "others")}
+            </div>
 
 
             {/* SUPPORT */}

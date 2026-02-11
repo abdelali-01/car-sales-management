@@ -41,7 +41,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex-shrink-0">
-            <Image src={'/logo.png'} width={120} height={60} alt='Soft de Maison logo' className="h-10 w-auto" />
+            <Image src={'/logo.JPG'} width={120} height={60} alt='Bensaoud Auto' className="h-10 w-auto" />
           </Link>
 
           {/* Desktop Navigation */}
@@ -50,7 +50,7 @@ export default function Navbar() {
               <Link
                 key={item.name}
                 href={item.href}
-                className="text-gray-900 dark:text-gray-100 hover:text-[#c1a36f] dark:hover:text-[#c1a36f] transition-colors font-medium"
+                className="text-gray-900 dark:text-gray-100 hover:text-brand-500 dark:hover:text-brand-400 transition-colors font-medium"
               >
                 {item.name}
               </Link>
@@ -80,7 +80,7 @@ export default function Navbar() {
             <button
               type="button"
               onClick={openCart}
-              className="relative text-gray-900 dark:text-gray-100 hover:text-[#c1a36f] dark:hover:text-[#c1a36f] transition-colors"
+              className="relative text-gray-900 dark:text-gray-100 hover:text-brand-500 dark:hover:text-brand-400 transition-colors"
               aria-label="Open cart"
             >
               <ShoppingCartIcon className="h-6 w-6" />
@@ -94,7 +94,7 @@ export default function Navbar() {
             {/* Mobile menu button */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="md:hidden text-gray-900 dark:text-gray-100 hover:text-[#c1a36f] dark:hover:text-[#c1a36f] transition-colors"
+              className="md:hidden text-gray-900 dark:text-gray-100 hover:text-brand-500 dark:hover:text-brand-400 transition-colors"
             >
               {isMenuOpen ? (
                 <XMarkIcon className="h-6 w-6" />
@@ -114,7 +114,7 @@ export default function Navbar() {
                 <Link
                   key={item.name}
                   href={item.href}
-                  className="block px-3 py-2 rounded-md text-base font-medium text-gray-900 dark:text-gray-100 hover:bg-white/50 dark:hover:bg-gray-800/50 hover:text-[#c1a36f] transition-colors"
+                  className="block px-3 py-2 rounded-md text-base font-medium text-gray-900 dark:text-gray-100 hover:bg-white/50 dark:hover:bg-gray-800/50 hover:text-brand-500 transition-colors"
                 >
                   {item.name}
                 </Link>

@@ -13,7 +13,7 @@ interface ContactInfoItem {
   title: string;
   description: string;
   link?: string;
-  action? : string ;
+  action?: string;
 }
 
 interface SocialLinkItem {
@@ -106,7 +106,7 @@ const ContactSection = () => {
     setStatus('idle');
     setFeedback('');
     try {
-      await axios.post(process.env.NEXT_PUBLIC_SERVER+'/api/messages', formData);
+      await axios.post(process.env.NEXT_PUBLIC_SERVER + '/api/messages', formData);
 
       // Track Contact and Lead events
       trackContact();
@@ -148,7 +148,7 @@ const ContactSection = () => {
   return (
     <section className="py-16 lg:py-24">
       <div className="container mx-auto px-4">
-        <h1 className="text-4xl md:text-5xl font-extrabold text-center text-[#c1a36f] mb-16">
+        <h1 className="text-4xl md:text-5xl font-extrabold text-center text-brand-500 dark:text-brand-400 mb-16">
           {t('contact.title')}
         </h1>
 
@@ -160,9 +160,9 @@ const ContactSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.6 }}
-              className="bg-[#f3efe7] dark:bg-gray-800 p-8 rounded-xl border border-[#efe9df] text-center flex flex-col items-center"
+              className="bg-brand-50 dark:bg-gray-800 p-8 rounded-xl border border-brand-100 text-center flex flex-col items-center"
             >
-              <item.icon className="w-12 h-12 text-[#c1a36f] dark:text-[#c1a36f] mb-4" />
+              <item.icon className="w-12 h-12 text-brand-500 dark:text-brand-400 mb-4" />
               <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
                 {item.title}
               </h2>
@@ -172,7 +172,7 @@ const ContactSection = () => {
               {item.link && (
                 <a
                   href={item.link}
-                  className="text-[#c1a36f] dark:text-[#c1a36f] hover:underline font-semibold"
+                  className="text-brand-500 dark:text-brand-400 hover:underline font-semibold"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -188,9 +188,9 @@ const ContactSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="bg-[#f3efe7] dark:bg-gray-800 p-8 rounded-xl border border-[#efe9df] max-w-3xl mx-auto"
+          className="bg-brand-50 dark:bg-gray-800 p-8 rounded-xl border border-brand-100 max-w-3xl mx-auto"
         >
-          <h2 className="text-3xl font-bold text-[#c1a36f] mb-8 text-center">
+          <h2 className="text-3xl font-bold text-brand-500 dark:text-brand-400 mb-8 text-center">
             {t('contact.form.title')}
           </h2>
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -204,7 +204,7 @@ const ContactSection = () => {
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border border-[#efe9df] dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#c1a36f] dark:focus:ring-[#c1a36f] focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                className="w-full px-4 py-3 border border-brand-100 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 dark:focus:ring-brand-400 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 required
               />
             </div>
@@ -218,7 +218,7 @@ const ContactSection = () => {
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border border-[#efe9df] dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#c1a36f] dark:focus:ring-[#c1a36f] focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                className="w-full px-4 py-3 border border-brand-100 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 dark:focus:ring-brand-400 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 required
               />
             </div>
@@ -232,13 +232,13 @@ const ContactSection = () => {
                 rows={5}
                 value={formData.message}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border border-[#efe9df] dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#c1a36f] dark:focus:ring-[#c1a36f] focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                className="w-full px-4 py-3 border border-brand-100 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 dark:focus:ring-brand-400 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 required
               ></textarea>
             </div>
             <button
               type="submit"
-              className="w-full bg-[#c1a36f] text-white py-3 rounded-lg flex items-center justify-center gap-2 font-bold hover:bg-[#ba9550] transition-colors tracking-wide shadow"
+              className="w-full bg-brand-500 text-white py-3 rounded-lg flex items-center justify-center gap-2 font-bold hover:bg-brand-600 transition-colors tracking-wide shadow"
             >
               {t('contact.form.submit')}
             </button>
@@ -254,9 +254,9 @@ const ContactSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="bg-[#f3efe7] dark:bg-gray-700 p-8 rounded-xl border border-[#efe9df] mt-16 max-w-3xl mx-auto text-center"
+          className="bg-brand-50 dark:bg-gray-700 p-8 rounded-xl border border-brand-100 mt-16 max-w-3xl mx-auto text-center"
         >
-          <h2 className="text-3xl font-bold mb-8 text-[#c1a36f]">
+          <h2 className="text-3xl font-bold mb-8 text-brand-500 dark:text-brand-400">
             {t('contact.social.title')}
           </h2>
           <div className="flex justify-center gap-6">
@@ -266,7 +266,7 @@ const ContactSection = () => {
                 href={social.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-16 h-16 bg-white text-[#c1a36f] rounded-full flex items-center justify-center text-2xl hover:bg-[#c1a36f] hover:text-white transition-colors shadow-md"
+                className="w-16 h-16 bg-white text-brand-500 rounded-full flex items-center justify-center text-2xl hover:bg-brand-500 hover:text-white transition-colors shadow-md"
                 aria-label={social.name}
               >
                 <social.icon size={32} />
