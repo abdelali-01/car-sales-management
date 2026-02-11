@@ -1,10 +1,10 @@
-import DeleteModal from "@/components/example/ModalExample/DeleteModal";
+import DeleteModal from "@/components/modals/DeleteModal";
 import { createContext, useContext, useState, ReactNode } from "react";
 
 type DeleteModalContextType = {
   isOpen: boolean;
-  itemId: string | null ;
-  openModal: (id: string| number | undefined, onConfirm: (id: string | number) => void) => void;
+  itemId: string | null;
+  openModal: (id: string | number | undefined, onConfirm: (id: string | number) => void) => void;
   closeModal: () => void;
 };
 
@@ -24,7 +24,7 @@ export function DeleteModalProvider({ children }: { children: ReactNode }) {
   const [onConfirm, setOnConfirm] = useState<((id: string | number) => void) | null>(null);
 
   const openModal = (id: string | number | undefined, confirmFn: (id: string) => void) => {
-    if(!id) return ;
+    if (!id) return;
 
     setItemId(id);
     setOnConfirm(() => confirmFn);

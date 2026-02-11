@@ -5,7 +5,7 @@
 
 // === Enums ===
 
-export type OfferStatus = 'AVAILABLE' | 'RESERVED' | 'SOLD';
+export type OfferStatus = 'available' | 'reserved' | 'sold';
 
 export type VisitorStatus = 'NEW' | 'CONTACTED' | 'MATCHED' | 'CONVERTED' | 'LOST';
 

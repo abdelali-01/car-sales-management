@@ -1,0 +1,22 @@
+<mxfile host="65bd71144e">
+    <diagram id="z-znDw75jMhwTUvfqXO4" name="Page-1">
+        <mxGraphModel dx="605" dy="645" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="none" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="2" value="Serach" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="54" y="130" width="193" height="38" as="geometry"/>
+                </mxCell>
+                <mxCell id="4" value="&lt;h2 style=&quot;box-sizing: border-box; margin: 0px 0px 24px; padding: 0px; border: 0px solid rgb(228, 231, 236); font-size: 18px; line-height: 1.55556; --tw-font-weight: 600; scrollbar-width: thin; scrollbar-color: rgb(168, 168, 168) transparent; font-family: Outfit, &amp;quot;Outfit Fallback&amp;quot;; text-align: start;&quot; class=&quot;text-lg font-semibold text-gray-900 dark:text-white mb-6&quot;&gt;&lt;font color=&quot;#ffffff&quot;&gt;Table&lt;/font&gt;&lt;/h2&gt;&lt;div&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="54" y="374" width="475" height="131" as="geometry"/>
+                </mxCell>
+                <mxCell id="5" value="Filter button (X)" style="rounded=1;whiteSpace=wrap;html=1;fontColor=#FFFFFF;" parent="1" vertex="1">
+                    <mxGeometry x="415" y="130" width="106" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="6" value="&lt;font color=&quot;#f1f2f3&quot;&gt;Expanded Filters options&amp;nbsp;&lt;/font&gt;&lt;h2 style=&quot;box-sizing: border-box; margin: 0px 0px 24px; padding: 0px; border: 0px solid rgb(228, 231, 236); font-size: 18px; line-height: 1.55556; --tw-font-weight: 600; scrollbar-width: thin; scrollbar-color: rgb(168, 168, 168) transparent; font-family: Outfit, &amp;quot;Outfit Fallback&amp;quot;; text-align: start;&quot; class=&quot;text-lg font-semibold text-gray-900 dark:text-white mb-6&quot;&gt;&lt;/h2&gt;" style="rounded=1;whiteSpace=wrap;html=1;fontColor=#FFFFFF;" parent="1" vertex="1">
+                    <mxGeometry x="52" y="187" width="472" height="159" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

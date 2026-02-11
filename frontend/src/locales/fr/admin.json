@@ -1,22 +1,19 @@
 {
   "sidebar": {
     "dashboard": "Tableau de bord",
+    "offers": "Offres",
+    "visitors": "Visiteurs",
     "orders": "Commandes",
-    "products": "Produits",
-    "categories": "Catégories",
-    "delivery": "Livraison",
-    "promoCodes": "Codes Promo",
-    "pixels": "Pixels",
-    "messages": "Messages",
-    "wilayas": "Wilayas",
+    "clients": "Clients",
+    "payments": "Paiements",
+    "admins": "Administrateurs",
     "profile": "Profil",
     "liveSupport": "Support en Direct",
-    "admins": "Administrateurs",
     "sections": {
       "overview": "Aperçu",
-      "operations": "Opérations",
-      "catalog": "Catalogue",
-      "settings": "Paramètres",
+      "inventory": "Inventaire",
+      "sales": "Ventes",
+      "finance": "Finance",
       "administration": "Administration",
       "support": "Support"
     }
@@ -48,6 +45,68 @@
       "title": "Distribution des Statuts",
       "description": "Aperçu des statuts des commandes",
       "noData": "Aucune donnée de commande disponible"
+    }
+  },
+  "offers": {
+    "title": "Offres",
+    "list": "Liste des Offres",
+    "description": "Gérez votre inventaire de véhicules et vos offres",
+    "addOffer": "Ajouter une Offre",
+    "editOffer": "Modifier l'Offre",
+    "export": "Exporter",
+    "exporting": "Exportation...",
+    "search": "Rechercher des offres...",
+    "noOffers": "Aucune offre trouvée",
+    "noSearchResults": "Aucune offre ne correspond à votre recherche",
+    "available": "Disponible",
+    "reserved": "Réservée",
+    "sold": "Vendue",
+    "columns": {
+      "image": "Image",
+      "car": "Véhicule",
+      "year": "Année",
+      "km": "KM",
+      "price": "Prix",
+      "location": "Localisation",
+      "status": "Statut",
+      "date": "Date",
+      "actions": "Actions",
+      "owner": "Propriétaire"
+    },
+    "validation": {
+      "brandRequired": "La marque est requise",
+      "modelRequired": "Le modèle est requis",
+      "yearRequired": "L'année est requise",
+      "priceRequired": "Le prix est requis",
+      "phoneRequired": "Le téléphone du propriétaire est requis"
+    },
+    "form": {
+      "brand": "Marque",
+      "model": "Modèle",
+      "year": "Année",
+      "km": "Kilomètres",
+      "price": "Prix",
+      "location": "Localisation",
+      "ownerName": "Nom du Propriétaire",
+      "ownerPhone": "Téléphone du Propriétaire",
+      "status": "Statut",
+      "features": "Caractéristiques",
+      "description": "Description"
+    },
+    "filters": {
+      "button": "Filtres",
+      "all": "Tous",
+      "brand": "Marque",
+      "location": "Localisation",
+      "status": "Statut",
+      "yearRange": "Plage d'Années",
+      "priceRange": "Plage de Prix",
+      "kmRange": "Plage de KM",
+      "min": "Min",
+      "max": "Max",
+      "reset": "Réinitialiser les Filtres",
+      "activeCount": "{{count}} filtre(s) actif(s)",
+      "noFilters": "Aucun filtre appliqué"
     }
   },
   "products": {

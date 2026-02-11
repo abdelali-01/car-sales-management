@@ -1,22 +1,19 @@
 {
   "sidebar": {
     "dashboard": "لوحة التحكم",
+    "offers": "العروض",
+    "visitors": "الزوار",
     "orders": "الطلبات",
-    "products": "المنتجات",
-    "categories": "الفئات",
-    "delivery": "التوصيل",
-    "promoCodes": "رموز الخصم",
-    "pixels": "البكسلات",
-    "messages": "الرسائل",
-    "wilayas": "الولايات",
+    "clients": "العملاء",
+    "payments": "المدفوعات",
+    "admins": "المسؤولون",
     "profile": "الملف الشخصي",
     "liveSupport": "الدعم المباشر",
-    "admins": "المسؤولون",
     "sections": {
       "overview": "نظرة عامة",
-      "operations": "العمليات",
-      "catalog": "الكتالوج",
-      "settings": "الإعدادات",
+      "inventory": "المخزون",
+      "sales": "المبيعات",
+      "finance": "المالية",
       "administration": "الإدارة",
       "support": "الدعم"
     }
@@ -48,6 +45,68 @@
       "title": "توزيع حالات الطلبات",
       "description": "نظرة عامة على حالات الطلبات",
       "noData": "لا توجد بيانات للطلبات"
+    }
+  },
+  "offers": {
+    "title": "العروض",
+    "list": "قائمة العروض",
+    "description": "إدارة مخزون السيارات والعروض",
+    "addOffer": "إضافة عرض",
+    "editOffer": "تعديل العرض",
+    "export": "تصدير",
+    "exporting": "جاري التصدير...",
+    "search": "البحث عن عروض...",
+    "noOffers": "لم يتم العثور على عروض",
+    "noSearchResults": "لا توجد عروض تطابق بحثك",
+    "available": "متاح",
+    "reserved": "محجوز",
+    "sold": "مباع",
+    "columns": {
+      "image": "الصورة",
+      "car": "السيارة",
+      "year": "السنة",
+      "km": "الكيلومترات",
+      "price": "السعر",
+      "location": "الموقع",
+      "status": "الحالة",
+      "date": "التاريخ",
+      "actions": "الإجراءات",
+      "owner": "المالك"
+    },
+    "validation": {
+      "brandRequired": "العلامة التجارية مطلوبة",
+      "modelRequired": "الموديل مطلوب",
+      "yearRequired": "السنة مطلوبة",
+      "priceRequired": "السعر مطلوب",
+      "phoneRequired": "هاتف المالك مطلوب"
+    },
+    "form": {
+      "brand": "العلامة التجارية",
+      "model": "الموديل",
+      "year": "السنة",
+      "km": "الكيلومترات",
+      "price": "السعر",
+      "location": "الموقع",
+      "ownerName": "اسم المالك",
+      "ownerPhone": "هاتف المالك",
+      "status": "الحالة",
+      "features": "المميزات",
+      "description": "الوصف"
+    },
+    "filters": {
+      "button": "التصفية",
+      "all": "الكل",
+      "brand": "العلامة التجارية",
+      "location": "الموقع",
+      "status": "الحالة",
+      "yearRange": "نطاق السنة",
+      "priceRange": "نطاق السعر",
+      "kmRange": "نطاق الكيلومترات",
+      "min": "أدنى",
+      "max": "أقصى",
+      "reset": "إعادة تعيين الفلاتر",
+      "activeCount": "{{count}} فلتر(ات) نشط",
+      "noFilters": "لم يتم تطبيق أي فلتر"
     }
   },
   "products": {

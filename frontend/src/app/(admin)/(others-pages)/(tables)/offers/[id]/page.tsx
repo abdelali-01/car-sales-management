@@ -5,19 +5,20 @@ import { useRouter, useParams } from 'next/navigation';
 import PageBreadcrumb from '@/components/common/PageBreadCrumb';
 import ProductFormActions from '@/components/products/ProductFormActions';
 import OfferDetailsSection from '@/components/offers/OfferDetailsSection';
-import OfferPricingSection from '@/components/offers/OfferPricingSection';
+import OfferPricingStatusSection from '@/components/offers/OfferPricingStatusSection';
+import OfferContactSection from '@/components/offers/OfferContactSection';
 import OfferImagesSection, { OfferImageState } from '@/components/offers/OfferImagesSection';
 import { AppDispatch, RootState } from '@/store/store';
-import { fetchOfferById, updateOffer, uploadOfferImages } from '@/store/offers/offersHandler'; // We rely on updateOffer
+import { fetchOfferById, updateOffer, uploadOfferImages } from '@/store/offers/offersHandler';
 import { useFormErrors } from '@/hooks/useFormErrors';
 import { useTranslation } from 'react-i18next';
-import Loader from '@/components/ui/load/Loader';
+import { OfferFormSkeleton } from '@/components/skeleton';
 
 export default function EditOfferPage() {
+    const params = useParams();
+    const offerId = Number(params.id);
     const dispatch = useDispatch<AppDispatch>();
     const router = useRouter();
-    const params = useParams();
-    const offerId = params?.id ? Number(params.id) : null;
     const { errors, setApiError, setFieldError, clearFieldError, clearErrors } = useFormErrors<Record<string, string>>();
     const { t } = useTranslation('admin');
 
@@ -35,19 +36,16 @@ export default function EditOfferPage() {
         location: '',
         ownerName: '',
         ownerPhone: '',
-        ownerEmail: '',
-        status: 'AVAILABLE' as 'AVAILABLE' | 'RESERVED' | 'SOLD'
+        deliveryCompany: '',
+        profit: 0,
+        status: 'available' as 'available' | 'reserved' | 'sold'
     });
     const [description, setDescription] = useState('');
 
-    // Fetch Offer
     useEffect(() => {
-        if (offerId) {
-            dispatch(fetchOfferById(offerId));
-        }
+        dispatch(fetchOfferById(offerId));
     }, [dispatch, offerId]);
 
-    // Populate Form
     useEffect(() => {
         if (currentOffer && currentOffer.id === offerId) {
             setFormData({
@@ -59,11 +57,12 @@ export default function EditOfferPage() {
                 location: currentOffer.location,
                 ownerName: currentOffer.ownerName,
                 ownerPhone: currentOffer.ownerPhone,
-                ownerEmail: currentOffer.ownerEmail || '',
-                status: currentOffer.status
+                deliveryCompany: '',
+                profit: 0,
+                status: currentOffer.status as 'available' | 'reserved' | 'sold'
             });
             // Populate images
-            if (currentOffer.images) {
+            if (currentOffer.images && currentOffer.images.length > 0) {
                 setImages(currentOffer.images.map(img => ({
                     url: img.imageUrl,
                     id: img.id
@@ -116,11 +115,10 @@ export default function EditOfferPage() {
     };
 
     const handleSubmit = async () => {
-        if (!offerId || !validateForm()) return;
+        if (!validateForm()) return;
 
         setIsSubmitting(true);
         try {
-            // 1. Update Offer
             await dispatch(updateOffer(offerId, {
                 brand: formData.brand,
                 model: formData.model,
@@ -130,12 +128,9 @@ export default function EditOfferPage() {
                 location: formData.location,
                 ownerName: formData.ownerName,
                 ownerPhone: formData.ownerPhone,
-                ownerEmail: formData.ownerEmail,
                 status: formData.status,
             }));
 
-            // 2. Upload New Images
-            // Filter images that have a File object
             const filesToUpload = images.filter(img => img.file).map(img => img.file!);
             if (filesToUpload.length > 0) {
                 await dispatch(uploadOfferImages(offerId, filesToUpload));
@@ -149,55 +144,67 @@ export default function EditOfferPage() {
         }
     };
 
-    if (loading && !currentOffer) {
-        return (
-            <div className="flex items-center justify-center h-64">
-                <Loader />
-            </div>
-        );
+    if (loading || !currentOffer) {
+        return <OfferFormSkeleton />;
     }
 
     return (
         <div className="space-y-5">
             <PageBreadcrumb paths={['offers']} pageTitle={t('offers.editOffer')} />
 
-            <div className="space-y-5">
-                {/* Offer Details */}
-                <OfferDetailsSection
-                    brand={formData.brand}
-                    model={formData.model}
-                    year={formData.year}
-                    km={formData.km}
-                    location={formData.location}
-                    description={description}
-                    onChange={handleFieldChange}
-                    errors={errors}
-                />
+            {/* 2-Column Grid Layout */}
+            <div className="grid grid-cols-3 lg:grid-cols-5 gap-5">
+                {/* Left Column */}
+                <div className="flex flex-col gap-5 col-span-2 lg:col-span-3 h-full">
+                    {/* Car Details */}
+                    <OfferDetailsSection
+                        brand={formData.brand}
+                        model={formData.model}
+                        year={formData.year}
+                        km={formData.km}
+                        location={formData.location}
+                        description={description}
+                        onChange={handleFieldChange}
+                        errors={errors}
+                    />
 
-                {/* Pricing & Contact */}
-                <OfferPricingSection
-                    price={formData.price}
-                    status={formData.status}
-                    ownerName={formData.ownerName}
-                    ownerPhone={formData.ownerPhone}
-                    ownerEmail={formData.ownerEmail}
-                    onChange={handleFieldChange}
-                    errors={errors}
-                />
+                    {/* Contact & Delivery Company */}
+                    <OfferContactSection
+                        ownerName={formData.ownerName}
+                        ownerPhone={formData.ownerPhone}
+                        deliveryCompany={formData.deliveryCompany}
+                        onChange={handleFieldChange}
+                        errors={errors}
+                    />
+                </div>
 
-                {/* Images */}
-                <OfferImagesSection
-                    images={images}
-                    onChange={handleImagesChange}
-                />
+                {/* Right Column */}
+                <div className="flex flex-col gap-5 col-span-1 lg:col-span-2 h-full">
+                    {/* Pricing & Status */}
+                    <OfferPricingStatusSection
+                        price={formData.price}
+                        status={formData.status}
+                        profit={formData.profit}
+                        onChange={handleFieldChange}
+                        errors={errors}
+                    />
 
-                {/* Form Actions */}
-                <ProductFormActions
-                    isSubmitting={isSubmitting}
-                    isEditing={true}
-                    onSubmit={handleSubmit}
-                />
+                    {/* Images - Grows to fill remaining space */}
+                    <div className="flex-1 h-full">
+                        <OfferImagesSection
+                            images={images}
+                            onChange={handleImagesChange}
+                        />
+                    </div>
+                </div>
             </div>
+
+            {/* Form Actions */}
+            <ProductFormActions
+                isSubmitting={isSubmitting}
+                isEditing={true}
+                onSubmit={handleSubmit}
+            />
         </div>
     );
 }

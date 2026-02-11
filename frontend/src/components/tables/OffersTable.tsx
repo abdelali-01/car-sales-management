@@ -3,7 +3,7 @@ import React, { useEffect, useState, useMemo } from 'react'
 import { Table, TableRow, TableHeader, TableCell, TableBody } from '../ui/table'
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/store/store';
-import Loader from '../ui/load/Loader';
+import { OfferListSkeleton } from '@/components/skeleton';
 import Image from 'next/image';
 import Badge from '../ui/badge/Badge';
 import { TrashIcon, MagnifyingGlassIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
@@ -12,6 +12,7 @@ import { fetchOffers, deleteOffer } from '@/store/offers/offersHandler';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { Offer } from '@/types/auto-sales';
+import OffersFilterPanel, { OffersFilterButton, OfferFilters, defaultFilters, applyFilters, countActiveFilters } from '@/components/offers/OffersFilterPanel';
 
 const ITEMS_PER_PAGE = 7;
 
@@ -26,6 +27,8 @@ export default function OffersTable() {
     const [searchQuery, setSearchQuery] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [sortField, setSortField] = useState<'brand' | 'price' | 'year' | 'createdAt'>('createdAt');
+    const [filters, setFilters] = useState<OfferFilters>(defaultFilters);
+    const [showFilters, setShowFilters] = useState(false);
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
 
     useEffect(() => {
@@ -36,13 +39,20 @@ export default function OffersTable() {
     const filteredOffers = useMemo(() => {
         if (!offers) return [];
 
-        let filtered = offers.filter(offer =>
-            `${offer.brand} ${offer.model}`.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            offer.location?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            offer.ownerName?.toLowerCase().includes(searchQuery.toLowerCase())
-        );
+        // 1. Apply deep filters
+        let filtered = applyFilters(offers, filters);
 
-        // Sort offers
+        // 2. Apply text search
+        if (searchQuery) {
+            const q = searchQuery.toLowerCase();
+            filtered = filtered.filter(offer =>
+                `${offer.brand} ${offer.model}`.toLowerCase().includes(q) ||
+                offer.location?.toLowerCase().includes(q) ||
+                offer.ownerName?.toLowerCase().includes(q)
+            );
+        }
+
+        // 3. Sort offers
         filtered.sort((a, b) => {
             if (sortField === 'price') {
                 return sortOrder === 'asc' ? a.price - b.price : b.price - a.price;
@@ -62,7 +72,7 @@ export default function OffersTable() {
         });
 
         return filtered;
-    }, [offers, searchQuery, sortField, sortOrder]);
+    }, [offers, searchQuery, filters, sortField, sortOrder]);
 
     // Pagination
     const totalPages = Math.ceil(filteredOffers.length / ITEMS_PER_PAGE);
@@ -71,10 +81,14 @@ export default function OffersTable() {
         return filteredOffers.slice(start, start + ITEMS_PER_PAGE);
     }, [filteredOffers, currentPage]);
 
-    // Reset to page 1 when search changes
+    // Reset to page 1 when search or filters change
     useEffect(() => {
         setCurrentPage(1);
-    }, [searchQuery]);
+    }, [searchQuery, filters]);
+
+    const handleResetFilters = () => {
+        setFilters(defaultFilters);
+    };
 
     const handleSort = (field: 'brand' | 'price' | 'year' | 'createdAt') => {
         if (sortField === field) {
@@ -115,12 +129,12 @@ export default function OffersTable() {
         }
     };
 
-    if (!offers) return <Loader />
+    if (!offers) return <OfferListSkeleton />
 
     return (
         <div className="space-y-4">
-            {/* Header Actions */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
+            {/* Toolbar: Search (left) + Filter button (right) */}
+            <div className="flex items-center justify-between gap-3">
                 {/* Search */}
                 <div className="relative w-full sm:w-64">
                     <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -132,7 +146,23 @@ export default function OffersTable() {
                         className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent text-sm"
                     />
                 </div>
+
+                {/* Filter toggle button (right) */}
+                <OffersFilterButton
+                    activeCount={countActiveFilters(filters)}
+                    isOpen={showFilters}
+                    onToggle={() => setShowFilters(prev => !prev)}
+                />
             </div>
+
+            {/* Expandable filter panel (full-width, between toolbar and table) */}
+            <OffersFilterPanel
+                filters={filters}
+                onChange={setFilters}
+                onReset={handleResetFilters}
+                offers={offers || []}
+                isOpen={showFilters}
+            />
 
             {/* Table */}
             <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800/50">

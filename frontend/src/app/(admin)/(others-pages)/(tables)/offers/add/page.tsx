@@ -5,13 +5,13 @@ import { useRouter } from 'next/navigation';
 import PageBreadcrumb from '@/components/common/PageBreadCrumb';
 import ProductFormActions from '@/components/products/ProductFormActions';
 import OfferDetailsSection from '@/components/offers/OfferDetailsSection';
-import OfferPricingSection from '@/components/offers/OfferPricingSection';
+import OfferPricingStatusSection from '@/components/offers/OfferPricingStatusSection';
+import OfferContactSection from '@/components/offers/OfferContactSection';
 import OfferImagesSection, { OfferImageState } from '@/components/offers/OfferImagesSection';
 import { AppDispatch } from '@/store/store';
 import { createOffer, uploadOfferImages } from '@/store/offers/offersHandler';
 import { useFormErrors } from '@/hooks/useFormErrors';
 import { useTranslation } from 'react-i18next';
-import { addToast } from '@/store/toast/toastSlice';
 
 export default function AddOfferPage() {
     const dispatch = useDispatch<AppDispatch>();
@@ -22,7 +22,6 @@ export default function AddOfferPage() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [images, setImages] = useState<OfferImageState[]>([]);
 
-    // Form state matching Offer interface (minus id, createdAt, images)
     const [formData, setFormData] = useState({
         brand: '',
         model: '',
@@ -32,22 +31,11 @@ export default function AddOfferPage() {
         location: '',
         ownerName: '',
         ownerPhone: '',
-        ownerEmail: '',
-        status: 'AVAILABLE' as 'AVAILABLE' | 'RESERVED' | 'SOLD',
-        description: '' // Assuming description maps to remarks or extra field if supported, else ignoring?
-        // Wait, Offer interface doesn't have description. It has 'location', 'ownerName', etc.
-        // I will use 'location' as generic string.
-        // Offer interface: brand, model, year, km, price, location, ownerName, ownerPhone, ownerEmail, status.
-        // No 'description' field in Offer interface logic I saw earlier.
-        // Reviewing types/auto-sales.ts...
-        // interface Offer { id, brand, model, year, km, price, location, ownerName, ownerPhone, ownerEmail?, status, images?, createdAt }
-        // So no description. I'll remove description or use it if I update the backend.
-        // For now I'll ignore description or map it to something else? 
-        // I won't send description to backend if it doesn't accept it.
+        deliveryCompany: '',
+        profit: 0,
+        status: 'available' as 'available' | 'reserved' | 'sold',
     });
 
-    // We'll remove description from state to avoid confusion, or keep it but not send it?
-    // I'll keep it in UI state but not send it to creatingOffer if not supported.
     const [description, setDescription] = useState('');
 
     const handleFieldChange = (field: string, value: string | number) => {
@@ -98,7 +86,6 @@ export default function AddOfferPage() {
 
         setIsSubmitting(true);
         try {
-            // 1. Create Offer
             const newOffer = await dispatch(createOffer({
                 brand: formData.brand,
                 model: formData.model,
@@ -108,12 +95,9 @@ export default function AddOfferPage() {
                 location: formData.location,
                 ownerName: formData.ownerName,
                 ownerPhone: formData.ownerPhone,
-                ownerEmail: formData.ownerEmail,
                 status: formData.status,
-                // ownerEmail: ... (if we had it)
             }));
 
-            // 2. Upload Images
             const filesToUpload = images.filter(img => img.file).map(img => img.file!);
             if (filesToUpload.length > 0 && newOffer) {
                 await dispatch(uploadOfferImages(newOffer.id, filesToUpload));
@@ -131,43 +115,59 @@ export default function AddOfferPage() {
         <div className="space-y-5">
             <PageBreadcrumb paths={['offers']} pageTitle={t('offers.addOffer')} />
 
-            <div className="space-y-5">
-                {/* Offer Details */}
-                <OfferDetailsSection
-                    brand={formData.brand}
-                    model={formData.model}
-                    year={formData.year}
-                    km={formData.km}
-                    location={formData.location}
-                    description={description}
-                    onChange={handleFieldChange}
-                    errors={errors}
-                />
+            {/* 2-Column Grid Layout */}
+            <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">
+                {/* Left Column */}
+                <div className="flex flex-col gap-5 col-span-1 lg:col-span-3 h-full">
+                    {/* Car Details */}
+                    <OfferDetailsSection
+                        brand={formData.brand}
+                        model={formData.model}
+                        year={formData.year}
+                        km={formData.km}
+                        location={formData.location}
+                        description={description}
+                        onChange={handleFieldChange}
+                        errors={errors}
+                    />
 
-                {/* Pricing & Contact */}
-                <OfferPricingSection
-                    price={formData.price}
-                    status={formData.status}
-                    ownerName={formData.ownerName}
-                    ownerPhone={formData.ownerPhone}
-                    ownerEmail={formData.ownerEmail}
-                    onChange={handleFieldChange}
-                    errors={errors}
-                />
+                    {/* Contact & Delivery Company */}
+                    <OfferContactSection
+                        ownerName={formData.ownerName}
+                        ownerPhone={formData.ownerPhone}
+                        deliveryCompany={formData.deliveryCompany}
+                        onChange={handleFieldChange}
+                        errors={errors}
+                    />
+                </div>
 
-                {/* Images */}
-                <OfferImagesSection
-                    images={images}
-                    onChange={handleImagesChange}
-                />
+                {/* Right Column */}
+                <div className="flex flex-col gap-5 col-span-1 lg:col-span-2 h-full">
+                    {/* Pricing & Status */}
+                    <OfferPricingStatusSection
+                        price={formData.price}
+                        status={formData.status}
+                        profit={formData.profit}
+                        onChange={handleFieldChange}
+                        errors={errors}
+                    />
 
-                {/* Form Actions */}
-                <ProductFormActions
-                    isSubmitting={isSubmitting}
-                    isEditing={false}
-                    onSubmit={handleSubmit}
-                />
+                    {/* Images - Grows to fill remaining space */}
+                    <div className="flex-1 h-full">
+                        <OfferImagesSection
+                            images={images}
+                            onChange={handleImagesChange}
+                        />
+                    </div>
+                </div>
             </div>
+
+            {/* Form Actions */}
+            <ProductFormActions
+                isSubmitting={isSubmitting}
+                isEditing={false}
+                onSubmit={handleSubmit}
+            />
         </div>
     );
 }

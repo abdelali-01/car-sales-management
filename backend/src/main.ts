@@ -30,14 +30,20 @@ async function bootstrap() {
 
   // Session configuration with PostgreSQL store
   const PgSession = connectPgSimple(session);
+  const databaseUrl = configService.get('DATABASE_URL');
+
   app.use(
     session({
+      // NOTE: Using in-memory sessions for development
+      // PGStore session persistence disabled to avoid localhost:5432 connection errors
+      // The DATABASE_URL is correctly used by TypeORM, but connect-pg-simple 
+      // requires additional pool configuration for SSL that we'll set up for production
       // store: new PgSession({
-      //   conString: configService.get('DATABASE_URL'),
+      //   conString: databaseUrl,
       //   tableName: 'session',
       //   createTableIfMissing: true,
-      //   conObject: {
-      //     ssl: { rejectUnauthorized: false },
+      //   ssl: {
+      //     rejectUnauthorized: false,
       //   },
       // }),
       secret:

@@ -1,22 +1,19 @@
 {
   "sidebar": {
     "dashboard": "Dashboard",
+    "offers": "Offers",
+    "visitors": "Visitors",
     "orders": "Orders",
-    "products": "Products",
-    "categories": "Categories",
-    "delivery": "Delivery",
-    "promoCodes": "Promo Codes",
-    "pixels": "Pixels",
-    "messages": "Messages",
-    "wilayas": "Wilayas",
+    "clients": "Clients",
+    "payments": "Payments",
+    "admins": "Admins",
     "profile": "Profile",
     "liveSupport": "Live Support",
-    "admins": "Admins",
     "sections": {
       "overview": "Overview",
-      "operations": "Operations",
-      "catalog": "Catalog",
-      "settings": "Settings",
+      "inventory": "Inventory",
+      "sales": "Sales",
+      "finance": "Finance",
       "administration": "Administration",
       "support": "Support"
     }
@@ -88,13 +85,28 @@
         "model": "Model",
         "year": "Year",
         "km": "Kilometers",
-        "price": "Price (DA)",
+        "price": "Price",
         "location": "Location",
         "ownerName": "Owner Name",
         "ownerPhone": "Owner Phone",
         "status": "Status",
         "features": "Features",
         "description": "Description"
+    },
+    "filters": {
+        "button": "Filters",
+        "all": "All",
+        "brand": "Brand",
+        "location": "Location",
+        "status": "Status",
+        "yearRange": "Year Range",
+        "priceRange": "Price Range",
+        "kmRange": "KM Range",
+        "min": "Min",
+        "max": "Max",
+        "reset": "Reset Filters",
+        "activeCount": "{{count}} filter(s) active",
+        "noFilters": "No filters applied"
     }
   },
   "products": {
