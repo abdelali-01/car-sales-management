@@ -12,7 +12,7 @@ export class VisitorsService {
   constructor(
     @InjectRepository(Visitor)
     private visitorsRepository: Repository<Visitor>,
-  ) {}
+  ) { }
 
   async create(createVisitorDto: CreateVisitorDto): Promise<Visitor> {
     const visitor = this.visitorsRepository.create(createVisitorDto);
@@ -29,7 +29,7 @@ export class VisitorsService {
 
     const queryBuilder = this.visitorsRepository
       .createQueryBuilder('visitor')
-      .orderBy('visitor.created_at', 'DESC');
+      .orderBy('visitor.createdAt', 'DESC');
 
     if (status) {
       queryBuilder.andWhere('visitor.status = :status', { status });

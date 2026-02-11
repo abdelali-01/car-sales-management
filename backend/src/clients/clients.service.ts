@@ -11,7 +11,7 @@ export class ClientsService {
   constructor(
     @InjectRepository(Client)
     private clientsRepository: Repository<Client>,
-  ) {}
+  ) { }
 
   async create(createClientDto: CreateClientDto): Promise<Client> {
     const client = this.clientsRepository.create(createClientDto);
@@ -27,7 +27,7 @@ export class ClientsService {
 
     const queryBuilder = this.clientsRepository
       .createQueryBuilder('client')
-      .orderBy('client.created_at', 'DESC');
+      .orderBy('client.createdAt', 'DESC');
 
     if (name) {
       queryBuilder.andWhere('LOWER(client.name) LIKE LOWER(:name)', {

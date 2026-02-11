@@ -21,7 +21,7 @@ export class PaymentsService {
     private paymentsRepository: Repository<Payment>,
     private ordersService: OrdersService,
     private clientsService: ClientsService,
-  ) {}
+  ) { }
 
   async create(createPaymentDto: CreatePaymentDto): Promise<Payment> {
     // Validate that the order exists
@@ -50,7 +50,7 @@ export class PaymentsService {
       .createQueryBuilder('payment')
       .leftJoinAndSelect('payment.order', 'order')
       .leftJoinAndSelect('payment.client', 'client')
-      .orderBy('payment.created_at', 'DESC');
+      .orderBy('payment.createdAt', 'DESC');
 
     if (status) {
       queryBuilder.andWhere('payment.status = :status', { status });

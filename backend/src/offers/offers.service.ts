@@ -22,7 +22,7 @@ export class OffersService {
     @InjectRepository(OfferImage)
     private offerImagesRepository: Repository<OfferImage>,
     private cloudinaryService: CloudinaryService,
-  ) {}
+  ) { }
 
   async create(
     createOfferDto: CreateOfferDto,
@@ -51,7 +51,7 @@ export class OffersService {
     const queryBuilder = this.offersRepository
       .createQueryBuilder('offer')
       .leftJoinAndSelect('offer.images', 'images')
-      .orderBy('offer.created_at', 'DESC');
+      .orderBy('offer.createdAt', 'DESC');
 
     if (status) {
       queryBuilder.andWhere('offer.status = :status', { status });

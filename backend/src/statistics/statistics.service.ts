@@ -23,7 +23,7 @@ export class StatisticsService {
     private clientsRepository: Repository<Client>,
     @InjectRepository(Payment)
     private paymentsRepository: Repository<Payment>,
-  ) {}
+  ) { }
 
   async getOverview() {
     const [
@@ -163,20 +163,20 @@ export class StatisticsService {
     const recentOrders = await this.ordersRepository
       .createQueryBuilder('order')
       .leftJoinAndSelect('order.offer', 'offer')
-      .orderBy('order.created_at', 'DESC')
+      .orderBy('order.createdAt', 'DESC')
       .limit(limit)
       .getMany();
 
     const recentVisitors = await this.visitorsRepository
       .createQueryBuilder('visitor')
-      .orderBy('visitor.created_at', 'DESC')
+      .orderBy('visitor.createdAt', 'DESC')
       .limit(limit)
       .getMany();
 
     const recentPayments = await this.paymentsRepository
       .createQueryBuilder('payment')
       .leftJoinAndSelect('payment.order', 'order')
-      .orderBy('payment.created_at', 'DESC')
+      .orderBy('payment.createdAt', 'DESC')
       .limit(limit)
       .getMany();
 

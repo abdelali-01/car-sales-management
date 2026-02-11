@@ -3,6 +3,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 import session from 'express-session';
 import connectPgSimple from 'connect-pg-simple';
+import passport from 'passport';
 import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
@@ -31,11 +32,14 @@ async function bootstrap() {
   const PgSession = connectPgSimple(session);
   app.use(
     session({
-      store: new PgSession({
-        conString: `postgresql://${configService.get('DB_USERNAME')}:${configService.get('DB_PASSWORD')}@${configService.get('DB_HOST')}:${configService.get('DB_PORT')}/${configService.get('DB_DATABASE')}`,
-        tableName: 'session',
-        createTableIfMissing: true,
-      }),
+      // store: new PgSession({
+      //   conString: configService.get('DATABASE_URL'),
+      //   tableName: 'session',
+      //   createTableIfMissing: true,
+      //   conObject: {
+      //     ssl: { rejectUnauthorized: false },
+      //   },
+      // }),
       secret:
         configService.get<string>('SESSION_SECRET') ||
         'fallback-secret-change-me',
@@ -49,6 +53,10 @@ async function bootstrap() {
       },
     }),
   );
+
+  // Passport initialization (MUST come after session middleware)
+  app.use(passport.initialize());
+  app.use(passport.session());
 
   // Global API prefix
   app.setGlobalPrefix('api');

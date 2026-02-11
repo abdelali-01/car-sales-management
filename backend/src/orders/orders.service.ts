@@ -23,7 +23,7 @@ export class OrdersService {
     private ordersRepository: Repository<Order>,
     private offersService: OffersService,
     private visitorsService: VisitorsService,
-  ) {}
+  ) { }
 
   async create(createOrderDto: CreateOrderDto): Promise<Order> {
     // Validate that the offer exists and is available
@@ -67,7 +67,7 @@ export class OrdersService {
       .createQueryBuilder('order')
       .leftJoinAndSelect('order.offer', 'offer')
       .leftJoinAndSelect('order.visitor', 'visitor')
-      .orderBy('order.created_at', 'DESC');
+      .orderBy('order.createdAt', 'DESC');
 
     if (status) {
       queryBuilder.andWhere('order.status = :status', { status });
