@@ -10,7 +10,7 @@ import { Offer } from './entities/offer.entity';
 import { OfferImage } from './entities/offer-image.entity';
 import { CreateOfferDto } from './dto/create-offer.dto';
 import { UpdateOfferDto } from './dto/update-offer.dto';
-import { CloudinaryService } from '../common/cloudinary/cloudinary.service';
+import { FileUploadService } from '../common/services/file-upload.service';
 import { OfferStatus } from '../common/enums/offer-status.enum';
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
 
@@ -21,8 +21,11 @@ export class OffersService {
     private offersRepository: Repository<Offer>,
     @InjectRepository(OfferImage)
     private offerImagesRepository: Repository<OfferImage>,
-    private cloudinaryService: CloudinaryService,
-  ) { }
+    private fileUploadService: FileUploadService,
+  ) {
+    // Ensure upload directory exists
+    this.fileUploadService.ensureUploadDirExists('offers');
+  }
 
   async create(
     createOfferDto: CreateOfferDto,
@@ -97,13 +100,19 @@ export class OffersService {
   ): Promise<Offer> {
     const offer = await this.findOne(id);
 
-    // Block update if offer is sold
-    if (offer.status === OfferStatus.SOLD) {
-      throw new BadRequestException('Cannot update a sold offer');
-    }
-
     Object.assign(offer, updateOfferDto);
     await this.offersRepository.save(offer);
+
+    // Handle deleted images
+    if (updateOfferDto.deletedImageIds && updateOfferDto.deletedImageIds.length > 0) {
+      for (const imageId of updateOfferDto.deletedImageIds) {
+        try {
+          await this.removeImage(imageId);
+        } catch (error) {
+          console.error(`Error removing image ${imageId}:`, error);
+        }
+      }
+    }
 
     // Upload new images if provided
     if (files && files.length > 0) {
@@ -123,11 +132,20 @@ export class OffersService {
       throw new ConflictException('Cannot delete a sold offer');
     }
 
-    // Delete all images from Cloudinary
+    // Delete all images from filesystem
     if (offer.images && offer.images.length > 0) {
-      for (const image of offer.images) {
-        if (image.publicId) {
-          await this.cloudinaryService.deleteImage(image.publicId);
+      const filenames = offer.images
+        .filter((img) => img.publicId) // publicId now stores filename
+        .map((img) => img.publicId);
+
+      if (filenames.length > 0) {
+        try {
+          await this.fileUploadService.deleteMultipleFiles(
+            filenames,
+            'offers',
+          );
+        } catch (error) {
+          console.error('Error deleting images from filesystem:', error);
         }
       }
     }
@@ -145,19 +163,28 @@ export class OffersService {
 
     for (const file of files) {
       try {
-        const result = await this.cloudinaryService.uploadImage(file, 'offers');
+        // File is already saved by Multer, we just need to create the database record
+        const imageUrl = this.fileUploadService.getFileUrl(
+          file.filename,
+          'offers',
+        );
 
         const offerImage = this.offerImagesRepository.create({
           offerId: offer.id,
-          imageUrl: result.secure_url,
-          publicId: result.public_id,
+          imageUrl: imageUrl,
+          publicId: file.filename, // Store filename for deletion
         });
 
         const savedImage = await this.offerImagesRepository.save(offerImage);
         uploadedImages.push(savedImage);
       } catch (error) {
-        console.error('Error uploading image:', error);
-        // Continue with other images even if one fails
+        console.error('Error saving image record:', error);
+        // Delete the uploaded file if database save fails
+        try {
+          await this.fileUploadService.deleteFile(file.filename, 'offers');
+        } catch (deleteError) {
+          console.error('Error deleting orphaned file:', deleteError);
+        }
       }
     }
 
@@ -173,12 +200,12 @@ export class OffersService {
       throw new NotFoundException(`Image with ID ${imageId} not found`);
     }
 
-    // Delete from Cloudinary
+    // Delete from filesystem
     if (image.publicId) {
       try {
-        await this.cloudinaryService.deleteImage(image.publicId);
+        await this.fileUploadService.deleteFile(image.publicId, 'offers');
       } catch (error) {
-        console.error('Error deleting image from Cloudinary:', error);
+        console.error('Error deleting image from filesystem:', error);
       }
     }
 

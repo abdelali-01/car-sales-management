@@ -6,13 +6,15 @@ interface ClientsState {
     totalCount: number;
     loading: boolean;
     error: string | null;
+    currentClient: Client | null;
 }
 
 const initialState: ClientsState = {
     clients: null,
     totalCount: 0,
     loading: false,
-    error: null
+    error: null,
+    currentClient: null
 };
 
 const clientSlice = createSlice({
@@ -22,6 +24,9 @@ const clientSlice = createSlice({
         setClients: (state, action: PayloadAction<{ clients: Client[], total: number }>) => {
             state.clients = action.payload.clients;
             state.totalCount = action.payload.total;
+        },
+        setCurrentClient: (state, action: PayloadAction<Client | null>) => {
+            state.currentClient = action.payload;
         },
         addClient: (state, action: PayloadAction<Client>) => {
             if (state.clients) {
@@ -40,6 +45,10 @@ const clientSlice = createSlice({
                     client.remainingBalance = action.payload.remainingBalance;
                 }
             }
+            if (state.currentClient && state.currentClient.id === action.payload.id) {
+                state.currentClient.totalSpent = action.payload.totalSpent;
+                state.currentClient.remainingBalance = action.payload.remainingBalance;
+            }
         },
         setLoading: (state, action: PayloadAction<boolean>) => {
             state.loading = action.payload;
@@ -52,6 +61,7 @@ const clientSlice = createSlice({
 
 export const {
     setClients,
+    setCurrentClient,
     addClient,
     updateClientFinancials,
     setLoading,

@@ -36,6 +36,7 @@ export const ENDPOINTS = {
     // Orders Module (Deals)
     ORDERS: {
         BASE: '/api/orders',                                    // GET (?status), POST
+        BY_ID: (id: number) => `/api/orders/${id}`,             // GET, PATCH
         CONFIRM: (id: number) => `/api/orders/${id}/confirm`,   // POST
         COMPLETE: (id: number) => `/api/orders/${id}/complete`, // POST
         CANCEL: (id: number) => `/api/orders/${id}/cancel`,     // POST
@@ -44,6 +45,7 @@ export const ENDPOINTS = {
     // Clients Module
     CLIENTS: {
         BASE: '/api/clients',                                   // GET (?name), POST
+        BY_ID: (id: number) => `/api/clients/${id}`,            // GET, PATCH, DELETE
         FINANCIALS: (id: number) => `/api/clients/${id}/financials`, // PATCH
     },
 

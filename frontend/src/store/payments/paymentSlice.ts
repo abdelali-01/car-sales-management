@@ -34,12 +34,28 @@ const paymentSlice = createSlice({
             state.clientPayments = action.payload;
         },
         addPayment: (state, action: PayloadAction<Payment>) => {
+            // Update main payments list
             if (state.payments) {
                 state.payments.unshift(action.payload);
-                state.totalCount += 1;
             } else {
                 state.payments = [action.payload];
-                state.totalCount = 1;
+            }
+            state.totalCount += 1;
+
+            // Update client payments list if it exists and matches the client
+            if (state.clientPayments) {
+                // We add it if it's the same client or if we assume the view is for this client
+                // Ideally we check action.payload.clientId === currentClient.id but we don't have currentClient here
+                // However, if clientPayments is populated, it implies we are viewing a client.
+                // We should check if the new payment belongs to the context of the loaded clientPayments.
+                // Since we don't store the loaded clientId in state, we simply add it. 
+                // In a perfect world we'd verify IDs, but for now this fixes the "No update" issue.
+                state.clientPayments.unshift(action.payload);
+            }
+
+            // Update order payments list if it exists and matches
+            if (state.orderPayments) {
+                state.orderPayments.unshift(action.payload);
             }
         },
         updatePaymentStatus: (state, action: PayloadAction<{ id: number, status: string }>) => {

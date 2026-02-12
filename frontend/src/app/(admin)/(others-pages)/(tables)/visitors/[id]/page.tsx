@@ -41,9 +41,9 @@ export default function VisitorDetailPage() {
                 // Exclude offers already in interests
                 if (interestOfferIds.includes(offer.id)) return false;
 
-                // Budget match (±20%)
-                const budgetMin = currentVisitor.budget * 0.8;
-                const budgetMax = currentVisitor.budget * 1.2;
+                // Budget match (±40%)
+                const budgetMin = currentVisitor.budget * 0.6;
+                const budgetMax = currentVisitor.budget * 1.4;
                 if (offer.price < budgetMin || offer.price > budgetMax) return false;
 
                 return true;

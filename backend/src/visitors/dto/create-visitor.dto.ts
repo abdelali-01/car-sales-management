@@ -23,15 +23,14 @@ export class CreateVisitorDto {
   phone: string;
 
   @IsOptional()
-  @IsEmail()
   email?: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   @MaxLength(100)
   carBrand: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   @MaxLength(100)
   carModel: string;

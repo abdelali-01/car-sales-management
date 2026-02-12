@@ -20,14 +20,15 @@ import { SessionAuthGuard } from '../auth/guards/session-auth.guard';
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
 import { OfferStatus } from '../common/enums/offer-status.enum';
 import { ApiResponseDto } from '../common/dto/api-response.dto';
+import { multerConfig } from '../common/config/upload.config';
 
 @Controller('offers')
 @UseGuards(SessionAuthGuard)
 export class OffersController {
-  constructor(private readonly offersService: OffersService) {}
+  constructor(private readonly offersService: OffersService) { }
 
   @Post()
-  @UseInterceptors(FilesInterceptor('images', 10))
+  @UseInterceptors(FilesInterceptor('images', 10, multerConfig))
   async create(
     @Body() createOfferDto: CreateOfferDto,
     @UploadedFiles() files: Express.Multer.File[],
@@ -61,7 +62,7 @@ export class OffersController {
   }
 
   @Patch(':id')
-  @UseInterceptors(FilesInterceptor('images', 10))
+  @UseInterceptors(FilesInterceptor('images', 10, multerConfig))
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateOfferDto: UpdateOfferDto,
@@ -78,7 +79,7 @@ export class OffersController {
   }
 
   @Post(':id/images')
-  @UseInterceptors(FilesInterceptor('images', 10))
+  @UseInterceptors(FilesInterceptor('images', 10, multerConfig))
   async uploadImages(
     @Param('id', ParseIntPipe) id: number,
     @UploadedFiles() files: Express.Multer.File[],

@@ -30,6 +30,9 @@ export class PaymentsService {
     // Validate client if provided
     if (createPaymentDto.clientId) {
       await this.clientsService.findOne(createPaymentDto.clientId);
+    } else if (order.clientId) {
+      // Auto-populate clientId from order if not provided
+      createPaymentDto.clientId = order.clientId;
     }
 
     const payment = this.paymentsRepository.create(createPaymentDto);

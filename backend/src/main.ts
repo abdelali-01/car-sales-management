@@ -5,8 +5,17 @@ import session from 'express-session';
 import connectPgSimple from 'connect-pg-simple';
 import passport from 'passport';
 import { ConfigService } from '@nestjs/config';
+import * as fs from 'fs';
+import * as path from 'path';
 
 async function bootstrap() {
+  // Ensure uploads directory exists
+  const uploadsDir = path.join(__dirname, '..', 'uploads', 'offers');
+  if (!fs.existsSync(uploadsDir)) {
+    fs.mkdirSync(uploadsDir, { recursive: true });
+    console.log('✅ Created uploads directory');
+  }
+
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
 

@@ -1,8 +1,9 @@
 'use client';
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import Image from 'next/image';
-import { CloudArrowUpIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { CloudArrowUpIcon, TrashIcon, EyeIcon } from '@heroicons/react/24/outline';
 import { useTranslation } from 'react-i18next';
+import ImageCarouselModal from '@/components/modals/ImageCarouselModal';
 
 export interface OfferImageState {
     url: string;
@@ -21,6 +22,10 @@ export default function OfferImagesSection({
 }: OfferImagesSectionProps) {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const { t } = useTranslation('admin');
+
+    // Gallery State
+    const [isGalleryOpen, setIsGalleryOpen] = useState(false);
+    const [galleryIndex, setGalleryIndex] = useState(0);
 
     const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
@@ -88,22 +93,38 @@ export default function OfferImagesSection({
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
                     {images.map((image, index) => (
                         <div key={index} className="relative group aspect-square">
-                            <Image
-                                src={image.url}
-                                alt={`Offer image ${index + 1}`}
-                                fill
-                                className="object-cover rounded-lg"
-                                unoptimized
-                            />
+                            <div
+                                className="relative w-full h-full cursor-pointer overflow-hidden rounded-lg"
+                                onClick={() => {
+                                    setGalleryIndex(index);
+                                    setIsGalleryOpen(true);
+                                }}
+                            >
+                                <Image
+                                    src={image.url}
+                                    alt={`Offer image ${index + 1}`}
+                                    fill
+                                    className="object-cover transition-transform duration-300 group-hover:scale-110"
+                                    unoptimized
+                                />
+                                {/* Overlay with view icon */}
+                                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
+                                    <EyeIcon className="w-8 h-8 text-white drop-shadow-lg" />
+                                </div>
+                            </div>
+
                             <button
                                 type="button"
-                                onClick={() => handleRemoveImage(index)}
-                                className="absolute top-2 right-2 p-1.5 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600"
+                                onClick={(e) => {
+                                    e.stopPropagation(); // Prevent opening gallery
+                                    handleRemoveImage(index);
+                                }}
+                                className="absolute top-2 right-2 p-1.5 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600 z-10"
                             >
                                 <TrashIcon className="w-4 h-4" />
                             </button>
                             {index === 0 && (
-                                <span className="absolute bottom-2 left-2 px-2 py-0.5 bg-brand-500 text-white text-xs rounded-full">
+                                <span className="absolute bottom-2 left-2 px-2 py-0.5 bg-brand-500 text-white text-xs rounded-full z-10">
                                     Main
                                 </span>
                             )}
@@ -138,6 +159,17 @@ export default function OfferImagesSection({
                     />
                 </div>
             </div>
+
+            {/* Image Carousel Modal */}
+            <ImageCarouselModal
+                isOpen={isGalleryOpen}
+                onClose={() => setIsGalleryOpen(false)}
+                images={images.map((img, i) => ({
+                    url: img.url,
+                    alt: `Offer image ${i + 1}`
+                }))}
+                initialSlide={galleryIndex}
+            />
         </div>
     );
 }

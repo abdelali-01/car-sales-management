@@ -117,7 +117,7 @@ export const uploadOfferImages = (offerId: number, files: File[]) => async (disp
 };
 
 // Update existing offer
-export const updateOffer = (offerId: number, updates: Partial<Omit<Offer, 'id' | 'createdAt'>>) => async (dispatch: AppDispatch) => {
+export const updateOffer = (offerId: number, updates: Partial<Omit<Offer, 'id' | 'createdAt'>> & { deletedImageIds?: number[] }) => async (dispatch: AppDispatch) => {
     dispatch(setLoading(true));
 
     try {

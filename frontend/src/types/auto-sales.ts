@@ -68,6 +68,7 @@ export interface Order {
     id: number;
     offerId: number;
     visitorId?: number;
+    clientId?: number;
     clientName: string;
     clientPhone: string;
     clientEmail?: string;

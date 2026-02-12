@@ -223,8 +223,8 @@ export default function OfferInterestedVisitorsSection({ offerId }: OfferInteres
                                     <label
                                         key={visitor.id}
                                         className={`flex items-center gap-3 p-3 rounded-lg border-2 cursor-pointer transition-all ${isSelected
-                                                ? 'border-brand-500 bg-brand-50 dark:bg-brand-900/20 shadow-sm'
-                                                : 'border-gray-200 dark:border-gray-700 hover:border-brand-300 dark:hover:border-brand-700 hover:bg-gray-50 dark:hover:bg-gray-800/50'
+                                            ? 'border-brand-500 bg-brand-50 dark:bg-brand-900/20 shadow-sm'
+                                            : 'border-gray-200 dark:border-gray-700 hover:border-brand-300 dark:hover:border-brand-700 hover:bg-gray-50 dark:hover:bg-gray-800/50'
                                             }`}
                                     >
                                         {/* Custom Checkbox */}
@@ -236,8 +236,8 @@ export default function OfferInterestedVisitorsSection({ offerId }: OfferInteres
                                                 className="sr-only"
                                             />
                                             <div className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${isSelected
-                                                    ? 'bg-brand-600 border-brand-600'
-                                                    : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600'
+                                                ? 'bg-brand-600 border-brand-600'
+                                                : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600'
                                                 }`}>
                                                 {isSelected && (
                                                     <CheckCircleIconSolid className="w-4 h-4 text-white" />
@@ -317,17 +317,19 @@ export default function OfferInterestedVisitorsSection({ offerId }: OfferInteres
 
                             {/* Visitor Info */}
                             <div className="flex-1 min-w-0">
-                                <div className="flex items-start justify-between gap-2 mb-2">
+                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-y-1 gap-x-2 mb-2">
                                     <button
                                         onClick={() => handleVisitorClick(visitor.id)}
-                                        className="text-base font-semibold text-gray-900 dark:text-white hover:text-brand-600 dark:hover:text-brand-400 transition-colors truncate"
+                                        className="text-base font-semibold text-gray-900 dark:text-white hover:text-brand-600 dark:hover:text-brand-400 transition-colors truncate text-left"
                                     >
                                         {visitor.name}
                                     </button>
-                                    {getStatusBadge(visitor.status)}
+                                    <div className="flex-shrink-0">
+                                        {getStatusBadge(visitor.status)}
+                                    </div>
                                 </div>
 
-                                <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
+                                <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-gray-600 dark:text-gray-400">
                                     <span className="flex items-center gap-1.5">
                                         <PhoneIcon className="w-4 h-4" />
                                         {visitor.phone}
@@ -341,20 +343,22 @@ export default function OfferInterestedVisitorsSection({ offerId }: OfferInteres
                                 </div>
                             </div>
 
-                            {/* Action Buttons */}
-                            <div className="flex-shrink-0 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                            {/* Action Buttons - Always visible on mobile, hover on desktop */}
+                            <div className="flex-shrink-0 flex flex-col sm:flex-row gap-2 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity">
                                 <button
                                     onClick={() => handleWhatsApp(visitor.phone)}
-                                    className="p-2.5 text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20 rounded-lg transition-colors"
+                                    className="p-2 text-green-600 bg-green-50 hover:bg-green-100 dark:bg-green-900/20 dark:hover:bg-green-900/30 rounded-lg transition-colors border border-green-200 dark:border-green-800"
                                     title="Contact via WhatsApp"
                                 >
+                                    <span className="sr-only">WhatsApp</span>
                                     <PhoneIcon className="w-5 h-5" />
                                 </button>
                                 <button
                                     onClick={() => handleRemoveInterest(visitor.id, visitor.name)}
-                                    className="p-2.5 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
+                                    className="p-2 text-red-600 bg-red-50 hover:bg-red-100 dark:bg-red-900/20 dark:hover:bg-red-900/30 rounded-lg transition-colors border border-red-200 dark:border-red-800"
                                     title="Remove from interested list"
                                 >
+                                    <span className="sr-only">Remove</span>
                                     <TrashIcon className="w-5 h-5" />
                                 </button>
                             </div>

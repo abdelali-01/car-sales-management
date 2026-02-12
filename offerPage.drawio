@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="z-znDw75jMhwTUvfqXO4" name="Page-1">
-        <mxGraphModel dx="483" dy="513" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="none" math="0" shadow="0">
+        <mxGraphModel dx="671" dy="667" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="none" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -66,6 +66,23 @@
                 </mxCell>
                 <mxCell id="7_QxoyjWh0Qq3--9LE2i-11" value="Interests &amp;amp; notes" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;shadow=0;glass=0;sketch=0;fontSize=16;" parent="1" vertex="1">
                     <mxGeometry x="395" y="561" width="104" height="30" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+    <diagram id="uKDvLBlrXTCPbcqoGsed" name="Page-3">
+        <mxGraphModel dx="671" dy="667" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="w7sEwxqLQ8NKpdpEEm3l-1" value="client information" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="45" y="130" width="316" height="161" as="geometry"/>
+                </mxCell>
+                <mxCell id="w7sEwxqLQ8NKpdpEEm3l-2" value="client orders" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="45" y="309" width="316" height="124" as="geometry"/>
+                </mxCell>
+                <mxCell id="w7sEwxqLQ8NKpdpEEm3l-3" value="payment information &amp;amp; history" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="379" y="130" width="150" height="305" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>

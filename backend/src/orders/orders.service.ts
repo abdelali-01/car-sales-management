@@ -59,18 +59,24 @@ export class OrdersService {
   async findAll(
     query: PaginationQueryDto & {
       status?: OrderStatus;
+      clientId?: number;
     },
   ): Promise<{ data: Order[]; total: number; page: number; limit: number }> {
-    const { page = 1, limit = 10, status } = query;
+    const { page = 1, limit = 10, status, clientId } = query;
 
     const queryBuilder = this.ordersRepository
       .createQueryBuilder('order')
       .leftJoinAndSelect('order.offer', 'offer')
       .leftJoinAndSelect('order.visitor', 'visitor')
+      .leftJoinAndSelect('order.client', 'client')
       .orderBy('order.createdAt', 'DESC');
 
     if (status) {
       queryBuilder.andWhere('order.status = :status', { status });
+    }
+
+    if (clientId) {
+      queryBuilder.andWhere('order.clientId = :clientId', { clientId });
     }
 
     const [data, total] = await queryBuilder
@@ -84,7 +90,7 @@ export class OrdersService {
   async findOne(id: number): Promise<Order> {
     const order = await this.ordersRepository.findOne({
       where: { id },
-      relations: ['offer', 'offer.images', 'visitor'],
+      relations: ['offer', 'offer.images', 'visitor', 'client'],
     });
 
     if (!order) {

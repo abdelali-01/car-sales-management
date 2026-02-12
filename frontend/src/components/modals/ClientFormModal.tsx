@@ -1,14 +1,16 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/store/store';
-import { createClient } from '@/store/clients/clientsHandler';
+import { createClient, updateClient } from '@/store/clients/clientsHandler';
+import { Client } from '@/types/auto-sales';
 
 interface ClientFormModalProps {
     closeModal: () => void;
+    client?: Client | null;
 }
 
-export default function ClientFormModal({ closeModal }: ClientFormModalProps) {
+export default function ClientFormModal({ closeModal, client }: ClientFormModalProps) {
     const dispatch = useDispatch<AppDispatch>();
 
     const [formData, setFormData] = useState({
@@ -18,6 +20,18 @@ export default function ClientFormModal({ closeModal }: ClientFormModalProps) {
         address: '',
         notes: '',
     });
+
+    useEffect(() => {
+        if (client) {
+            setFormData({
+                name: client.name || '',
+                phone: client.phone || '',
+                email: client.email || '',
+                address: client.address || '',
+                notes: client.notes || '',
+            });
+        }
+    }, [client]);
 
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -30,10 +44,14 @@ export default function ClientFormModal({ closeModal }: ClientFormModalProps) {
         e.preventDefault();
         setIsSubmitting(true);
         try {
-            await dispatch(createClient(formData as any));
+            if (client) {
+                await dispatch(updateClient(client.id, formData));
+            } else {
+                await dispatch(createClient(formData as any));
+            }
             closeModal();
         } catch (error) {
-            console.error('Error creating client:', error);
+            console.error('Error saving client:', error);
         } finally {
             setIsSubmitting(false);
         }
@@ -41,7 +59,9 @@ export default function ClientFormModal({ closeModal }: ClientFormModalProps) {
 
     return (
         <div>
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">Add New Client</h2>
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
+                {client ? 'Edit Client' : 'Add New Client'}
+            </h2>
             <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                     <div>
@@ -77,7 +97,7 @@ export default function ClientFormModal({ closeModal }: ClientFormModalProps) {
                     </button>
                     <button type="submit" disabled={isSubmitting}
                         className="px-4 py-2.5 rounded-lg bg-brand-500 text-white hover:bg-brand-600 text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-                        {isSubmitting ? 'Saving...' : 'Add Client'}
+                        {client ? 'Save Changes' : 'Add Client'}
                     </button>
                 </div>
             </form>

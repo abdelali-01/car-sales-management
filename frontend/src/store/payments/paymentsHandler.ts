@@ -26,8 +26,8 @@ export const fetchPayments = (params?: {
 
         if (res.data.success) {
             dispatch(setPayments({
-                payments: res.data.payments || [],
-                total: res.data.total || 0
+                payments: res.data.data || [],
+                total: res.data.meta.total || 0
             }));
         }
     } catch (error) {
@@ -48,7 +48,7 @@ export const createPayment = (paymentData: Omit<Payment, 'id' | 'createdAt'>) =>
         const res = await api.post(ENDPOINTS.PAYMENTS.BASE, paymentData);
 
         if (res.data.success) {
-            const newPayment = res.data.payment;
+            const newPayment = res.data.data;
             dispatch(addPaymentAction(newPayment));
             dispatch(addToast({ type: 'success', message: 'Payment created successfully' }));
             return newPayment;
@@ -88,7 +88,7 @@ export const fetchOrderPayments = (orderId: number) => async (dispatch: AppDispa
         const res = await api.get(ENDPOINTS.PAYMENTS.BY_ORDER(orderId));
 
         if (res.data.success) {
-            dispatch(setOrderPayments(res.data.payments || []));
+            dispatch(setOrderPayments(res.data.data || []));
         }
     } catch (error) {
         const message = getErrorMessage(error);
@@ -108,7 +108,7 @@ export const fetchClientPayments = (clientId: number) => async (dispatch: AppDis
         const res = await api.get(ENDPOINTS.PAYMENTS.BY_CLIENT(clientId));
 
         if (res.data.success) {
-            dispatch(setClientPayments(res.data.payments || []));
+            dispatch(setClientPayments(res.data.data || []));
         }
     } catch (error) {
         const message = getErrorMessage(error);

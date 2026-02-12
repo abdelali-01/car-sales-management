@@ -4,12 +4,12 @@ import { OffersService } from './offers.service';
 import { OffersController } from './offers.controller';
 import { Offer } from './entities/offer.entity';
 import { OfferImage } from './entities/offer-image.entity';
-import { CloudinaryModule } from '../common/cloudinary/cloudinary.module';
+import { FileUploadService } from '../common/services/file-upload.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Offer, OfferImage]), CloudinaryModule],
+  imports: [TypeOrmModule.forFeature([Offer, OfferImage])],
   controllers: [OffersController],
-  providers: [OffersService],
+  providers: [OffersService, FileUploadService],
   exports: [OffersService],
 })
 export class OffersModule { }

@@ -22,6 +22,11 @@ export class CreateOrderDto {
   @Type(() => Number)
   visitorId?: number;
 
+  @IsOptional()
+  @IsNumber()
+  @Type(() => Number)
+  clientId?: number;
+
   @IsNotEmpty()
   @IsString()
   @MaxLength(100)

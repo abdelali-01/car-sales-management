@@ -120,6 +120,11 @@ export default function EditOfferPage() {
 
         setIsSubmitting(true);
         try {
+            // Calculate deleted image IDs
+            const currentImageIds = images.filter(img => img.id !== undefined).map(img => img.id);
+            const initialImageIds = currentOffer?.images?.map(img => img.id) || [];
+            const deletedImageIds = initialImageIds.filter(id => !currentImageIds.includes(id));
+
             await dispatch(updateOffer(offerId, {
                 brand: formData.brand,
                 model: formData.model,
@@ -130,6 +135,7 @@ export default function EditOfferPage() {
                 ownerName: formData.ownerName,
                 ownerPhone: formData.ownerPhone,
                 status: formData.status,
+                deletedImageIds: deletedImageIds,
             }));
 
             const filesToUpload = images.filter(img => img.file).map(img => img.file!);
@@ -154,9 +160,9 @@ export default function EditOfferPage() {
             <PageBreadcrumb paths={['offers']} pageTitle={t('offers.editOffer')} />
 
             {/* 2-Column Grid Layout */}
-            <div className="grid grid-cols-3 lg:grid-cols-5 gap-5">
+            <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">
                 {/* Left Column */}
-                <div className="flex flex-col gap-5 col-span-2 lg:col-span-3 h-full">
+                <div className="flex flex-col gap-5 col-span-1 lg:col-span-3 h-full">
                     {/* Car Details */}
                     <OfferDetailsSection
                         brand={formData.brand}

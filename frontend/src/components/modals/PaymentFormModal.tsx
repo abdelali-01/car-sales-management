@@ -1,24 +1,33 @@
-'use client';
-import React, { useState } from 'react';
+import { Order } from '@/types/auto-sales';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/store/store';
 import { createPayment } from '@/store/payments/paymentsHandler';
 
 interface PaymentFormModalProps {
     closeModal: () => void;
+    clientId?: number;
+    orders?: Order[];
 }
 
-export default function PaymentFormModal({ closeModal }: PaymentFormModalProps) {
+export default function PaymentFormModal({ closeModal, clientId, orders }: PaymentFormModalProps) {
     const dispatch = useDispatch<AppDispatch>();
 
     const [formData, setFormData] = useState({
         orderId: '',
-        clientId: '',
+        clientId: clientId ? String(clientId) : '',
         amount: 0,
         method: 'CASH',
         status: 'UNPAID',
         notes: '',
     });
+
+    // Update clientId if prop changes
+    useEffect(() => {
+        if (clientId) {
+            setFormData(prev => ({ ...prev, clientId: String(clientId) }));
+        }
+    }, [clientId]);
 
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -26,7 +35,7 @@ export default function PaymentFormModal({ closeModal }: PaymentFormModalProps) 
         const { name, value } = e.target;
         setFormData(prev => ({
             ...prev,
-            [name]: ['amount', 'orderId', 'clientId'].includes(name) ? (value === '' ? '' : Number(value)) : value,
+            [name]: ['amount', 'orderId', 'clientId'].includes(name) ? (value === '' ? '' : value) : value,
         }));
     };
 
@@ -38,6 +47,7 @@ export default function PaymentFormModal({ closeModal }: PaymentFormModalProps) 
                 ...formData,
                 orderId: Number(formData.orderId),
                 clientId: formData.clientId ? Number(formData.clientId) : undefined,
+                amount: Number(formData.amount),
             };
             await dispatch(createPayment(payload as any));
             closeModal();
@@ -53,17 +63,34 @@ export default function PaymentFormModal({ closeModal }: PaymentFormModalProps) 
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">Record Payment</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Order ID *</label>
-                        <input type="number" name="orderId" required value={formData.orderId} onChange={handleChange}
-                            placeholder="Order ID"
-                            className="w-full px-4 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-brand-500" />
-                    </div>
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Client ID</label>
-                        <input type="number" name="clientId" value={formData.clientId} onChange={handleChange}
-                            placeholder="Optional"
-                            className="w-full px-4 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-brand-500" />
+                    <div className="col-span-2">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Order *</label>
+                        {orders && orders.length > 0 ? (
+                            <select
+                                name="orderId"
+                                required
+                                value={formData.orderId}
+                                onChange={handleChange}
+                                className="w-full px-4 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+                            >
+                                <option value="">Select Order</option>
+                                {orders.map(order => (
+                                    <option key={order.id} value={order.id}>
+                                        Order #{order.id} - {order.offer ? `${order.offer.brand} ${order.offer.model}` : 'Unknown Car'} ({Number(order.agreedPrice).toLocaleString()} DZD)
+                                    </option>
+                                ))}
+                            </select>
+                        ) : (
+                            <input
+                                type="number"
+                                name="orderId"
+                                required
+                                value={formData.orderId}
+                                onChange={handleChange}
+                                placeholder="Order ID"
+                                className="w-full px-4 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+                            />
+                        )}
                     </div>
                 </div>
                 <div className="grid grid-cols-2 gap-4">

@@ -10,6 +10,7 @@ import {
 import { OrderStatus } from '../../common/enums/order-status.enum';
 import { Offer } from '../../offers/entities/offer.entity';
 import { Visitor } from '../../visitors/entities/visitor.entity';
+import { Client } from '../../clients/entities/client.entity';
 
 @Entity('orders')
 export class Order {
@@ -63,4 +64,11 @@ export class Order {
   @ManyToOne(() => Visitor, { nullable: true })
   @JoinColumn({ name: 'visitor_id' })
   visitor: Visitor;
+
+  @Column({ name: 'client_id', nullable: true })
+  clientId: number;
+
+  @ManyToOne(() => Client, (client) => client.orders, { nullable: true })
+  @JoinColumn({ name: 'client_id' })
+  client: Client;
 }

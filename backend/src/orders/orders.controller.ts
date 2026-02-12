@@ -21,7 +21,7 @@ import { ApiResponseDto } from '../common/dto/api-response.dto';
 @Controller('orders')
 @UseGuards(SessionAuthGuard)
 export class OrdersController {
-  constructor(private readonly ordersService: OrdersService) {}
+  constructor(private readonly ordersService: OrdersService) { }
 
   @Post()
   async create(@Body() createOrderDto: CreateOrderDto) {
@@ -34,6 +34,7 @@ export class OrdersController {
     @Query()
     query: PaginationQueryDto & {
       status?: OrderStatus;
+      clientId?: number;
     },
   ) {
     const result = await this.ordersService.findAll(query);

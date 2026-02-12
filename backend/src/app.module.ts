@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { CloudinaryModule } from './common/cloudinary/cloudinary.module';
 import { AuthModule } from './auth/auth.module';
 import { AdminsModule } from './admins/admins.module';
 import { OffersModule } from './offers/offers.module';
@@ -42,8 +43,11 @@ import { StatisticsModule } from './statistics/statistics.module';
       inject: [ConfigService],
     }),
 
-    // Cloudinary for image uploads
-    CloudinaryModule,
+    // Serve static files (uploaded images)
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'uploads'),
+      serveRoot: '/uploads',
+    }),
 
     // Authentication and Authorization
     AuthModule,

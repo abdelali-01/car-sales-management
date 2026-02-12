@@ -95,15 +95,15 @@ export default function ClientsTable() {
                                         Name {sortField === 'name' && <span className="text-brand-500">{sortOrder === 'asc' ? '↑' : '↓'}</span>}
                                     </div>
                                 </TableCell>
-                                <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm">Phone</TableCell>
-                                <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm">Email</TableCell>
-                                <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm">
+                                <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm text-start">Phone</TableCell>
+                                <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm text-start">Email</TableCell>
+                                <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm text-start">
                                     <div className="flex items-center gap-1 cursor-pointer hover:text-brand-500" onClick={() => handleSort('totalSpent')}>
                                         Total Spent {sortField === 'totalSpent' && <span className="text-brand-500">{sortOrder === 'asc' ? '↑' : '↓'}</span>}
                                     </div>
                                 </TableCell>
-                                <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm">Remaining</TableCell>
-                                <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm">
+                                <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm text-start">Remaining</TableCell>
+                                <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm text-start">
                                     <div className="flex items-center gap-1 cursor-pointer hover:text-brand-500" onClick={() => handleSort('createdAt')}>
                                         Date {sortField === 'createdAt' && <span className="text-brand-500">{sortOrder === 'asc' ? '↑' : '↓'}</span>}
                                     </div>
@@ -118,25 +118,25 @@ export default function ClientsTable() {
                                     </TableCell>
                                 </TableRow>
                             ) : (
-                                paginatedClients.map(client => (
-                                    <TableRow key={client.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
-                                        <TableCell className="px-4 py-3 min-w-[180px]">
-                                            <div>
-                                                <span className="font-medium text-gray-900 dark:text-white text-sm">{client.name}</span>
-                                                {client.address && <p className="text-xs text-gray-500 dark:text-gray-400">{client.address}</p>}
-                                            </div>
-                                        </TableCell>
-                                        <TableCell className="px-4 py-3 text-gray-600 dark:text-gray-400 text-sm">{client.phone}</TableCell>
-                                        <TableCell className="px-4 py-3 text-gray-600 dark:text-gray-400 text-sm">{client.email || '—'}</TableCell>
-                                        <TableCell className="px-4 py-3 text-gray-900 dark:text-white font-medium text-sm">{formatPrice(client.totalSpent)}</TableCell>
-                                        <TableCell className="px-4 py-3 text-sm">
-                                            <span className={client.remainingBalance > 0 ? 'text-red-500 font-medium' : 'text-green-500 font-medium'}>
-                                                {formatPrice(client.remainingBalance)}
-                                            </span>
-                                        </TableCell>
-                                        <TableCell className="px-4 py-3 text-gray-600 dark:text-gray-400 text-sm">{formatDate(client.createdAt)}</TableCell>
-                                    </TableRow>
-                                ))
+                                    paginatedClients.map(client => (
+                            <TableRow key={client.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                                <TableCell className="px-4 py-3 min-w-[180px]">
+                                    <div onClick={() => window.location.href = `/clients/${client.id}`} className="cursor-pointer group">
+                                        <span className="font-medium text-gray-900 dark:text-white text-sm group-hover:text-brand-500 transition-colors">{client.name}</span>
+                                        {client.address && <p className="text-xs text-gray-500 dark:text-gray-400">{client.address}</p>}
+                                    </div>
+                                </TableCell>
+                                <TableCell className="px-4 py-3 text-gray-600 dark:text-gray-400 text-sm">{client.phone}</TableCell>
+                                <TableCell className="px-4 py-3 text-gray-600 dark:text-gray-400 text-sm">{client.email || '—'}</TableCell>
+                                <TableCell className="px-4 py-3 text-gray-900 dark:text-white font-medium text-sm">{formatPrice(client.totalSpent)}</TableCell>
+                                <TableCell className="px-4 py-3 text-sm">
+                                    <span className={client.remainingBalance > 0 ? 'text-red-500 font-medium' : 'text-green-500 font-medium'}>
+                                        {formatPrice(client.remainingBalance)}
+                                    </span>
+                                </TableCell>
+                                <TableCell className="px-4 py-3 text-gray-600 dark:text-gray-400 text-sm">{formatDate(client.createdAt)}</TableCell>
+                            </TableRow>
+                            ))
                             )}
                         </TableBody>
                     </Table>
