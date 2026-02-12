@@ -7,13 +7,13 @@
 
 export type OfferStatus = 'available' | 'reserved' | 'sold';
 
-export type VisitorStatus = 'NEW' | 'CONTACTED' | 'MATCHED' | 'CONVERTED' | 'LOST';
+export type VisitorStatus = 'new' | 'contacted' | 'interested' | 'converted' | 'lost';
 
-export type OrderStatus = 'PENDING' | 'CONFIRMED' | 'COMPLETED' | 'CANCELED';
+export type OrderStatus = 'pending' | 'confirmed' | 'completed' | 'canceled';
 
-export type PaymentStatus = 'UNPAID' | 'ADVANCE' | 'PAID';
+export type PaymentStatus = 'unpaid' | 'advance' | 'paid';
 
-export type PaymentMethod = 'CASH' | 'TRANSFER' | 'CHEQUE';
+export type PaymentMethod = 'cash' | 'transfer' | 'cheque';
 
 // === Entities ===
 
@@ -41,6 +41,15 @@ export interface Offer {
     createdAt: string;
 }
 
+export interface VisitorInterestOffer {
+    id: number;
+    visitorId: number;
+    offerId: number;
+    priority: number;
+    createdAt: string;
+    offer?: Offer;
+}
+
 export interface Visitor {
     id: number;
     name: string;
@@ -52,6 +61,7 @@ export interface Visitor {
     remarks?: string;
     status: VisitorStatus;
     createdAt: string;
+    interests?: VisitorInterestOffer[];
 }
 
 export interface Order {

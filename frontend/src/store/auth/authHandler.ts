@@ -43,7 +43,7 @@ export const loggedIn = (user: { email: string, password: string }, router: AppR
 export const checkIfLoggedIn = (pathname: string, router: AppRouterInstance) => async (dispatch: AppDispatch) => {
     try {
         const res = await api.get(ENDPOINTS.AUTH.ME);
-        const userLogged = res.data?.user;
+        const userLogged = res.data;
         if (userLogged) {
             dispatch(setUser(userLogged));
             // Only redirect to admin if currently on signin page

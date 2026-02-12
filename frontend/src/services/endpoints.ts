@@ -26,7 +26,11 @@ export const ENDPOINTS = {
     // Visitors Module (Leads)
     VISITORS: {
         BASE: '/api/visitors',                                  // GET (?page&limit&status), POST
+        BY_ID: (id: number) => `/api/visitors/${id}`,           // GET, DELETE
+        BY_OFFER: (offerId: number) => `/api/visitors/by-offer/${offerId}`, // GET
         STATUS: (id: number) => `/api/visitors/${id}/status`,   // PATCH ({ status })
+        INTERESTS: (id: number) => `/api/visitors/${id}/interests`, // GET, POST
+        INTEREST_BY_OFFER: (id: number, offerId: number) => `/api/visitors/${id}/interests/${offerId}`, // PATCH, DELETE
     },
 
     // Orders Module (Deals)

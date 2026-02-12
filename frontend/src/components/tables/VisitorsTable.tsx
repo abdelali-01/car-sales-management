@@ -3,16 +3,20 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { Table, TableRow, TableHeader, TableCell, TableBody } from '../ui/table';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/store/store';
-import Loader from '../ui/load/Loader';
 import Badge from '../ui/badge/Badge';
-import { MagnifyingGlassIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
-import { fetchVisitors, updateVisitorStatus } from '@/store/visitors/visitorsHandler';
+import { MagnifyingGlassIcon, ChevronLeftIcon, ChevronRightIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { fetchVisitors, deleteVisitor } from '@/store/visitors/visitorsHandler';
+import { useDeleteModal } from '@/context/DeleteModalContext';
+import { useRouter } from 'next/navigation';
+import { VisitorListSkeleton } from '@/components/skeleton/VisitorSkeleton';
 
 const ITEMS_PER_PAGE = 7;
 
 export default function VisitorsTable() {
     const dispatch = useDispatch<AppDispatch>();
+    const router = useRouter();
     const visitors = useSelector((state: RootState) => state.visitors.visitors);
+    const { openModal } = useDeleteModal();
 
     const [searchQuery, setSearchQuery] = useState('');
     const [statusFilter, setStatusFilter] = useState<string>('');
@@ -81,20 +85,20 @@ export default function VisitorsTable() {
 
     const getStatusBadge = (status: string) => {
         switch (status) {
-            case 'NEW': return <Badge color='info' size="sm">New</Badge>;
-            case 'CONTACTED': return <Badge color='warning' size="sm">Contacted</Badge>;
-            case 'INTERESTED': return <Badge color='primary' size="sm">Interested</Badge>;
-            case 'CONVERTED': return <Badge color='success' size="sm">Converted</Badge>;
-            case 'LOST': return <Badge color='error' size="sm">Lost</Badge>;
+            case 'new': return <Badge color='info' size="sm">New</Badge>;
+            case 'contacted': return <Badge color='warning' size="sm">Contacted</Badge>;
+            case 'interested': return <Badge color='primary' size="sm">Interested</Badge>;
+            case 'converted': return <Badge color='success' size="sm">Converted</Badge>;
+            case 'lost': return <Badge color='error' size="sm">Lost</Badge>;
             default: return <Badge color='light' size="sm">{status}</Badge>;
         }
     };
 
-    const handleStatusChange = (visitorId: number, newStatus: string) => {
-        dispatch(updateVisitorStatus(visitorId, newStatus));
+    const handleDelete = (visitorId: string | number) => {
+        dispatch(deleteVisitor(Number(visitorId)));
     };
 
-    if (!visitors) return <Loader />;
+    if (!visitors) return <VisitorListSkeleton />;
 
     return (
         <div className="space-y-4">
@@ -115,11 +119,11 @@ export default function VisitorsTable() {
                     className="px-4 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
                 >
                     <option value="">All Statuses</option>
-                    <option value="NEW">New</option>
-                    <option value="CONTACTED">Contacted</option>
-                    <option value="INTERESTED">Interested</option>
-                    <option value="CONVERTED">Converted</option>
-                    <option value="LOST">Lost</option>
+                    <option value="new">New</option>
+                    <option value="contacted">Contacted</option>
+                    <option value="interested">Interested</option>
+                    <option value="converted">Converted</option>
+                    <option value="lost">Lost</option>
                 </select>
             </div>
 
@@ -128,20 +132,20 @@ export default function VisitorsTable() {
                     <Table>
                         <TableHeader className="bg-gray-50 dark:bg-gray-800/80">
                             <TableRow>
-                                <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm">
+                                <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm text-start">
                                     <div className="flex items-center gap-1 cursor-pointer hover:text-brand-500" onClick={() => handleSort('name')}>
                                         Name {sortField === 'name' && <span className="text-brand-500">{sortOrder === 'asc' ? '↑' : '↓'}</span>}
                                     </div>
                                 </TableCell>
-                                <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm">Phone</TableCell>
-                                <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm">Car Interest</TableCell>
-                                <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm">
+                                <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm text-start">Phone</TableCell>
+                                <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm text-start">Car Interest</TableCell>
+                                <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm text-start">
                                     <div className="flex items-center gap-1 cursor-pointer hover:text-brand-500" onClick={() => handleSort('budget')}>
                                         Budget {sortField === 'budget' && <span className="text-brand-500">{sortOrder === 'asc' ? '↑' : '↓'}</span>}
                                     </div>
                                 </TableCell>
-                                <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm">Status</TableCell>
-                                <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm">
+                                <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm text-start">Status</TableCell>
+                                <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm text-start">
                                     <div className="flex items-center gap-1 cursor-pointer hover:text-brand-500" onClick={() => handleSort('createdAt')}>
                                         Date {sortField === 'createdAt' && <span className="text-brand-500">{sortOrder === 'asc' ? '↑' : '↓'}</span>}
                                     </div>
@@ -158,7 +162,11 @@ export default function VisitorsTable() {
                                 </TableRow>
                             ) : (
                                 paginatedVisitors.map(visitor => (
-                                    <TableRow key={visitor.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                                    <TableRow
+                                        key={visitor.id}
+                                        className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors cursor-pointer"
+                                        onClick={() => router.push(`/visitors/${visitor.id}`)}
+                                    >
                                         <TableCell className="px-4 py-3 min-w-[180px]">
                                             <div>
                                                 <span className="font-medium text-gray-900 dark:text-white text-sm">{visitor.name}</span>
@@ -175,18 +183,15 @@ export default function VisitorsTable() {
                                         <TableCell className="px-4 py-3">{getStatusBadge(visitor.status)}</TableCell>
                                         <TableCell className="px-4 py-3 text-gray-600 dark:text-gray-400 text-sm">{formatDate(visitor.createdAt)}</TableCell>
                                         <TableCell className="px-4 py-3">
-                                            <select
-                                                value={visitor.status}
-                                                onChange={(e) => handleStatusChange(visitor.id, e.target.value)}
-                                                className="px-2 py-1.5 rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs focus:outline-none focus:ring-1 focus:ring-brand-500"
-                                                onClick={(e) => e.stopPropagation()}
-                                            >
-                                                <option value="NEW">New</option>
-                                                <option value="CONTACTED">Contacted</option>
-                                                <option value="INTERESTED">Interested</option>
-                                                <option value="CONVERTED">Converted</option>
-                                                <option value="LOST">Lost</option>
-                                            </select>
+                                            <div onClick={(e) => e.stopPropagation()}>
+                                                <button
+                                                    onClick={() => openModal(visitor.id, handleDelete)}
+                                                    className="p-2 rounded-lg text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+                                                    title="Delete visitor"
+                                                >
+                                                    <TrashIcon className="w-5 h-5" />
+                                                </button>
+                                            </div>
                                         </TableCell>
                                     </TableRow>
                                 ))

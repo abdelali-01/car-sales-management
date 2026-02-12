@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 import { OfferStatus } from '../../common/enums/offer-status.enum';
 import { OfferImage } from './offer-image.entity';
+import { VisitorInterestOffer } from '../../visitors/entities/visitor-interest-offer.entity';
 
 @Entity('offers')
 export class Offer {
@@ -52,4 +53,7 @@ export class Offer {
 
   @OneToMany(() => OfferImage, (image) => image.offer, { cascade: true })
   images: OfferImage[];
+
+  @OneToMany(() => VisitorInterestOffer, (interest) => interest.offer)
+  interestedVisitors: VisitorInterestOffer[];
 }

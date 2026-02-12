@@ -1,4 +1,5 @@
 'use client';
+import React from 'react';
 import PageBreadcrumb from '@/components/common/PageBreadCrumb';
 import VisitorsTable from '@/components/tables/VisitorsTable';
 import VisitorFormModal from '@/components/modals/VisitorFormModal';

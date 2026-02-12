@@ -3,8 +3,10 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
+  OneToMany,
 } from 'typeorm';
 import { VisitorStatus } from '../../common/enums/visitor-status.enum';
+import { VisitorInterestOffer } from './visitor-interest-offer.entity';
 
 @Entity('visitors')
 export class Visitor {
@@ -41,4 +43,9 @@ export class Visitor {
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
+
+  @OneToMany(() => VisitorInterestOffer, (interest) => interest.visitor, {
+    cascade: true,
+  })
+  interests: VisitorInterestOffer[];
 }

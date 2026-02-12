@@ -1,5 +1,5 @@
 export function formatDateToISO(date: string | Date): string {
-  if(date instanceof Date){
+  if (date instanceof Date) {
     return date.toISOString().split('T')[0]
   }
 
@@ -7,7 +7,7 @@ export function formatDateToISO(date: string | Date): string {
 }
 
 export function formatDateToISOWithTime(date: string | Date): string {
-  if(date instanceof Date){
+  if (date instanceof Date) {
     return date.toISOString();
   }
 
@@ -49,3 +49,37 @@ export function filterItems<T>(items: T[], search: string): T[] {
   const lowerSearch = search.toLowerCase();
   return items.filter((item) => deepSearchMatch(item, lowerSearch));
 }
+
+// WhatsApp and phone utilities
+export function getWhatsAppLink(phone: string, message?: string): string {
+  // Remove all non-digit characters
+  const cleanPhone = phone.replace(/\D/g, '');
+
+  // Add country code if not present (assuming Algeria +213)
+  const phoneWithCode = cleanPhone.startsWith('213') ? cleanPhone : `213${cleanPhone}`;
+
+  if (message) {
+    return `https://wa.me/${phoneWithCode}?text=${encodeURIComponent(message)}`;
+  }
+
+  return `https://wa.me/${phoneWithCode}`;
+}
+
+export function shareOfferViaWhatsApp(visitorPhone: string, offer: { brand: string; model: string; year: number; price: number; location: string }): string {
+  const message = `Hello! I found this car that might interest you:\n\n🚗 ${offer.brand} ${offer.model} (${offer.year})\n💰 Price: ${formatPrice(offer.price)}\n📍 Location: ${offer.location}\n\nLet me know if you'd like more details!`;
+
+  return getWhatsAppLink(visitorPhone, message);
+}
+
+export function getCallLink(phone: string): string {
+  return `tel:${phone}`;
+}
+
+export function formatPrice(price: number): string {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'DZD',
+    minimumFractionDigits: 0
+  }).format(price).replace('DZD', 'DA');
+}
+

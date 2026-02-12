@@ -38,8 +38,8 @@ export default function ProductFormActions({
                 {isSubmitting
                     ? 'Saving...'
                     : isEditing
-                        ? 'Update Product'
-                        : 'Publish Product'
+                        ? 'Update Offer'
+                        : 'Publish Offer'
                 }
             </Button>
         </div>

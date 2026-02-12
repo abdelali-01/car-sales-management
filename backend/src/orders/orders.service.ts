@@ -45,11 +45,11 @@ export class OrdersService {
     // Update offer status to RESERVED
     await this.offersService.update(offer.id, { status: OfferStatus.RESERVED });
 
-    // If visitor is linked, update visitor status to MATCHED
+    // If visitor is linked, update visitor status to INTERESTED
     if (createOrderDto.visitorId) {
       await this.visitorsService.updateStatus(
         createOrderDto.visitorId,
-        VisitorStatus.MATCHED,
+        VisitorStatus.INTERESTED,
       );
     }
 

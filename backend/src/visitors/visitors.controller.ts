@@ -13,15 +13,18 @@ import {
 import { VisitorsService } from './visitors.service';
 import { CreateVisitorDto } from './dto/create-visitor.dto';
 import { UpdateVisitorDto } from './dto/update-visitor.dto';
+import { AddVisitorInterestDto } from './dto/add-visitor-interest.dto';
+import { UpdateVisitorInterestDto } from './dto/update-visitor-interest.dto';
 import { SessionAuthGuard } from '../auth/guards/session-auth.guard';
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
 import { VisitorStatus } from '../common/enums/visitor-status.enum';
+import { VisitorInterestOffer } from './entities/visitor-interest-offer.entity';
 import { ApiResponseDto } from '../common/dto/api-response.dto';
 
 @Controller('visitors')
 @UseGuards(SessionAuthGuard)
 export class VisitorsController {
-  constructor(private readonly visitorsService: VisitorsService) {}
+  constructor(private readonly visitorsService: VisitorsService) { }
 
   @Post()
   async create(@Body() createVisitorDto: CreateVisitorDto) {
@@ -52,6 +55,12 @@ export class VisitorsController {
     return ApiResponseDto.success(visitor);
   }
 
+  @Get('by-offer/:offerId')
+  async findByOffer(@Param('offerId', ParseIntPipe) offerId: number) {
+    const visitors = await this.visitorsService.findByOffer(offerId);
+    return ApiResponseDto.success(visitors);
+  }
+
   @Patch(':id')
   async update(
     @Param('id', ParseIntPipe) id: number,
@@ -77,5 +86,47 @@ export class VisitorsController {
       visitor,
       'Visitor status updated successfully',
     );
+  }
+
+  // Interest management endpoints
+  @Post(':id/interests')
+  async addInterest(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() addInterestDto: AddVisitorInterestDto,
+  ) {
+    const interest = await this.visitorsService.addInterest(id, addInterestDto);
+    return ApiResponseDto.success(interest, 'Interest added successfully');
+  }
+
+  @Get(':id/interests')
+  async getInterests(@Param('id', ParseIntPipe) id: number) {
+    const interests = await this.visitorsService.getVisitorInterests(id);
+    return ApiResponseDto.success(interests);
+  }
+
+  @Patch(':id/interests/:offerId')
+  async updateInterestPriority(
+    @Param('id', ParseIntPipe) id: number,
+    @Param('offerId', ParseIntPipe) offerId: number,
+    @Body() updateDto: UpdateVisitorInterestDto,
+  ) {
+    const interest = await this.visitorsService.updateInterestPriority(
+      id,
+      offerId,
+      updateDto,
+    );
+    return ApiResponseDto.success(
+      interest,
+      'Interest priority updated successfully',
+    );
+  }
+
+  @Delete(':id/interests/:offerId')
+  async removeInterest(
+    @Param('id', ParseIntPipe) id: number,
+    @Param('offerId', ParseIntPipe) offerId: number,
+  ) {
+    await this.visitorsService.removeInterest(id, offerId);
+    return ApiResponseDto.success(null, 'Interest removed successfully');
   }
 }

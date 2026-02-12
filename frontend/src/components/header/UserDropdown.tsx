@@ -30,7 +30,7 @@ export default function UserDropdown() {
         className="flex items-center text-gray-700 dark:text-gray-400 dropdown-toggle"
       >
 
-        <span className="block mr-1 font-medium text-theme-sm">{user && user.username}</span>
+        <span className="block mr-1 font-medium text-theme-sm">{user && user.name}</span>
 
         <svg
           className={`stroke-gray-500 dark:stroke-gray-400 transition-transform duration-200 ${isOpen ? "rotate-180" : ""

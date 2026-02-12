@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="z-znDw75jMhwTUvfqXO4" name="Page-1">
-        <mxGraphModel dx="605" dy="645" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="none" math="0" shadow="0">
+        <mxGraphModel dx="483" dy="513" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="none" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -15,6 +15,57 @@
                 </mxCell>
                 <mxCell id="6" value="&lt;font color=&quot;#f1f2f3&quot;&gt;Expanded Filters options&amp;nbsp;&lt;/font&gt;&lt;h2 style=&quot;box-sizing: border-box; margin: 0px 0px 24px; padding: 0px; border: 0px solid rgb(228, 231, 236); font-size: 18px; line-height: 1.55556; --tw-font-weight: 600; scrollbar-width: thin; scrollbar-color: rgb(168, 168, 168) transparent; font-family: Outfit, &amp;quot;Outfit Fallback&amp;quot;; text-align: start;&quot; class=&quot;text-lg font-semibold text-gray-900 dark:text-white mb-6&quot;&gt;&lt;/h2&gt;" style="rounded=1;whiteSpace=wrap;html=1;fontColor=#FFFFFF;" parent="1" vertex="1">
                     <mxGeometry x="52" y="187" width="472" height="159" as="geometry"/>
+                </mxCell>
+                <mxCell id="7" value="" style="edgeStyle=none;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1">
+                    <mxGeometry width="80" relative="1" as="geometry">
+                        <mxPoint x="361" y="84" as="sourcePoint"/>
+                        <mxPoint x="441" y="84" as="targetPoint"/>
+                        <Array as="points"/>
+                    </mxGeometry>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+    <diagram id="k2vNuirnC91tAa7w7Kmb" name="Page-2">
+        <mxGraphModel dx="483" dy="513" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="y0nCOUVoCz2AyK76g2wG-1" value="Visitor information" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="284" y="356" width="287" height="168" as="geometry"/>
+                </mxCell>
+                <mxCell id="y0nCOUVoCz2AyK76g2wG-2" value="" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="284" y="534" width="290" height="135" as="geometry"/>
+                </mxCell>
+                <mxCell id="7_QxoyjWh0Qq3--9LE2i-2" value="call" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="498" y="368" width="57" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="7_QxoyjWh0Qq3--9LE2i-3" value="whatsapp" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="433" y="368" width="57" height="31" as="geometry"/>
+                </mxCell>
+                <mxCell id="7_QxoyjWh0Qq3--9LE2i-4" value="" style="rounded=1;whiteSpace=wrap;html=1;glass=0;shadow=0;" parent="1" vertex="1">
+                    <mxGeometry x="583" y="356" width="212" height="315" as="geometry"/>
+                </mxCell>
+                <mxCell id="7_QxoyjWh0Qq3--9LE2i-5" value="&lt;p style=&quot;line-height: 80%; font-size: 16px;&quot;&gt;Offers may like&lt;/p&gt;" style="text;strokeColor=none;fillColor=none;html=1;fontSize=16;fontStyle=1;verticalAlign=middle;align=center;rounded=1;shadow=0;glass=0;sketch=0;" parent="1" vertex="1">
+                    <mxGeometry x="597" y="371" width="131" height="14" as="geometry"/>
+                </mxCell>
+                <mxCell id="7_QxoyjWh0Qq3--9LE2i-6" value="" style="rounded=1;whiteSpace=wrap;html=1;shadow=0;glass=0;sketch=0;fontSize=16;" parent="1" vertex="1">
+                    <mxGeometry x="596.5" y="403" width="185" height="155" as="geometry"/>
+                </mxCell>
+                <mxCell id="7_QxoyjWh0Qq3--9LE2i-7" value="Main image" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;shadow=0;glass=0;sketch=0;fontSize=16;" parent="1" vertex="1">
+                    <mxGeometry x="654" y="443" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="7_QxoyjWh0Qq3--9LE2i-8" value="offer information .." style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;shadow=0;glass=0;sketch=0;fontSize=16;" parent="1" vertex="1">
+                    <mxGeometry x="617.5" y="490" width="143" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="7_QxoyjWh0Qq3--9LE2i-9" value="Order" style="rounded=1;whiteSpace=wrap;html=1;shadow=0;glass=0;sketch=0;fontSize=16;" parent="1" vertex="1">
+                    <mxGeometry x="687" y="520" width="80" height="32" as="geometry"/>
+                </mxCell>
+                <mxCell id="7_QxoyjWh0Qq3--9LE2i-10" value="Whatsapp" style="rounded=1;whiteSpace=wrap;html=1;shadow=0;glass=0;sketch=0;fontSize=16;" parent="1" vertex="1">
+                    <mxGeometry x="614" y="520" width="63" height="31" as="geometry"/>
+                </mxCell>
+                <mxCell id="7_QxoyjWh0Qq3--9LE2i-11" value="Interests &amp;amp; notes" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;shadow=0;glass=0;sketch=0;fontSize=16;" parent="1" vertex="1">
+                    <mxGeometry x="395" y="561" width="104" height="30" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>

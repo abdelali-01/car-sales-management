@@ -11,7 +11,7 @@ export default function OffersPage() {
 
     return (
         <div className='space-y-5'>
-            <PageBreadcrumb paths={['offers']} pageTitle={t('offers.title')} />
+            <PageBreadcrumb pageTitle={t('offers.title')} />
 
             {/* Main Card */}
             <div className="rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800/50 p-5 lg:p-6">

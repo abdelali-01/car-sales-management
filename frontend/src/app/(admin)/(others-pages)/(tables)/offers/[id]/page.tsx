@@ -8,6 +8,7 @@ import OfferDetailsSection from '@/components/offers/OfferDetailsSection';
 import OfferPricingStatusSection from '@/components/offers/OfferPricingStatusSection';
 import OfferContactSection from '@/components/offers/OfferContactSection';
 import OfferImagesSection, { OfferImageState } from '@/components/offers/OfferImagesSection';
+import OfferInterestedVisitorsSection from '@/components/offers/OfferInterestedVisitorsSection';
 import { AppDispatch, RootState } from '@/store/store';
 import { fetchOfferById, updateOffer, uploadOfferImages } from '@/store/offers/offersHandler';
 import { useFormErrors } from '@/hooks/useFormErrors';
@@ -176,6 +177,9 @@ export default function EditOfferPage() {
                         onChange={handleFieldChange}
                         errors={errors}
                     />
+
+                    {/* Interested Visitors */}
+                    <OfferInterestedVisitorsSection offerId={offerId} />
                 </div>
 
                 {/* Right Column */}

@@ -1,8 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Visitor } from "@/types/auto-sales";
+import { Visitor, VisitorInterestOffer } from "@/types/auto-sales";
 
 interface VisitorsState {
     visitors: Visitor[] | null;
+    currentVisitor: Visitor | null;
     totalCount: number;
     loading: boolean;
     error: string | null;
@@ -10,6 +11,7 @@ interface VisitorsState {
 
 const initialState: VisitorsState = {
     visitors: null,
+    currentVisitor: null,
     totalCount: 0,
     loading: false,
     error: null
@@ -39,6 +41,51 @@ const visitorSlice = createSlice({
                     visitor.status = action.payload.status as any;
                 }
             }
+            if (state.currentVisitor && state.currentVisitor.id === action.payload.id) {
+                state.currentVisitor.status = action.payload.status as any;
+            }
+        },
+        setCurrentVisitor: (state, action: PayloadAction<Visitor | null>) => {
+            state.currentVisitor = action.payload;
+        },
+        updateVisitorRemarks: (state, action: PayloadAction<{ id: number, remarks: string }>) => {
+            if (state.currentVisitor && state.currentVisitor.id === action.payload.id) {
+                state.currentVisitor.remarks = action.payload.remarks;
+            }
+        },
+        addInterestToVisitor: (state, action: PayloadAction<VisitorInterestOffer>) => {
+            if (state.currentVisitor) {
+                if (!state.currentVisitor.interests) {
+                    state.currentVisitor.interests = [];
+                }
+                state.currentVisitor.interests.push(action.payload);
+            }
+        },
+        removeInterestFromVisitor: (state, action: PayloadAction<number>) => {
+            if (state.currentVisitor && state.currentVisitor.interests) {
+                state.currentVisitor.interests = state.currentVisitor.interests.filter(
+                    interest => interest.offerId !== action.payload
+                );
+            }
+        },
+        updateInterestPriority: (state, action: PayloadAction<{ offerId: number, priority: number }>) => {
+            if (state.currentVisitor && state.currentVisitor.interests) {
+                const movingInterest = state.currentVisitor.interests.find(i => i.offerId === action.payload.offerId);
+
+                if (movingInterest) {
+                    const oldPriority = movingInterest.priority;
+                    const newPriority = action.payload.priority;
+
+                    // Find the interest at the target priority (the one being displaced)
+                    const targetInterest = state.currentVisitor.interests.find(i => i.priority === newPriority);
+
+                    // Swap priorities
+                    movingInterest.priority = newPriority;
+                    if (targetInterest) {
+                        targetInterest.priority = oldPriority;
+                    }
+                }
+            }
         },
         setLoading: (state, action: PayloadAction<boolean>) => {
             state.loading = action.payload;
@@ -53,6 +100,11 @@ export const {
     setVisitors,
     addVisitor,
     updateVisitorStatus,
+    setCurrentVisitor,
+    updateVisitorRemarks,
+    addInterestToVisitor,
+    removeInterestFromVisitor,
+    updateInterestPriority,
     setLoading,
     setError
 } = visitorSlice.actions;

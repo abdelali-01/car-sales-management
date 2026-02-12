@@ -1,7 +1,7 @@
 export enum VisitorStatus {
   NEW = 'new',
   CONTACTED = 'contacted',
-  MATCHED = 'matched',
+  INTERESTED = 'interested',
   CONVERTED = 'converted',
   LOST = 'lost',
 }
