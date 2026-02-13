@@ -6,7 +6,6 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import { PaymentStatus } from '../../common/enums/payment-status.enum';
 import { PaymentMethod } from '../../common/enums/payment-method.enum';
 import { Order } from '../../orders/entities/order.entity';
 import { Client } from '../../clients/entities/client.entity';
@@ -32,12 +31,6 @@ export class Payment {
   })
   method: PaymentMethod;
 
-  @Column({
-    type: 'enum',
-    enum: PaymentStatus,
-    default: PaymentStatus.UNPAID,
-  })
-  status: PaymentStatus;
 
   @Column({ type: 'text', nullable: true })
   notes: string;

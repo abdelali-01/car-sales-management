@@ -52,6 +52,7 @@ export default function ClientDetailsPage() {
                         loading={paymentsLoading}
                         orders={orders}
                         clientId={currentClient?.id}
+                        totalSpent={currentClient?.totalSpent || 0}
                     />
                 </div>
             </div>

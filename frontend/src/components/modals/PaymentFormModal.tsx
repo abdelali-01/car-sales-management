@@ -17,8 +17,7 @@ export default function PaymentFormModal({ closeModal, clientId, orders }: Payme
         orderId: '',
         clientId: clientId ? String(clientId) : '',
         amount: 0,
-        method: 'CASH',
-        status: 'UNPAID',
+        method: 'cash',
         notes: '',
     });
 
@@ -103,20 +102,11 @@ export default function PaymentFormModal({ closeModal, clientId, orders }: Payme
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Method *</label>
                         <select name="method" value={formData.method} onChange={handleChange}
                             className="w-full px-4 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
-                            <option value="CASH">Cash</option>
-                            <option value="BANK_TRANSFER">Bank Transfer</option>
-                            <option value="CHECK">Check</option>
+                            <option value="cash">Cash</option>
+                            <option value="transfer">Bank Transfer</option>
+                            <option value="cheque">Check</option>
                         </select>
                     </div>
-                </div>
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Status</label>
-                    <select name="status" value={formData.status} onChange={handleChange}
-                        className="w-full px-4 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
-                        <option value="UNPAID">Unpaid</option>
-                        <option value="ADVANCE">Advance</option>
-                        <option value="PAID">Paid</option>
-                    </select>
                 </div>
                 <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Notes</label>

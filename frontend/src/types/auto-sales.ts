@@ -102,7 +102,7 @@ export interface Payment {
     clientId?: number;
     amount: number;
     method: PaymentMethod;
-    status: PaymentStatus;
+    status?: PaymentStatus;
     notes?: string;
     createdAt: string;
     // Nested/populated fields (optional, for display)

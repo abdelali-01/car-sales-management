@@ -6,7 +6,7 @@ import { AppDispatch, RootState } from '@/store/store';
 import Loader from '../ui/load/Loader';
 import Badge from '../ui/badge/Badge';
 import { MagnifyingGlassIcon, ChevronLeftIcon, ChevronRightIcon, CheckIcon } from '@heroicons/react/24/outline';
-import { fetchPayments, markPaymentPaid } from '@/store/payments/paymentsHandler';
+import { fetchPayments } from '@/store/payments/paymentsHandler';
 
 const ITEMS_PER_PAGE = 7;
 
@@ -30,7 +30,7 @@ export default function PaymentsTable() {
         let filtered = payments.filter(p => {
             const matchesSearch = p.notes?.toLowerCase().includes(searchQuery.toLowerCase()) ||
                 String(p.orderId).includes(searchQuery);
-            const matchesStatus = !statusFilter || p.status === statusFilter;
+            const matchesStatus = !statusFilter || (p.status as string) === statusFilter;
             return matchesSearch && matchesStatus;
         });
 
@@ -72,12 +72,12 @@ export default function PaymentsTable() {
         return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'DZD', minimumFractionDigits: 0 }).format(price).replace('DZD', 'DA');
     };
 
-    const getStatusBadge = (status: string) => {
+    const getStatusBadge = (status?: string) => {
         switch (status) {
             case 'PAID': return <Badge color='success' size="sm">Paid</Badge>;
             case 'UNPAID': return <Badge color='error' size="sm">Unpaid</Badge>;
             case 'ADVANCE': return <Badge color='warning' size="sm">Advance</Badge>;
-            default: return <Badge color='light' size="sm">{status}</Badge>;
+            default: return <Badge color='light' size="sm">{status || '—'}</Badge>;
         }
     };
 
@@ -150,19 +150,7 @@ export default function PaymentsTable() {
                                         <TableCell className="px-4 py-3">{getStatusBadge(payment.status)}</TableCell>
                                         <TableCell className="px-4 py-3 text-gray-600 dark:text-gray-400 text-sm">{formatDate(payment.createdAt)}</TableCell>
                                         <TableCell className="px-4 py-3 text-gray-600 dark:text-gray-400 text-xs max-w-[150px] truncate">{payment.notes || '—'}</TableCell>
-                                        <TableCell className="px-4 py-3">
-                                            {(payment.status === 'UNPAID' || payment.status === 'ADVANCE') && (
-                                                <button
-                                                    onClick={(e) => { e.stopPropagation(); dispatch(markPaymentPaid(payment.id)); }}
-                                                    title="Mark as Paid"
-                                                    className="flex items-center gap-1 px-2.5 py-1.5 rounded-md text-xs font-medium text-green-600 bg-green-50 hover:bg-green-100 dark:bg-green-900/20 dark:hover:bg-green-900/30 dark:text-green-400 transition-colors">
-                                                    <CheckIcon className="w-3.5 h-3.5" /> Paid
-                                                </button>
-                                            )}
-                                            {payment.status === 'PAID' && (
-                                                <span className="text-xs text-gray-400">—</span>
-                                            )}
-                                        </TableCell>
+                                        <TableCell className="px-4 py-3">—</TableCell>
                                     </TableRow>
                                 ))
                             )}

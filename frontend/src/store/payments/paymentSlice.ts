@@ -58,14 +58,6 @@ const paymentSlice = createSlice({
                 state.orderPayments.unshift(action.payload);
             }
         },
-        updatePaymentStatus: (state, action: PayloadAction<{ id: number, status: string }>) => {
-            if (state.payments) {
-                const payment = state.payments.find(p => p.id === action.payload.id);
-                if (payment) {
-                    payment.status = action.payload.status as any;
-                }
-            }
-        },
         setLoading: (state, action: PayloadAction<boolean>) => {
             state.loading = action.payload;
         },
@@ -80,7 +72,6 @@ export const {
     setOrderPayments,
     setClientPayments,
     addPayment,
-    updatePaymentStatus,
     setLoading,
     setError
 } = paymentSlice.actions;

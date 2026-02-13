@@ -8,7 +8,6 @@ import {
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { PaymentMethod } from '../../common/enums/payment-method.enum';
-import { PaymentStatus } from '../../common/enums/payment-status.enum';
 
 export class CreatePaymentDto {
   @IsNotEmpty()
@@ -31,9 +30,6 @@ export class CreatePaymentDto {
   @IsEnum(PaymentMethod)
   method?: PaymentMethod;
 
-  @IsOptional()
-  @IsEnum(PaymentStatus)
-  status?: PaymentStatus;
 
   @IsOptional()
   @IsString()

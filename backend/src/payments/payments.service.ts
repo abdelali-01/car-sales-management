@@ -9,7 +9,6 @@ import { Payment } from './entities/payment.entity';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
-import { PaymentStatus } from '../common/enums/payment-status.enum';
 import { PaymentMethod } from '../common/enums/payment-method.enum';
 import { OrdersService } from '../orders/orders.service';
 import { ClientsService } from '../clients/clients.service';
@@ -41,13 +40,12 @@ export class PaymentsService {
 
   async findAll(
     query: PaginationQueryDto & {
-      status?: PaymentStatus;
       method?: PaymentMethod;
       orderId?: number;
       clientId?: number;
     },
   ): Promise<{ data: Payment[]; total: number; page: number; limit: number }> {
-    const { page = 1, limit = 10, status, method, orderId, clientId } = query;
+    const { page = 1, limit = 10, method, orderId, clientId } = query;
 
     const queryBuilder = this.paymentsRepository
       .createQueryBuilder('payment')
@@ -55,9 +53,6 @@ export class PaymentsService {
       .leftJoinAndSelect('payment.client', 'client')
       .orderBy('payment.createdAt', 'DESC');
 
-    if (status) {
-      queryBuilder.andWhere('payment.status = :status', { status });
-    }
 
     if (method) {
       queryBuilder.andWhere('payment.method = :method', { method });
@@ -98,10 +93,6 @@ export class PaymentsService {
   ): Promise<Payment> {
     const payment = await this.findOne(id);
 
-    // Block updates if payment is already paid
-    if (payment.status === PaymentStatus.PAID) {
-      throw new BadRequestException('Cannot update a paid payment');
-    }
 
     Object.assign(payment, updatePaymentDto);
     return this.paymentsRepository.save(payment);
@@ -110,24 +101,10 @@ export class PaymentsService {
   async remove(id: number): Promise<void> {
     const payment = await this.findOne(id);
 
-    // Block deletion if payment is paid
-    if (payment.status === PaymentStatus.PAID) {
-      throw new BadRequestException('Cannot delete a paid payment');
-    }
 
     await this.paymentsRepository.remove(payment);
   }
 
-  async markAsPaid(id: number): Promise<Payment> {
-    const payment = await this.findOne(id);
-
-    if (payment.status === PaymentStatus.PAID) {
-      throw new BadRequestException('Payment is already marked as paid');
-    }
-
-    payment.status = PaymentStatus.PAID;
-    return this.paymentsRepository.save(payment);
-  }
 
   async getOrderPayments(orderId: number): Promise<Payment[]> {
     return this.paymentsRepository.find({

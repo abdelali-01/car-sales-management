@@ -236,7 +236,6 @@ async function seed() {
         clientId: clients[0].id,
         amount: 5000,
         method: PaymentMethod.CASH,
-        status: PaymentStatus.PAID,
         notes: 'Initial deposit',
       }),
       paymentsService.create({
@@ -244,7 +243,6 @@ async function seed() {
         clientId: clients[0].id,
         amount: 11000,
         method: PaymentMethod.TRANSFER,
-        status: PaymentStatus.UNPAID,
         notes: 'Remaining balance',
       }),
     ]);

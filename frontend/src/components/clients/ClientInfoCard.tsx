@@ -42,7 +42,7 @@ export default function ClientInfoCard({ client, loading }: ClientInfoCardProps)
                 </button>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 gap-6">
                 <div className="space-y-4">
                     <div>
                         <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Full Name</p>
@@ -74,40 +74,6 @@ export default function ClientInfoCard({ client, loading }: ClientInfoCardProps)
                     </div>
                 </div>
 
-                <div className="space-y-4 bg-gray-50 dark:bg-gray-800/50 p-4 rounded-lg border border-gray-100 dark:border-gray-700/50">
-                    <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">Financial Overview</h4>
-
-                    <div className="flex items-center justify-between p-3 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
-                        <div className="flex items-center gap-3">
-                            <div className="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg">
-                                <CurrencyDollarIcon className="w-5 h-5 text-green-600 dark:text-green-400" />
-                            </div>
-                            <span className="text-sm font-medium text-gray-600 dark:text-gray-300">Total Spent</span>
-                        </div>
-                        <span className="text-base font-bold text-gray-900 dark:text-white">
-                            {Number(client.totalSpent || 0).toLocaleString()} DZD
-                        </span>
-                    </div>
-
-                    <div className="flex items-center justify-between p-3 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
-                        <div className="flex items-center gap-3">
-                            <div className="p-2 bg-red-100 dark:bg-red-900/30 rounded-lg">
-                                <BanknotesIcon className="w-5 h-5 text-red-600 dark:text-red-400" />
-                            </div>
-                            <span className="text-sm font-medium text-gray-600 dark:text-gray-300">Remaining Balance</span>
-                        </div>
-                        <span className="text-base font-bold text-red-600 dark:text-red-400">
-                            {Number(client.remainingBalance || 0).toLocaleString()} DZD
-                        </span>
-                    </div>
-
-                    {client.notes && (
-                        <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-                            <p className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Notes</p>
-                            <p className="text-sm text-gray-700 dark:text-gray-300 italic">{client.notes}</p>
-                        </div>
-                    )}
-                </div>
             </div>
 
             <Modal isOpen={isEditModalOpen} onClose={() => setIsEditModalOpen(false)} className='max-w-xl p-6'>

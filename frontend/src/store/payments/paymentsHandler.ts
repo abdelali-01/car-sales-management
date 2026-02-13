@@ -1,13 +1,12 @@
 import { addToast } from "../toast/toastSlice";
 import { AppDispatch } from "../store";
-import { setPayments, setOrderPayments, setClientPayments, addPayment as addPaymentAction, updatePaymentStatus as updatePaymentStatusAction, setLoading, setError } from "./paymentSlice";
+import { setPayments, setOrderPayments, setClientPayments, addPayment as addPaymentAction, setLoading, setError } from "./paymentSlice";
 import { Payment } from "@/types/auto-sales";
 import api, { getErrorMessage } from "@/services/api";
 import { ENDPOINTS } from "@/services/endpoints";
 
 // Fetch all payments with optional filters
 export const fetchPayments = (params?: {
-    status?: string;
     method?: string;
 }) => async (dispatch: AppDispatch) => {
     dispatch(setLoading(true));
@@ -15,7 +14,6 @@ export const fetchPayments = (params?: {
 
     try {
         const queryParams = new URLSearchParams();
-        if (params?.status) queryParams.append('status', params.status);
         if (params?.method) queryParams.append('method', params.method);
 
         const url = queryParams.toString()
@@ -64,21 +62,6 @@ export const createPayment = (paymentData: Omit<Payment, 'id' | 'createdAt'>) =>
 };
 
 // Mark payment as paid
-export const markPaymentPaid = (paymentId: number) => async (dispatch: AppDispatch) => {
-    try {
-        const res = await api.post(ENDPOINTS.PAYMENTS.MARK_PAID(paymentId), {});
-
-        if (res.data.success) {
-            dispatch(updatePaymentStatusAction({ id: paymentId, status: 'PAID' }));
-            dispatch(addToast({ type: 'success', message: 'Payment marked as paid' }));
-        }
-    } catch (error) {
-        const message = getErrorMessage(error);
-        console.error('Error marking payment as paid:', error);
-        dispatch(addToast({ type: 'error', message }));
-        throw error;
-    }
-};
 
 // Fetch payments for a specific order
 export const fetchOrderPayments = (orderId: number) => async (dispatch: AppDispatch) => {

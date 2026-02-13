@@ -15,14 +15,13 @@ import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
 import { SessionAuthGuard } from '../auth/guards/session-auth.guard';
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
-import { PaymentStatus } from '../common/enums/payment-status.enum';
 import { PaymentMethod } from '../common/enums/payment-method.enum';
 import { ApiResponseDto } from '../common/dto/api-response.dto';
 
 @Controller('payments')
 @UseGuards(SessionAuthGuard)
 export class PaymentsController {
-  constructor(private readonly paymentsService: PaymentsService) {}
+  constructor(private readonly paymentsService: PaymentsService) { }
 
   @Post()
   async create(@Body() createPaymentDto: CreatePaymentDto) {
@@ -34,7 +33,6 @@ export class PaymentsController {
   async findAll(
     @Query()
     query: PaginationQueryDto & {
-      status?: PaymentStatus;
       method?: PaymentMethod;
       orderId?: number;
       clientId?: number;
@@ -82,12 +80,4 @@ export class PaymentsController {
     return ApiResponseDto.success(null, 'Payment deleted successfully');
   }
 
-  @Post(':id/mark-paid')
-  async markAsPaid(@Param('id', ParseIntPipe) id: number) {
-    const payment = await this.paymentsService.markAsPaid(id);
-    return ApiResponseDto.success(
-      payment,
-      'Payment marked as paid successfully',
-    );
-  }
 }
