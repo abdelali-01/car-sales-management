@@ -13,6 +13,8 @@ import { VisitorStatus } from './common/enums/visitor-status.enum';
 import { OrderStatus } from './common/enums/order-status.enum';
 import { PaymentStatus } from './common/enums/payment-status.enum';
 import { PaymentMethod } from './common/enums/payment-method.enum';
+import { OrderType } from './common/enums/order-type.enum';
+
 
 async function seed() {
   console.log('🌱 Starting database seeding...\n');
@@ -184,7 +186,9 @@ async function seed() {
         deposit: 2000,
         profit: 500,
         status: OrderStatus.PENDING,
+        type: OrderType.INSIDE,
       }),
+
       ordersService.create({
         offerId: offers[3].id, // Peugeot 208 (will become RESERVED then can be completed)
         visitorId: visitors[3].id, // Leila Hammadi
@@ -194,7 +198,9 @@ async function seed() {
         deposit: 5000,
         profit: 1000,
         status: OrderStatus.PENDING,
+        type: OrderType.INSIDE,
       }),
+
     ]);
     console.log(`✓ Created ${orders.length} orders\n`);
 

@@ -177,6 +177,10 @@
       "canceled": "ملغي",
       "returned": "مرتجع",
       "completed": "مكتمل"
+    },
+    "type": {
+      "inside": "من العروض",
+      "outside": "طلب مخصص"
     }
   },
   "categories": {

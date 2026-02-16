@@ -251,16 +251,19 @@ export default function VisitorInterestsSection({ visitor, visitorId }: VisitorI
                                             <button
                                                 onClick={(e) => {
                                                     e.stopPropagation();
-                                                    // TODO: Implement order creation
-                                                    console.log('Create order for offer:', interest.offerId);
+                                                    router.push(`/orders/add?offerId=${interest.offerId}&visitorId=${visitorId}`);
                                                 }}
-                                                className="px-3 py-1.5 text-xs font-medium text-white bg-green-600 hover:bg-green-700 rounded-md transition-colors shadow-sm hover:shadow-md flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity"
-                                                title="Create Order"
+                                                disabled={interest.offer?.status === 'sold'}
+                                                className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors shadow-sm flex items-center gap-1.5 ${interest.offer?.status === 'sold'
+                                                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed dark:bg-gray-700 dark:text-gray-500'
+                                                        : 'text-white bg-green-600 hover:bg-green-700'
+                                                    }`}
+                                                title={interest.offer?.status === 'sold' ? 'Offer Sold' : 'Create Order'}
                                             >
                                                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
                                                 </svg>
-                                                Order
+                                                {interest.offer?.status === 'sold' ? 'Sold' : 'Order'}
                                             </button>
                                         </div>
                                     </div>

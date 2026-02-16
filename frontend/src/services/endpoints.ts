@@ -40,7 +40,10 @@ export const ENDPOINTS = {
         CONFIRM: (id: number) => `/api/orders/${id}/confirm`,   // POST
         COMPLETE: (id: number) => `/api/orders/${id}/complete`, // POST
         CANCEL: (id: number) => `/api/orders/${id}/cancel`,     // POST
+        DOCUMENTS: (id: number) => `/api/orders/${id}/documents`, // POST (upload)
+        DELETE_DOCUMENT: (id: number, docId: number) => `/api/orders/${id}/documents/${docId}`, // DELETE
     },
+
 
     // Clients Module
     CLIENTS: {
@@ -63,8 +66,10 @@ export const ENDPOINTS = {
         MONTHLY_SALES: '/api/statistics/monthly-sales',         // GET (?year)
         CONVERSION_RATE: '/api/statistics/conversion-rate',
         OFFERS_BY_STATUS: '/api/statistics/offers-by-status',
+        ORDERS_BY_STATUS: '/api/statistics/orders-by-status',
         REVENUE: '/api/statistics/revenue',
         RECENT_ACTIVITY: '/api/statistics/recent-activity',     // GET (?limit)
+        POPULAR_CARS: '/api/statistics/popular-cars',
     },
 } as const;
 

@@ -67,20 +67,6 @@ export default function OfferPricingStatusSection({
                         onChange={handleStatusChange}
                     />
                 </div>
-
-                {/* Show Profit field when status is sold */}
-                {status === 'sold' && (
-                    <div className="pt-4 border-t border-gray-100 dark:border-gray-700">
-                        <Label htmlFor="profit">Profit ( DA )</Label>
-                        <Input
-                            id="profit"
-                            type="number"
-                            placeholder="0"
-                            value={profit || ''}
-                            onChange={(e) => onChange('profit', Number(e.target.value))}
-                        />
-                    </div>
-                )}
             </div>
         </div>
     );

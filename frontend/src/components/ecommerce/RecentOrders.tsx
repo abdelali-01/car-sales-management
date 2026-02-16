@@ -14,11 +14,11 @@ import { useTranslation } from "react-i18next";
 // Define the TypeScript interface for the table rows
 interface RecentOrder {
   id: number;
-  name: string;
-  phone: string;
+  clientName: string;
+  clientPhone: string;
   status: string;
-  date: string;
-  is_pack: boolean;
+  createdAt: string;
+  type: string;
 }
 
 export default function RecentOrders() {
@@ -101,7 +101,6 @@ export default function RecentOrders() {
             </TableRow>
           </TableHeader>
 
-          {/* Table Body */}
           <TableBody className="divide-y divide-gray-100 dark:divide-gray-800">
             {recent_orders && recent_orders.length > 0 ? (
               recent_orders.map((order) => (
@@ -110,12 +109,12 @@ export default function RecentOrders() {
                     <div className="flex items-center gap-3">
                       <div className="h-[50px] w-[50px] overflow-hidden rounded-md bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
                         <span className="text-gray-600 dark:text-gray-400 text-lg font-semibold">
-                          {order.name.charAt(0).toUpperCase()}
+                          {order.clientName.charAt(0).toUpperCase()}
                         </span>
                       </div>
                       <div>
                         <p className="font-medium text-gray-800 text-theme-sm dark:text-white/90">
-                          {order.name}
+                          {order.clientName}
                         </p>
                         <span className="text-gray-500 text-theme-xs dark:text-gray-400">
                           {t('orders.order')} #{order.id}
@@ -124,14 +123,14 @@ export default function RecentOrders() {
                     </div>
                   </TableCell>
                   <TableCell className="py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                    {order.phone}
+                    {order.clientPhone}
                   </TableCell>
                   <TableCell className="py-3 text-gray-500 text-theme-sm dark:text-gray-400">
                     <Badge
                       size="sm"
-                      color={order.is_pack ? "info" : "success"}
+                      color={order.type === 'outside' ? "info" : "success"}
                     >
-                      {order.is_pack ? t('orders.pack') : t('orders.product')}
+                      {order.type === 'outside' ? t('orders.type.outside', 'Custom Order') : t('orders.type.inside', 'From Offers')}
                     </Badge>
                   </TableCell>
                   <TableCell className="py-3 text-gray-500 text-theme-sm dark:text-gray-400">
@@ -143,7 +142,7 @@ export default function RecentOrders() {
                     </Badge>
                   </TableCell>
                   <TableCell className="py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                    {formatDate(order.date)}
+                    {formatDate(order.createdAt)}
                   </TableCell>
                 </TableRow>
               ))

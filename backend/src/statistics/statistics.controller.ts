@@ -12,7 +12,7 @@ import { ApiResponseDto } from '../common/dto/api-response.dto';
 @Controller('statistics')
 @UseGuards(SessionAuthGuard)
 export class StatisticsController {
-  constructor(private readonly statisticsService: StatisticsService) {}
+  constructor(private readonly statisticsService: StatisticsService) { }
 
   @Get('overview')
   async getOverview() {
@@ -21,7 +21,7 @@ export class StatisticsController {
   }
 
   @Get('monthly-sales')
-  async getMonthlySales(@Query('year', ParseIntPipe) year?: number) {
+  async getMonthlySales(@Query('year', new ParseIntPipe({ optional: true })) year?: number) {
     const data = await this.statisticsService.getMonthlySales(year);
     return ApiResponseDto.success(data);
   }
@@ -35,6 +35,18 @@ export class StatisticsController {
   @Get('offers-by-status')
   async getOffersByStatus() {
     const data = await this.statisticsService.getOffersByStatus();
+    return ApiResponseDto.success(data);
+  }
+
+  @Get('orders-by-status')
+  async getOrdersByStatus() {
+    const data = await this.statisticsService.getOrdersByStatus();
+    return ApiResponseDto.success(data);
+  }
+
+  @Get('popular-cars')
+  async getPopularCars(@Query('limit', ParseIntPipe) limit?: number) {
+    const data = await this.statisticsService.getPopularCars(limit);
     return ApiResponseDto.success(data);
   }
 

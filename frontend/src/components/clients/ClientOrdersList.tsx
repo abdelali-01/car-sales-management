@@ -56,10 +56,18 @@ export default function ClientOrdersList({ orders, loading }: ClientOrdersListPr
                                 <div className="flex items-start justify-between mb-2">
                                     <div>
                                         <h4 className="text-base font-bold text-gray-900 dark:text-white truncate">
-                                            {order.offer ? `${order.offer.brand} ${order.offer.model}` : `Order #${order.id}`}
+                                            {order.offer
+                                                ? `${order.offer.brand} ${order.offer.model}`
+                                                : order.orderedCar
+                                                    ? `${order.orderedCar.brand} ${order.orderedCar.model}`
+                                                    : `Order #${order.id}`}
                                         </h4>
                                         <p className="text-sm text-gray-500 dark:text-gray-400">
-                                            {order.offer?.year} • {order.offer?.km?.toLocaleString()} km
+                                            {order.offer
+                                                ? `${order.offer.year} • ${order.offer.km?.toLocaleString()} km`
+                                                : order.orderedCar
+                                                    ? `${order.orderedCar.year} • ${order.orderedCar.color || 'Custom'}`
+                                                    : 'Custom Request'}
                                         </p>
                                     </div>
                                     <span className={`px-2.5 py-1 rounded-full text-xs font-semibold capitalize ${statusColors[order.status] || 'bg-gray-100 text-gray-800'}`}>
@@ -77,7 +85,7 @@ export default function ClientOrdersList({ orders, loading }: ClientOrdersListPr
                                     <div className="flex flex-col text-right">
                                         <span className="text-xs text-gray-500 dark:text-gray-400">Agreed Price</span>
                                         <span className="font-bold text-brand-600 dark:text-brand-400">
-                                            {Number(order.agreedPrice || order.offer?.price || 0).toLocaleString()} DZD
+                                            {Number(order.agreedPrice ?? order.offer?.price ?? 0).toLocaleString()} DZD
                                         </span>
                                     </div>
                                 </div>

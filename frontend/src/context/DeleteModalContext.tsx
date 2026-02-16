@@ -3,7 +3,7 @@ import { createContext, useContext, useState, ReactNode } from "react";
 
 type DeleteModalContextType = {
   isOpen: boolean;
-  itemId: string | null;
+  itemId: string | number | null;
   openModal: (id: string | number | undefined, onConfirm: (id: string | number) => void) => void;
   closeModal: () => void;
 };
@@ -23,7 +23,7 @@ export function DeleteModalProvider({ children }: { children: ReactNode }) {
   const [itemId, setItemId] = useState<string | number | null>(null);
   const [onConfirm, setOnConfirm] = useState<((id: string | number) => void) | null>(null);
 
-  const openModal = (id: string | number | undefined, confirmFn: (id: string) => void) => {
+  const openModal = (id: string | number | undefined, confirmFn: (id: string | number) => void) => {
     if (!id) return;
 
     setItemId(id);

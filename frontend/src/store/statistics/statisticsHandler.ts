@@ -5,8 +5,10 @@ import {
     setMonthlySales, setLoadingMonthlySales,
     setConversionRate, setLoadingConversionRate,
     setOffersByStatus, setLoadingOffersByStatus,
+    setOrderStatusDistribution, setLoadingOrdersByStatus,
     setRevenue, setLoadingRevenue,
     setRecentActivity, setLoadingRecentActivity,
+    setPopularCars, setLoadingPopularCars,
     setError
 } from "./statisticsSlice";
 import api, { getErrorMessage } from "@/services/api";
@@ -45,7 +47,8 @@ export const fetchMonthlySales = (year?: number) => async (dispatch: AppDispatch
         const res = await api.get(url);
 
         if (res.data.success) {
-            dispatch(setMonthlySales(res.data.data || []));
+            // Backend returns { year: number, data: MonthlySalesData[] }
+            dispatch(setMonthlySales(res.data.data.data || []));
         }
     } catch (error) {
         const message = getErrorMessage(error);
@@ -88,9 +91,45 @@ export const fetchOffersByStatus = () => async (dispatch: AppDispatch) => {
     } catch (error) {
         const message = getErrorMessage(error);
         console.error('Error fetching offers by status:', error);
-        dispatch(addToast({ type: 'error', message }));
+        // dispatch(addToast({ type: 'error', message }));
     } finally {
         dispatch(setLoadingOffersByStatus(false));
+    }
+};
+
+// Fetch orders by status
+export const fetchOrdersByStatus = () => async (dispatch: AppDispatch) => {
+    dispatch(setLoadingOrdersByStatus(true));
+
+    try {
+        const res = await api.get(ENDPOINTS.STATISTICS.ORDERS_BY_STATUS);
+
+        if (res.data.success) {
+            dispatch(setOrderStatusDistribution(res.data.data));
+        }
+    } catch (error) {
+        const message = getErrorMessage(error);
+        console.error('Error fetching orders by status:', error);
+    } finally {
+        dispatch(setLoadingOrdersByStatus(false));
+    }
+};
+
+// Fetch popular cars
+export const fetchPopularCars = (limit: number = 5) => async (dispatch: AppDispatch) => {
+    dispatch(setLoadingPopularCars(true));
+
+    try {
+        const res = await api.get(`${ENDPOINTS.STATISTICS.POPULAR_CARS}?limit=${limit}`);
+
+        if (res.data.success) {
+            dispatch(setPopularCars(res.data.data));
+        }
+    } catch (error) {
+        const message = getErrorMessage(error);
+        console.error('Error fetching popular cars:', error);
+    } finally {
+        dispatch(setLoadingPopularCars(false));
     }
 };
 
@@ -125,7 +164,9 @@ export const fetchRecentActivity = (limit?: number) => async (dispatch: AppDispa
         const res = await api.get(url);
 
         if (res.data.success) {
-            dispatch(setRecentActivity(res.data.data || []));
+            // Backend returns { recentOrders, recentVisitors, recentPayments }
+            // We only need recentOrders for the RecentOrders component
+            dispatch(setRecentActivity(res.data.data.recentOrders || []));
         }
     } catch (error) {
         const message = getErrorMessage(error);
@@ -144,8 +185,10 @@ export const fetchAllDashboardStats = () => async (dispatch: AppDispatch) => {
             dispatch(fetchMonthlySales()),
             dispatch(fetchConversionRate()),
             dispatch(fetchOffersByStatus()),
+            dispatch(fetchOrdersByStatus()),
             dispatch(fetchRevenueStats()),
-            dispatch(fetchRecentActivity(10))
+            dispatch(fetchRecentActivity(5)),
+            dispatch(fetchPopularCars(5))
         ]);
     } catch (error) {
         console.error('Error fetching dashboard stats:', error);

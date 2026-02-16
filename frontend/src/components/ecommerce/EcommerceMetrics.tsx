@@ -10,17 +10,19 @@ import { useTranslation } from "react-i18next";
 export const EcommerceMetrics = () => {
   const {
     monthly_income,
+    monthly_profit,
     monthly_orders,
     total_products,
     pending_orders,
+    total_orders,
     loadingOverview,
-    loadingIncome
+    loadingMonthlySales
   } = useSelector((state: RootState) => state.statistics);
 
   // Show skeleton for cards that need overview data
   const isOverviewLoading = loadingOverview;
   // Show skeleton for cards that need income data
-  const isIncomeLoading = loadingIncome;
+  const isIncomeLoading = loadingMonthlySales;
   const { t } = useTranslation('admin');
 
   return (
@@ -37,18 +39,18 @@ export const EcommerceMetrics = () => {
           <div className="flex items-end justify-between mt-5">
             <div>
               <span className="text-sm text-gray-500 dark:text-gray-400">
-                {t('dashboard.metrics.monthlyIncome')}
+                {t('dashboard.metrics.monthlyProfit', 'Monthly Profit')}
               </span>
               <h4 className="mt-2 font-bold text-gray-800 text-title-sm dark:text-white/90">
-                {monthly_income.toLocaleString()} DA
+                {monthly_profit.toLocaleString()} DA
               </h4>
             </div>
           </div>
         </div>
       )}
 
-      {/* Monthly Orders */}
-      {isIncomeLoading ? (
+      {/* This Month's Orders */}
+      {isOverviewLoading ? (
         <MetricCardSkeleton />
       ) : (
         <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
@@ -61,7 +63,7 @@ export const EcommerceMetrics = () => {
                 {t('dashboard.metrics.monthlyOrders')}
               </span>
               <h4 className="mt-2 font-bold text-gray-800 text-title-sm dark:text-white/90">
-                {monthly_orders} {t('sidebar.orders')}
+                {total_orders} {t('sidebar.orders')}
               </h4>
             </div>
           </div>
@@ -79,10 +81,10 @@ export const EcommerceMetrics = () => {
           <div className="flex items-end justify-between mt-5">
             <div>
               <span className="text-sm text-gray-500 dark:text-gray-400">
-                {t('dashboard.metrics.totalProducts')}
+                {t('dashboard.metrics.availableCars', 'Available Cars')}
               </span>
               <h4 className="mt-2 font-bold text-gray-800 text-title-sm dark:text-white/90">
-                {total_products} {t('sidebar.products')}
+                {total_products} {t('sidebar.offers')}
               </h4>
             </div>
           </div>

@@ -37,12 +37,12 @@ export class StatisticsService {
       totalClients,
     ] = await Promise.all([
       this.offersRepository.count(),
-      this.offersRepository.count({ where: { status: OfferStatus.AVAILABLE } }),
-      this.offersRepository.count({ where: { status: OfferStatus.SOLD } }),
+      this.offersRepository.createQueryBuilder('offer').where('LOWER(offer.status::text) = LOWER(:status)', { status: OfferStatus.AVAILABLE }).getCount(),
+      this.offersRepository.createQueryBuilder('offer').where('LOWER(offer.status::text) = LOWER(:status)', { status: OfferStatus.SOLD }).getCount(),
       this.visitorsRepository.count(),
       this.ordersRepository.count(),
-      this.ordersRepository.count({ where: { status: OrderStatus.PENDING } }),
-      this.ordersRepository.count({ where: { status: OrderStatus.COMPLETED } }),
+      this.ordersRepository.createQueryBuilder('order').where('LOWER("order".status::text) = LOWER(:status)', { status: OrderStatus.PENDING }).getCount(),
+      this.ordersRepository.createQueryBuilder('order').where('LOWER("order".status::text) = LOWER(:status)', { status: OrderStatus.COMPLETED }).getCount(),
       this.clientsRepository.count(),
     ]);
 
@@ -74,6 +74,7 @@ export class StatisticsService {
       .select('EXTRACT(MONTH FROM order.created_at)', 'month')
       .addSelect('COUNT(order.id)', 'count')
       .addSelect('SUM(order.agreed_price)', 'revenue')
+      .addSelect('SUM(order.profit)', 'profit')
       .where('EXTRACT(YEAR FROM order.created_at) = :year', {
         year: targetYear,
       })
@@ -87,6 +88,7 @@ export class StatisticsService {
       month: i + 1,
       count: 0,
       revenue: 0,
+      profit: 0,
     }));
 
     sales.forEach((sale) => {
@@ -95,6 +97,7 @@ export class StatisticsService {
         month: parseInt(sale.month),
         count: parseInt(sale.count),
         revenue: parseFloat(sale.revenue) || 0,
+        profit: parseFloat(sale.profit) || 0,
       };
     });
 
@@ -129,6 +132,70 @@ export class StatisticsService {
     }));
   }
 
+  async getOrdersByStatus() {
+    const statuses = Object.values(OrderStatus);
+    const counts = await Promise.all(
+      statuses.map((status) =>
+        this.ordersRepository.count({ where: { status } }),
+      ),
+    );
+
+    // Convert to object for easier consumption { pending: 10, confirmed: 5, ... }
+    const distribution = {};
+    statuses.forEach((status, index) => {
+      distribution[status] = counts[index];
+    });
+
+    return distribution;
+  }
+
+  async getPopularCars(limit: number = 5) {
+    // 1. Fetch all ordered cars (brand & model) from orders that have an orderedCar
+    // We only care about orders that HAVE an orderedCar entity linked
+    const rawCars = await this.ordersRepository
+      .createQueryBuilder('order')
+      .innerJoin('order.orderedCar', 'car')
+      .select('car.brand', 'brand')
+      .addSelect('car.model', 'model')
+      .getRawMany();
+
+    // User Update: "the popular car displaying only the ordered_card do not include offers cars"
+    // So we ONLY use rawCars (from ordered_cars table)
+
+    const allCars = [
+      ...rawCars
+    ];
+
+    // 2. Fuzzy match / Normalize
+    const normalizedCounts: Record<string, { name: string; count: number; brand: string; model: string }> = {};
+
+    const normalize = (str: string) => str ? str.toLowerCase().replace(/[^a-z0-9]/g, '') : '';
+
+    allCars.forEach(car => {
+      if (!car.brand || !car.model) return;
+
+      const key = normalize(car.brand) + '_' + normalize(car.model);
+
+      // Simple heuristic: keep the first "display name" encountered for this key, or find a better one
+      if (!normalizedCounts[key]) {
+        normalizedCounts[key] = {
+          name: `${car.brand} ${car.model}`, // First one wins for display
+          brand: car.brand,
+          model: car.model,
+          count: 0
+        };
+      }
+      normalizedCounts[key].count++;
+    });
+
+    // 3. Sort and limit
+    const sorted = Object.values(normalizedCounts)
+      .sort((a, b) => b.count - a.count)
+      .slice(0, limit);
+
+    return sorted;
+  }
+
   async getRevenue() {
     const completedOrders = await this.ordersRepository
       .createQueryBuilder('order')
@@ -141,7 +208,9 @@ export class StatisticsService {
     const paidPayments = await this.paymentsRepository
       .createQueryBuilder('payment')
       .select('SUM(payment.amount)', 'totalPaid')
-      .where('payment.status = :status', { status: PaymentStatus.PAID })
+      // Payment entity does not have a status column. Assuming all payments are valid/paid.
+      // If we need to filter, we might need to check the associated Order status, but payments are usually 'real' money.
+      // .where('payment.status = :status', { status: PaymentStatus.PAID })
       .getRawOne();
 
     const totalRevenue = parseFloat(completedOrders?.totalRevenue) || 0;

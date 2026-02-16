@@ -177,6 +177,10 @@
       "canceled": "Annulée",
       "returned": "Retournée",
       "completed": "Terminée"
+    },
+    "type": {
+      "inside": "De nos offres",
+      "outside": "Commande sur mesure"
     }
   },
   "categories": {

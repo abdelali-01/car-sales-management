@@ -4,55 +4,55 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/navigation';
 import { AppDispatch, RootState } from '@/store/store';
 import { Table, TableBody, TableCell, TableHeader, TableRow } from '../ui/table';
-import { fetchAccounts } from '@/store/accounts/accountHandler';
-import { MagnifyingGlassIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
+import { fetchAdmins, deleteAdmin } from '@/store/admins/adminsHandler';
+import { MagnifyingGlassIcon, ChevronLeftIcon, ChevronRightIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { useDeleteModal } from '@/context/DeleteModalContext';
 import Badge from '../ui/badge/Badge';
 import Loader from '../ui/load/Loader';
-import { User } from '@/app/(admin)/(others-pages)/(tables)/accounts/add/page';
+import { Admin } from '@/types/auto-sales';
 import { useTranslation } from 'react-i18next';
 
 const ITEMS_PER_PAGE = 7;
 
 // Role configuration with colors (using available Badge colors)
 const ROLE_CONFIG = {
-    'super': { label: 'Super Admin', color: 'info' as const },
-    'sub-super': { label: 'Admin', color: 'primary' as const },
-    'manager': { label: 'Order Manager', color: 'light' as const }
+    'admin': { label: 'Admin', color: 'primary' as const },
+    'super_admin': { label: 'Super Admin', color: 'info' as const },
 };
 
 export default function AccountsTable() {
     const { t, i18n } = useTranslation('admin');
     const dispatch = useDispatch<AppDispatch>();
     const router = useRouter();
-    const { accounts } = useSelector((state: RootState) => state.accounts);
+    const { openModal } = useDeleteModal();
+    const { admins } = useSelector((state: RootState) => state.admins);
     const { user: currentUser } = useSelector((state: RootState) => state.auth);
 
     // Search and filter state
     const [searchQuery, setSearchQuery] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
-    const [sortField, setSortField] = useState<'username' | 'role' | 'createdAt'>('createdAt');
+    const [sortField, setSortField] = useState<'name' | 'role' | 'createdAt'>('createdAt');
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
 
     useEffect(() => {
-        dispatch(fetchAccounts());
+        dispatch(fetchAdmins());
     }, [dispatch]);
 
     // Filtered and sorted accounts
     const filteredAccounts = useMemo(() => {
-        if (!accounts) return [];
+        if (!admins) return [];
 
-        let filtered = accounts.filter((account: User) =>
-            account.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            account.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            account.phone?.includes(searchQuery)
+        let filtered = admins.filter((admin: Admin) =>
+            admin.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            admin.email.toLowerCase().includes(searchQuery)
         );
 
-        // Sort accounts
-        filtered.sort((a: User, b: User) => {
-            if (sortField === 'username') {
+        // Sort admins
+        filtered.sort((a: Admin, b: Admin) => {
+            if (sortField === 'name') {
                 return sortOrder === 'asc'
-                    ? a.username.localeCompare(b.username)
-                    : b.username.localeCompare(a.username);
+                    ? a.name.localeCompare(b.name)
+                    : b.name.localeCompare(a.name);
             }
             if (sortField === 'role') {
                 return sortOrder === 'asc'
@@ -66,7 +66,7 @@ export default function AccountsTable() {
         });
 
         return filtered;
-    }, [accounts, searchQuery, sortField, sortOrder]);
+    }, [admins, searchQuery, sortField, sortOrder]);
 
     // Pagination
     const totalPages = Math.ceil(filteredAccounts.length / ITEMS_PER_PAGE);
@@ -80,7 +80,7 @@ export default function AccountsTable() {
         setCurrentPage(1);
     }, [searchQuery]);
 
-    const handleSort = (field: 'username' | 'role' | 'createdAt') => {
+    const handleSort = (field: 'name' | 'role' | 'createdAt') => {
         if (sortField === field) {
             setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
         } else {
@@ -104,11 +104,17 @@ export default function AccountsTable() {
         return <Badge color={config.color} size="sm">{label}</Badge>;
     };
 
-    const handleRowClick = (account: User) => {
+    const handleRowClick = (account: Admin) => {
         router.push(`/accounts/${account.id}`);
     };
 
-    if (!accounts) return <Loader />;
+    const handleDelete = (id: number) => {
+        openModal(id, () => {
+            dispatch(deleteAdmin(id));
+        });
+    };
+
+    if (!admins) return <Loader />;
 
     return (
         <div className="space-y-4">
@@ -138,10 +144,10 @@ export default function AccountsTable() {
                                 >
                                     <div
                                         className="flex items-center gap-1 cursor-pointer hover:text-brand-500"
-                                        onClick={() => handleSort('username')}
+                                        onClick={() => handleSort('name')}
                                     >
                                         {t('admins.headers.username')}
-                                        {sortField === 'username' && (
+                                        {sortField === 'name' && (
                                             <span className="text-brand-500">{sortOrder === 'asc' ? '↑' : '↓'}</span>
                                         )}
                                     </div>
@@ -152,12 +158,7 @@ export default function AccountsTable() {
                                 >
                                     {t('admins.headers.email')}
                                 </TableCell>
-                                <TableCell
-                                    isHeader
-                                    className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm text-start"
-                                >
-                                    {t('admins.headers.phone')}
-                                </TableCell>
+
                                 <TableCell
                                     isHeader
                                     className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm"
@@ -186,6 +187,12 @@ export default function AccountsTable() {
                                         )}
                                     </div>
                                 </TableCell>
+                                <TableCell
+                                    isHeader
+                                    className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm w-[50px]"
+                                >
+                                    {t('common.actions')}
+                                </TableCell>
                             </TableRow>
                         </TableHeader>
 
@@ -197,7 +204,7 @@ export default function AccountsTable() {
                                     </TableCell>
                                 </TableRow>
                             ) : (
-                                paginatedAccounts.map((account: User) => {
+                                paginatedAccounts.map((account: Admin) => {
                                     const isCurrentUser = currentUser?.id == account.id;
                                     return (
                                         <TableRow
@@ -214,11 +221,11 @@ export default function AccountsTable() {
                                                         ? 'bg-gradient-to-br from-green-400 to-green-600 ring-2 ring-green-300 dark:ring-green-700'
                                                         : 'bg-gradient-to-br from-brand-400 to-brand-600'
                                                         }`}>
-                                                        {account.username.charAt(0).toUpperCase()}
+                                                        {account.name.charAt(0).toUpperCase()}
                                                     </div>
                                                     <div className="flex items-center gap-2">
                                                         <span className="font-medium text-gray-900 dark:text-white text-sm">
-                                                            {account.username}
+                                                            {account.name}
                                                         </span>
                                                         {isCurrentUser && (
                                                             <Badge color="success" size="sm">{t('admins.you')}</Badge>
@@ -229,14 +236,25 @@ export default function AccountsTable() {
                                             <TableCell className="px-4 py-3 text-gray-600 dark:text-gray-400 text-sm">
                                                 {account.email}
                                             </TableCell>
-                                            <TableCell className="px-4 py-3 text-gray-600 dark:text-gray-400 text-sm">
-                                                {account.phone || '—'}
-                                            </TableCell>
                                             <TableCell className="px-4 py-3">
                                                 {getRoleBadge(account.role)}
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-gray-600 dark:text-gray-400 text-sm">
                                                 {formatDate(account.createdAt)}
+                                            </TableCell>
+                                            <TableCell className="px-4 py-3">
+                                                {!isCurrentUser && (
+                                                    <button
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            handleDelete(account.id);
+                                                        }}
+                                                        className="p-2 text-gray-400 hover:text-error-500 hover:bg-error-50 dark:hover:bg-error-900/20 rounded-lg transition-colors"
+                                                        title={t('common.delete')}
+                                                    >
+                                                        <TrashIcon className="w-5 h-5" />
+                                                    </button>
+                                                )}
                                             </TableCell>
                                         </TableRow>
                                     );

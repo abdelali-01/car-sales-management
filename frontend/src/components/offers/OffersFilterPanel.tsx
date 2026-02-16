@@ -16,6 +16,8 @@ export interface OfferFilters {
     priceMax: number | '';
     kmMin: number | '';
     kmMax: number | '';
+    dateMin: string;
+    dateMax: string;
 }
 
 export const defaultFilters: OfferFilters = {
@@ -28,6 +30,8 @@ export const defaultFilters: OfferFilters = {
     priceMax: '',
     kmMin: '',
     kmMax: '',
+    dateMin: '',
+    dateMax: '',
 };
 
 /** Count how many filters are active */
@@ -42,6 +46,8 @@ export function countActiveFilters(filters: OfferFilters): number {
     if (filters.priceMax !== '') count++;
     if (filters.kmMin !== '') count++;
     if (filters.kmMax !== '') count++;
+    if (filters.dateMin) count++;
+    if (filters.dateMax) count++;
     return count;
 }
 
@@ -57,6 +63,12 @@ export function applyFilters(offers: Offer[], filters: OfferFilters): Offer[] {
         if (filters.priceMax !== '' && offer.price > filters.priceMax) return false;
         if (filters.kmMin !== '' && (offer.km ?? 0) < filters.kmMin) return false;
         if (filters.kmMax !== '' && (offer.km ?? 0) > filters.kmMax) return false;
+        if (filters.dateMin && new Date(offer.createdAt) < new Date(filters.dateMin)) return false;
+        if (filters.dateMax) {
+            const dateMax = new Date(filters.dateMax);
+            dateMax.setHours(23, 59, 59, 999); // Include the entire end day
+            if (new Date(offer.createdAt) > dateMax) return false;
+        }
         return true;
     });
 }
@@ -275,6 +287,30 @@ export default function OffersFilterPanel({
                                 placeholder={t('offers.filters.max', 'Max')}
                                 value={filters.kmMax}
                                 onChange={e => handleNumberChange('kmMax', e.target.value)}
+                                className={inputCls}
+                            />
+                        </div>
+                    </div>
+
+                    {/* Date range */}
+                    <div>
+                        <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1.5">
+                            {t('offers.filters.dateRange', 'Date Range')}
+                        </label>
+                        <div className="flex items-center gap-2">
+                            <input
+                                type="date"
+                                placeholder={t('offers.filters.minDate', 'Start')}
+                                value={filters.dateMin}
+                                onChange={e => update('dateMin', e.target.value)}
+                                className={inputCls}
+                            />
+                            <span className="text-gray-400 text-xs">–</span>
+                            <input
+                                type="date"
+                                placeholder={t('offers.filters.maxDate', 'End')}
+                                value={filters.dateMax}
+                                onChange={e => update('dateMax', e.target.value)}
                                 className={inputCls}
                             />
                         </div>

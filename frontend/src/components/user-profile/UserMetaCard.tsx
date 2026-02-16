@@ -32,7 +32,7 @@ const getInitials = (name: string) => {
 // Get role badge styling
 const getRoleBadge = (role: string) => {
   const styles: Record<string, { bg: string; text: string; icon: string }> = {
-    super: {
+    super_admin: {
       bg: 'bg-gradient-to-r from-amber-100 to-yellow-100 dark:from-amber-900/30 dark:to-yellow-900/30',
       text: 'text-amber-700 dark:text-amber-400',
       icon: '👑'
@@ -41,11 +41,6 @@ const getRoleBadge = (role: string) => {
       bg: 'bg-gradient-to-r from-blue-100 to-indigo-100 dark:from-blue-900/30 dark:to-indigo-900/30',
       text: 'text-blue-700 dark:text-blue-400',
       icon: '🛡️'
-    },
-    moderator: {
-      bg: 'bg-gradient-to-r from-green-100 to-emerald-100 dark:from-green-900/30 dark:to-emerald-900/30',
-      text: 'text-green-700 dark:text-green-400',
-      icon: '✓'
     },
   };
   return styles[role?.toLowerCase()] || styles.admin;
@@ -57,8 +52,8 @@ export default function UserMetaCard() {
 
   if (!user) return null;
 
-  const avatarColor = getAvatarColor(user.username);
-  const initials = getInitials(user.username);
+  const avatarColor = getAvatarColor(user.name);
+  const initials = getInitials(user.name);
   const roleBadge = getRoleBadge(user?.role!);
 
   return (
@@ -91,7 +86,7 @@ export default function UserMetaCard() {
           {/* User Info */}
           <div className="flex-1 text-center sm:text-left">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-              {user.username}
+              {user.name}
             </h2>
 
             {/* Role Badge */}

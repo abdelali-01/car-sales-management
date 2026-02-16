@@ -175,7 +175,12 @@
       "shipped": "Shipped",
       "delivered": "Delivered",
       "canceled": "Canceled",
-      "returned": "Returned"
+      "returned": "Returned",
+      "completed": "Completed"
+    },
+    "type": {
+      "inside": "From Offers",
+      "outside": "Custom Order"
     }
   },
   "categories": {
@@ -486,29 +491,24 @@
     "registerDescription": "Fill in the details below to create a new admin account",
     "editTitle": "Edit Account",
     "editOwnDescription": "Update your account information",
-    "editDescription": "Edit account for {{username}}",
+    "editDescription": "Edit account for {{name}}",
     "searchPlaceholder": "Search by name, email...",
     "you": "You",
     "create": "Create Admin",
     "updatePasswordCheckbox": "I want to update my password",
     "roles": {
-      "super": "Super Admin",
-      "sub_super": "Admin",
-      "sub-super": "Admin",
-      "manager": "Order Manager"
+      "super_admin": "Super Admin",
+      "admin": "Admin"
     },
     "headers": {
-      "username": "Username",
+      "name": "Name",
       "email": "Email",
-      "phone": "Phone",
       "role": "Role",
       "created": "Created"
     },
     "form": {
-      "username": "Admin Name",
-      "usernamePlaceholder": "Enter admin name",
-      "phone": "Phone number",
-      "phonePlaceholder": "Enter phone number",
+      "name": "Admin Name",
+      "namePlaceholder": "Enter admin name",
       "email": "Email",
       "emailPlaceholder": "Enter email address",
       "password": "Password",
@@ -519,7 +519,7 @@
       "rolePlaceholder": "Select a role"
     },
     "validation": {
-      "usernameRequired": "Admin name is required",
+      "nameRequired": "Admin name is required",
       "emailRequired": "Email is required",
       "emailInvalid": "Please enter a valid email",
       "passwordRequired": "Password is required",

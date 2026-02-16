@@ -12,25 +12,18 @@ import { AppDispatch } from '@/store/store';
 import { registerUser } from '@/store/auth/authHandler';
 import { useFormErrors } from '@/hooks/useFormErrors';
 import { useTranslation } from 'react-i18next';
+import { CreateAdminDto } from '@/types/auto-sales'; // Import types
 
-export interface User {
-    id?: string;
-    username: string;
-    email: string;
-    phone: string;
-    password?: string;
-    confirmPassword?: string;
-    role?: string;
-    createdAt?: string;
+interface AdminFormState extends CreateAdminDto {
+    confirmPassword: string;
 }
 
-const initialState: User = {
-    username: '',
+const initialState: AdminFormState = {
+    name: '',
     email: '',
-    phone: '',
     password: '',
     confirmPassword: '',
-    role: ''
+    role: 'admin'
 };
 
 export default function AddAccountPage() {
@@ -38,16 +31,16 @@ export default function AddAccountPage() {
     const router = useRouter();
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-    const [user, setUser] = useState<User>(initialState);
-    const { errors, setFieldError, clearFieldError, clearErrors, setApiError } = useFormErrors<Partial<User>>();
+    const [admin, setAdmin] = useState<AdminFormState>(initialState);
+    const { errors, setFieldError, clearFieldError, clearErrors, setApiError } = useFormErrors<Partial<AdminFormState>>();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const { t } = useTranslation('admin');
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setUser((prev) => ({ ...prev, [name]: value }));
-        if (errors[name as keyof User]) {
-            clearFieldError(name as keyof User);
+        setAdmin((prev) => ({ ...prev, [name]: value }));
+        if (errors[name as keyof AdminFormState]) {
+            clearFieldError(name as keyof AdminFormState);
         }
     };
 
@@ -55,36 +48,36 @@ export default function AddAccountPage() {
         clearErrors();
         let isValid = true;
 
-        if (!user.username.trim()) {
-            setFieldError('username', t('admins.validation.usernameRequired'));
+        if (!admin.name.trim()) {
+            setFieldError('name', t('admins.validation.nameRequired'));
             isValid = false;
         }
 
-        if (!user.email.trim()) {
+        if (!admin.email.trim()) {
             setFieldError('email', t('admins.validation.emailRequired'));
             isValid = false;
-        } else if (!/\S+@\S+\.\S+/.test(user.email)) {
+        } else if (!/\S+@\S+\.\S+/.test(admin.email)) {
             setFieldError('email', t('admins.validation.emailInvalid'));
             isValid = false;
         }
 
-        if (!user.password) {
+        if (!admin.password) {
             setFieldError('password', t('admins.validation.passwordRequired'));
             isValid = false;
-        } else if (user.password.length < 8) {
+        } else if (admin.password.length < 8) {
             setFieldError('password', t('admins.validation.passwordLength'));
             isValid = false;
         }
 
-        if (!user.confirmPassword) {
+        if (!admin.confirmPassword) {
             setFieldError('confirmPassword', t('admins.validation.confirmPasswordRequired'));
             isValid = false;
-        } else if (user.password !== user.confirmPassword) {
+        } else if (admin.password !== admin.confirmPassword) {
             setFieldError('confirmPassword', t('admins.validation.passwordMismatch'));
             isValid = false;
         }
 
-        if (!user.role) {
+        if (!admin.role) {
             setFieldError('role', t('admins.validation.roleRequired'));
             isValid = false;
         }
@@ -98,7 +91,9 @@ export default function AddAccountPage() {
 
         setIsSubmitting(true);
         try {
-            await dispatch(registerUser(user, () => {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { confirmPassword, ...payload } = admin;
+            await dispatch(registerUser(payload as CreateAdminDto, () => {
                 router.push('/accounts');
             }));
         } catch (error) {
@@ -131,36 +126,23 @@ export default function AddAccountPage() {
                         {/* Admin Name */}
                         <div className="sm:col-span-2">
                             <Label>
-                                {t('admins.form.username')}<span className="text-error-500">*</span>
+                                {t('admins.form.name')}<span className="text-error-500">*</span>
                             </Label>
                             <Input
                                 type="text"
-                                id="username"
-                                name="username"
-                                placeholder={t('admins.form.usernamePlaceholder')}
+                                id="name"
+                                name="name"
+                                placeholder={t('admins.form.namePlaceholder')}
                                 required
-                                value={user.username}
+                                value={admin.name}
                                 onChange={handleChange}
-                                error={!!errors.username}
-                                hint={errors.username}
-                            />
-                        </div>
-
-                        {/* Phone */}
-                        <div className="sm:col-span-1">
-                            <Label>{t('admins.form.phone')}</Label>
-                            <Input
-                                type="text"
-                                id="phone"
-                                name="phone"
-                                placeholder={t('admins.form.phonePlaceholder')}
-                                value={user.phone}
-                                onChange={handleChange}
+                                error={!!errors.name}
+                                hint={errors.name}
                             />
                         </div>
 
                         {/* Email */}
-                        <div className="sm:col-span-1">
+                        <div className="sm:col-span-2">
                             <Label>
                                 {t('admins.form.email')}<span className="text-error-500">*</span>
                             </Label>
@@ -170,7 +152,7 @@ export default function AddAccountPage() {
                                 name="email"
                                 placeholder={t('admins.form.emailPlaceholder')}
                                 required
-                                value={user.email}
+                                value={admin.email}
                                 onChange={handleChange}
                                 error={!!errors.email}
                                 hint={errors.email}
@@ -188,7 +170,7 @@ export default function AddAccountPage() {
                                     type={showPassword ? "text" : "password"}
                                     required
                                     name="password"
-                                    value={user.password}
+                                    value={admin.password}
                                     onChange={handleChange}
                                     minLength={8}
                                     error={!!errors.password}
@@ -218,7 +200,7 @@ export default function AddAccountPage() {
                                     type={showConfirmPassword ? "text" : "password"}
                                     required
                                     name="confirmPassword"
-                                    value={user.confirmPassword}
+                                    value={admin.confirmPassword}
                                     onChange={handleChange}
                                     minLength={8}
                                     error={!!errors.confirmPassword}
@@ -242,17 +224,17 @@ export default function AddAccountPage() {
                             <Label>{t('admins.form.role')} <span className="text-error-500">*</span></Label>
                             <Select
                                 options={[
-                                    { value: 'super', label: t('admins.roles.super') },
-                                    { value: 'sub_super', label: t('admins.roles.sub_super') },
-                                    { value: 'manager', label: t('admins.roles.manager') },
+                                    { value: 'admin', label: t('admins.roles.admin') },
+                                    { value: 'super_admin', label: t('admins.roles.super_admin') },
                                 ]}
                                 onChange={(value) => {
-                                    setUser(prev => ({ ...prev, role: value }));
+                                    setAdmin(prev => ({ ...prev, role: value as any }));
                                     if (errors.role) {
                                         clearFieldError('role');
                                     }
                                 }}
                                 required={true}
+                                defaultValue="admin" // Default value
                                 className={errors.role ? 'border-error-500' : ''}
                             />
                             {errors.role && (

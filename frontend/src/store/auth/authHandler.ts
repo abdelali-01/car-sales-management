@@ -2,16 +2,16 @@ import { setIsFeching, setUser } from './authSlice';
 import { AppDispatch } from '../store';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { addToast } from '../toast/toastSlice';
-import { User } from '@/components/auth/SignUpForm';
-import { fetchAccounts } from '../accounts/accountHandler';
+import { Admin, CreateAdminDto, UpdateAdminDto } from '@/types/auto-sales';
+import { fetchAdmins } from '../admins/adminsHandler';
 import api, { getErrorMessage } from '@/services/api';
 import { ENDPOINTS } from '@/services/endpoints';
 
-export const registerUser = (user: User, clearFrom: () => void) => async (dispatch: AppDispatch) => {
+export const registerUser = (admin: CreateAdminDto, clearFrom: () => void) => async (dispatch: AppDispatch) => {
     dispatch(setIsFeching(true));
     try {
         // Uses POST /api/admins to create a new admin
-        const res = await api.post(ENDPOINTS.ADMINS.BASE, user);
+        const res = await api.post(ENDPOINTS.ADMINS.BASE, admin);
         if (res.data) {
             dispatch(addToast({ type: 'success', message: 'Your admin is registered successfully' }));
             clearFrom();
@@ -69,25 +69,25 @@ export const getUser = () => async (dispatch: AppDispatch) => {
     try {
         const res = await api.get(ENDPOINTS.AUTH.ME);
 
-        if (res.data.success)
-            dispatch(setUser(res.data.user));
+        if (res.data)
+            dispatch(setUser(res.data));
     } catch (error: unknown) {
         console.log('error during getting the user', error);
         dispatch(addToast({ type: 'error', message: getErrorMessage(error) }));
     }
 };
 
-export const updateAccount = (userInfo: User) => async (dispatch: AppDispatch) => {
+export const updateAccount = (adminInfo: UpdateAdminDto & { id: number }) => async (dispatch: AppDispatch) => {
     try {
-        if (!userInfo.id) {
-            return dispatch(addToast({ type: 'error', message: 'User ID is required' }));
+        if (!adminInfo.id) {
+            return dispatch(addToast({ type: 'error', message: 'Admin ID is required' }));
         }
-        // Uses PATCH /api/admins/:id (not in Postman yet, but follows REST convention)
-        await api.patch(ENDPOINTS.ADMINS.BY_ID(Number(userInfo.id)), userInfo);
+        // Uses PATCH /api/admins/:id
+        await api.patch(ENDPOINTS.ADMINS.BY_ID(Number(adminInfo.id)), adminInfo);
 
         dispatch(addToast({ type: 'success', message: 'Your Account has been updated successfully' }));
         dispatch(getUser());
-        dispatch(fetchAccounts());
+        dispatch(fetchAdmins());
 
     } catch (error: unknown) {
         console.log('error during updating the account', error);

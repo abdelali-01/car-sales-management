@@ -5,7 +5,7 @@ import { DemographicSkeleton } from "../ui/skeleton/DashboardSkeleton";
 import { useTranslation } from "react-i18next";
 
 export default function DemographicCard() {
-  const { order_status_distribution, total_orders, loadingOrders } = useSelector((state: RootState) => state.statistics);
+  const { order_status_distribution, total_orders, loadingOrdersByStatus } = useSelector((state: RootState) => state.statistics);
   const { t } = useTranslation('admin');
 
   const getStatusColor = (status: string) => {
@@ -33,7 +33,7 @@ export default function DemographicCard() {
   };
 
   // Show skeleton while loading
-  if (loadingOrders) {
+  if (loadingOrdersByStatus) {
     return <DemographicSkeleton />;
   }
 

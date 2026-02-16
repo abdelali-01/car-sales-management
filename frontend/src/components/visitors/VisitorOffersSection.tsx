@@ -25,14 +25,24 @@ export default function VisitorOffersSection({ offers, visitor, visitorId }: Vis
 
     const handleWhatsAppShare = (e: React.MouseEvent, offer: Offer) => {
         e.stopPropagation();
-        const link = shareOfferViaWhatsApp(visitor.phone, offer);
+        const link = shareOfferViaWhatsApp(visitor.phone, {
+            brand: offer.brand,
+            model: offer.model,
+            year: offer.year,
+            km: offer.km,
+            remarks: offer.remarks,
+            price: offer.price,
+            location: offer.location,
+            imageUrl: offer.images?.[0]?.imageUrl,
+            offerUrl: `${window.location.origin}/offers/${offer.id}`
+        });
         window.open(link, '_blank');
     };
 
     const handleCreateOrder = (e: React.MouseEvent, offer: Offer) => {
         e.stopPropagation();
         // Navigate to orders page with pre-filled data
-        router.push(`/orders?offerId=${offer.id}&visitorId=${visitorId}`);
+        router.push(`/orders/add?offerId=${offer.id}&visitorId=${visitorId}`);
     };
 
     const isInInterests = (offerId: number) => {
@@ -83,8 +93,8 @@ export default function VisitorOffersSection({ offers, visitor, visitorId }: Vis
                                     onClick={(e) => handleAddToInterests(e, offer.id)}
                                     disabled={isInInterests(offer.id)}
                                     className={`absolute top-2 right-2 p-2 rounded-full backdrop-blur-sm transition-all ${isInInterests(offer.id)
-                                            ? 'bg-red-500 text-white cursor-not-allowed'
-                                            : 'bg-white/90 dark:bg-gray-800/90 text-gray-600 dark:text-gray-400 hover:bg-white dark:hover:bg-gray-800 hover:text-red-500'
+                                        ? 'bg-red-500 text-white cursor-not-allowed'
+                                        : 'bg-white/90 dark:bg-gray-800/90 text-gray-600 dark:text-gray-400 hover:bg-white dark:hover:bg-gray-800 hover:text-red-500'
                                         }`}
                                     title={isInInterests(offer.id) ? 'Already in interests' : 'Add to interests'}
                                 >
@@ -121,12 +131,16 @@ export default function VisitorOffersSection({ offers, visitor, visitorId }: Vis
                                     </button>
                                     <button
                                         onClick={(e) => handleCreateOrder(e, offer)}
-                                        className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg border border-brand-500 text-brand-600 dark:text-brand-400 hover:bg-brand-50 dark:hover:bg-brand-900/20 transition-colors text-xs font-medium"
+                                        disabled={offer.status === 'sold'}
+                                        className={`flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg border transition-colors text-xs font-medium ${offer.status === 'sold'
+                                            ? 'border-gray-200 text-gray-400 bg-gray-50 cursor-not-allowed dark:border-gray-700 dark:bg-gray-800 dark:text-gray-500'
+                                            : 'border-brand-500 text-brand-600 dark:text-brand-400 hover:bg-brand-50 dark:hover:bg-brand-900/20'
+                                            }`}
                                     >
                                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                                         </svg>
-                                        Order
+                                        {offer.status === 'sold' ? 'Sold' : 'Order'}
                                     </button>
                                 </div>
                             </div>

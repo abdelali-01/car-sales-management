@@ -65,8 +65,28 @@ export function getWhatsAppLink(phone: string, message?: string): string {
   return `https://wa.me/${phoneWithCode}`;
 }
 
-export function shareOfferViaWhatsApp(visitorPhone: string, offer: { brand: string; model: string; year: number; price: number; location: string }): string {
-  const message = `Hello! I found this car that might interest you:\n\n🚗 ${offer.brand} ${offer.model} (${offer.year})\n💰 Price: ${formatPrice(offer.price)}\n📍 Location: ${offer.location}\n\nLet me know if you'd like more details!`;
+export function shareOfferViaWhatsApp(
+  visitorPhone: string,
+  offer: {
+    brand: string;
+    model: string;
+    year: number;
+    price: number;
+    location: string;
+    imageUrl?: string;
+    offerUrl?: string;
+    km: number;
+    remarks?: string;
+  }
+): string {
+
+  const message = `
+ - ${offer.brand} ${offer.model} (${offer.year})
+ - ${offer.km} km
+ ${offer.remarks ? '- ' + offer.remarks : ''}
+ - ${formatPrice(offer.price)}
+ - ${offer.location}
+`;
 
   return getWhatsAppLink(visitorPhone, message);
 }

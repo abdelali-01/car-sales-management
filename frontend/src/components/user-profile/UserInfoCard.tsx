@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import { updateAccount } from "@/store/auth/authHandler";
-import { User } from "@/components/auth/SignUpForm";
+import { Admin, UpdateAdminDto } from "@/types/auto-sales";
 import Input from "../form/input/InputField";
 import Label from "../form/Label";
 import Button from "../ui/button/Button";
@@ -12,7 +12,6 @@ import { EyeCloseIcon, EyeIcon } from "@/icons";
 import {
   UserIcon,
   EnvelopeIcon,
-  PhoneIcon,
   ShieldCheckIcon,
   ChevronDownIcon,
   ChevronUpIcon,
@@ -54,12 +53,11 @@ export default function UserInfoCard() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [passwordError, setPasswordError] = useState('');
-  const { errors, setApiError, clearFieldError } = useFormErrors<Partial<User>>();
+  const { errors, setApiError, clearFieldError } = useFormErrors<Partial<UpdateAdminDto>>();
 
   const [formData, setFormData] = useState({
-    username: '',
+    name: '',
     email: '',
-    phone: '',
     password: '',
     confirmPassword: ''
   });
@@ -67,9 +65,8 @@ export default function UserInfoCard() {
   useEffect(() => {
     if (user) {
       setFormData({
-        username: user.username || '',
+        name: user.name || '',
         email: user.email || '',
-        phone: user.phone || '',
         password: '',
         confirmPassword: ''
       });
@@ -85,17 +82,16 @@ export default function UserInfoCard() {
       setPasswordError('');
     }
 
-    if (errors[name as keyof User]) {
-      clearFieldError(name as keyof User);
+    if (errors[name as keyof UpdateAdminDto]) {
+      clearFieldError(name as keyof UpdateAdminDto);
     }
   };
 
   const handleCancel = () => {
     if (user) {
       setFormData({
-        username: user.username || '',
+        name: user.name || '',
         email: user.email || '',
-        phone: user.phone || '',
         password: '',
         confirmPassword: ''
       });
@@ -122,11 +118,11 @@ export default function UserInfoCard() {
     setIsSubmitting(true);
 
     try {
-      const payload: Partial<User> = {
-        ...user,
-        username: formData.username,
+      const payload: UpdateAdminDto & { id: number } = {
+        id: user!.id,
+        name: formData.name,
         email: formData.email,
-        phone: formData.phone,
+        role: user!.role, // Keep existing role
       };
 
       // Only include password if it's filled
@@ -134,8 +130,7 @@ export default function UserInfoCard() {
         payload.password = formData.password;
       }
 
-      console.log(payload);
-      await dispatch(updateAccount(payload as User));
+      await dispatch(updateAccount(payload));
       setIsEditing(false);
       setFormData(prev => ({ ...prev, password: '', confirmPassword: '' }));
     } catch (error) {
@@ -185,7 +180,7 @@ export default function UserInfoCard() {
                 icon={<UserIcon className="w-5 h-5 text-blue-600 dark:text-blue-400" />}
                 iconBg="bg-blue-50 dark:bg-blue-900/20"
                 label={t('profile.username')}
-                value={user.username}
+                value={user.name}
               />
               <InfoItem
                 icon={<EnvelopeIcon className="w-5 h-5 text-purple-600 dark:text-purple-400" />}
@@ -194,16 +189,10 @@ export default function UserInfoCard() {
                 value={user.email || t('profile.notSet')}
               />
               <InfoItem
-                icon={<PhoneIcon className="w-5 h-5 text-green-600 dark:text-green-400" />}
-                iconBg="bg-green-50 dark:bg-green-900/20"
-                label={t('profile.phoneNumber')}
-                value={user.phone || t('profile.notSet')}
-              />
-              <InfoItem
                 icon={<ShieldCheckIcon className="w-5 h-5 text-amber-600 dark:text-amber-400" />}
                 iconBg="bg-amber-50 dark:bg-amber-900/20"
                 label={t('profile.role')}
-                value={`${user.role} ${t('profile.admin')}`}
+                value={`${user.role}`}
               />
             </div>
           </div>
@@ -217,13 +206,13 @@ export default function UserInfoCard() {
                 <Label>{t('profile.username')}</Label>
                 <Input
                   type="text"
-                  name="username"
-                  value={formData.username}
+                  name="name"
+                  value={formData.name}
                   onChange={handleChange}
                   placeholder={t('profile.placeholders.username')}
                   required
-                  error={!!errors.username}
-                  hint={errors.username}
+                  error={!!errors.name}
+                  hint={errors.name}
                 />
               </div>
               <div>
@@ -240,22 +229,10 @@ export default function UserInfoCard() {
                 />
               </div>
               <div>
-                <Label>{t('profile.phoneNumber')}</Label>
-                <Input
-                  type="text"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  placeholder={t('profile.placeholders.phone')}
-                  error={!!errors.phone}
-                  hint={errors.phone}
-                />
-              </div>
-              <div>
                 <Label>{t('profile.role')}</Label>
                 <Input
                   type="text"
-                  value={`${user.role} ${t('profile.admin')}`}
+                  value={`${user.role}`}
                   disabled
                   className="bg-gray-50 dark:bg-gray-800"
                 />

@@ -8,8 +8,9 @@ import AppSidebar from "@/layout/AppSidebar";
 import Backdrop from "@/layout/Backdrop";
 import { RootState } from "@/store/store";
 import { usePathname, useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
+import ProfitReminderModal from "@/components/orders/ProfitReminderModal";
 
 export default function AdminLayout({
   children,
@@ -18,23 +19,7 @@ export default function AdminLayout({
 }) {
   const { isExpanded, isHovered, isMobileOpen } = useSidebar();
   const { user } = useSelector((state: RootState) => state.auth);
-  const router = useRouter();
-  const pathname = usePathname();
 
-
-  useEffect(()=>{
-    if(user){
-      if(user.role === 'manager'){
-        if(pathname == '/admin' || pathname=== '/admin/products' || pathname === '/admin/accounts' || pathname === '/admin/signup'){
-          router.push('/admin/orders');
-        }
-      }else if (user.role === 'sub-super'){
-        if(pathname == '/admin'|| pathname === '/signup'){
-          router.push('/admin/orders');
-        }
-      }
-    }
-  },[pathname , user , router]);
 
   // Dynamic class for main content margin based on sidebar state
   const mainContentMargin = isMobileOpen
@@ -59,6 +44,8 @@ export default function AdminLayout({
           >
             {/* Header */}
             <AppHeader />
+            {/* Profit Reminder Modal */}
+            <ProfitReminderModal />
             {/* Page Content */}
             <div className="p-4 mx-auto max-w-(--breakpoint-2xl) md:p-6">{children}</div>
           </div>

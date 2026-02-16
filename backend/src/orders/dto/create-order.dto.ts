@@ -10,12 +10,24 @@ import {
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { OrderStatus } from '../../common/enums/order-status.enum';
+import { OrderType } from '../../common/enums/order-type.enum';
+import { ProcessStatus } from '../../common/enums/process-status.enum';
+import { CreateOrderedCarDto } from './create-ordered-car.dto';
+import { ValidateNested } from 'class-validator';
+
+
 
 export class CreateOrderDto {
-  @IsNotEmpty()
+  @IsOptional()
   @IsNumber()
   @Type(() => Number)
-  offerId: number;
+  offerId?: number;
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => CreateOrderedCarDto)
+  orderedCar?: CreateOrderedCarDto;
+
 
   @IsOptional()
   @IsNumber()
@@ -38,7 +50,6 @@ export class CreateOrderDto {
   clientPhone: string;
 
   @IsOptional()
-  @IsEmail()
   clientEmail?: string;
 
   @IsNotEmpty()
@@ -65,4 +76,25 @@ export class CreateOrderDto {
   @IsOptional()
   @IsEnum(OrderStatus)
   status?: OrderStatus;
+
+  @IsNotEmpty()
+  @IsEnum(OrderType)
+  type: OrderType;
+
+  @IsOptional()
+  @IsEnum(ProcessStatus)
+  processStatus?: ProcessStatus;
+
+  @IsOptional()
+  @IsString()
+  deliveryCompany?: string;
+
+  @IsOptional()
+  @IsString()
+  containerId?: string;
+
+  @IsOptional()
+  @IsString()
+  passportImage?: string;
 }
+

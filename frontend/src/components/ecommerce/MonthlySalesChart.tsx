@@ -12,7 +12,7 @@ const ReactApexChart = dynamic(() => import("react-apexcharts"), {
 });
 
 export default function MonthlySalesChart() {
-  const { monthly_sales_chart, loadingCharts } = useSelector((state: RootState) => state.statistics);
+  const { monthly_profit_chart, loadingCharts } = useSelector((state: RootState) => state.statistics);
   const { t } = useTranslation('admin');
 
   const options: ApexOptions = {
@@ -73,7 +73,7 @@ export default function MonthlySalesChart() {
     return <ChartSkeleton height="h-[180px]" />;
   }
 
-  if (!monthly_sales_chart || monthly_sales_chart.length === 0) {
+  if (!monthly_profit_chart || monthly_profit_chart.length === 0) {
     return (
       <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white px-5 pt-5 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6 sm:pt-6 flex items-center justify-center h-[180px]">
         <p className="text-gray-500 dark:text-gray-400">{t('dashboard.charts.noData')}</p>
@@ -82,7 +82,7 @@ export default function MonthlySalesChart() {
   }
 
   const series = [
-    { name: t('common.total'), data: monthly_sales_chart },
+    { name: t('dashboard.charts.income'), data: monthly_profit_chart },
   ];
 
   return (

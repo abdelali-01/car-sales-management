@@ -344,7 +344,7 @@ export default function OfferInterestedVisitorsSection({ offerId }: OfferInteres
                             </div>
 
                             {/* Action Buttons - Always visible on mobile, hover on desktop */}
-                            <div className="flex-shrink-0 flex flex-col sm:flex-row gap-2 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity">
+                            <div className="flex-shrink-0 flex flex-col sm:flex-row gap-2">
                                 <button
                                     onClick={() => handleWhatsApp(visitor.phone)}
                                     className="p-2 text-green-600 bg-green-50 hover:bg-green-100 dark:bg-green-900/20 dark:hover:bg-green-900/30 rounded-lg transition-colors border border-green-200 dark:border-green-800"

@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="z-znDw75jMhwTUvfqXO4" name="Page-1">
-        <mxGraphModel dx="671" dy="667" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="none" math="0" shadow="0">
+        <mxGraphModel dx="622" dy="654" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="none" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -83,6 +83,29 @@
                 </mxCell>
                 <mxCell id="w7sEwxqLQ8NKpdpEEm3l-3" value="payment information &amp;amp; history" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
                     <mxGeometry x="379" y="130" width="150" height="305" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+    <diagram id="Bo0W9GrUuJPYoeMlzMBP" name="Page-4">
+        <mxGraphModel dx="622" dy="654" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="wQbmbWHBPCEKMoWR2AwG-1" value="Car details / offer selection&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;Better offer seletion with display all the information and the image of the car&lt;br&gt;&lt;br&gt;Price / deposit (remove profit field ( will handle it later in another place) )" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="39" y="61" width="264" height="285" as="geometry"/>
+                </mxCell>
+                <mxCell id="wQbmbWHBPCEKMoWR2AwG-3" value="Customer selection ( client/ visitor )&lt;br&gt;&lt;br&gt;&lt;div style=&quot;color: rgb(204, 204, 204); background-color: rgb(31, 31, 31); font-family: Consolas, &amp;quot;Courier New&amp;quot;, monospace; font-size: 14px; line-height: 19px;&quot;&gt;&lt;span style=&quot;color: #6a9955;&quot;&gt;Toggle between client/ visitor / custom ( clientName &amp;amp; phone)&lt;/span&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="39" y="358" width="260" height="164" as="geometry"/>
+                </mxCell>
+                <mxCell id="wQbmbWHBPCEKMoWR2AwG-4" value="Toggler between inside/outside&amp;nbsp;&lt;br&gt;&lt;br&gt;Process status, delivery company , container id display only when it's outside ." style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="39" y="537" width="261" height="121" as="geometry"/>
+                </mxCell>
+                <mxCell id="wQbmbWHBPCEKMoWR2AwG-5" value="Passport upload/view&amp;nbsp;&lt;br&gt;not both image view &amp;amp; upload&amp;nbsp;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="324" y="61" width="235" height="104" as="geometry"/>
+                </mxCell>
+                <mxCell id="wQbmbWHBPCEKMoWR2AwG-6" value="documents" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="324" y="187" width="229" height="472" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>

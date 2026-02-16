@@ -66,7 +66,6 @@ const salesItems: NavItem[] = [
 // Finance Section
 const financeItems: NavItem[] = [
   { icon: <UserCheck className="w-5 h-5" />, name: "sidebar.clients", path: "/clients" },
-  { icon: <Wallet className="w-5 h-5" />, name: "sidebar.payments", path: "/payments" },
 ];
 
 // Administration Section (Super Admin only)

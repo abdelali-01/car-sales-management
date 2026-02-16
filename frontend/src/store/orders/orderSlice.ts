@@ -46,10 +46,26 @@ const orderSlice = createSlice({
                 const index = state.orders.findIndex(o => o.id === action.payload.id);
                 if (index !== -1) {
                     state.orders[index] = action.payload;
+                } else {
+                    // Start: Update to add if not found
+                    state.orders.push(action.payload);
+                    state.totalCount += 1;
+                    // End: Update
                 }
+            } else {
+                // Initialize if null
+                state.orders = [action.payload];
+                state.totalCount = 1;
+            }
+        },
+        removeOrder: (state, action: PayloadAction<number>) => {
+            if (state.orders) {
+                state.orders = state.orders.filter(o => o.id !== action.payload);
+                state.totalCount -= 1;
             }
         },
         setLoading: (state, action: PayloadAction<boolean>) => {
+
             state.loading = action.payload;
         },
         setError: (state, action: PayloadAction<string | null>) => {
@@ -63,7 +79,9 @@ export const {
     addOrder,
     updateOrderStatus,
     updateOrder,
+    removeOrder,
     setLoading,
+
     setError
 } = orderSlice.actions;
 

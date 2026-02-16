@@ -13,7 +13,7 @@ const ReactApexChart = dynamic(() => import("react-apexcharts"), {
 });
 
 export default function StatisticsChart() {
-  const { monthly_sales_chart, loadingCharts } = useSelector((state: RootState) => state.statistics);
+  const { monthly_sales_chart, monthly_orders_chart, loadingCharts } = useSelector((state: RootState) => state.statistics);
   const { t } = useTranslation('admin');
 
   const options: ApexOptions = {
@@ -108,14 +108,9 @@ export default function StatisticsChart() {
     );
   }
 
-  // Create mock order count data for demonstration
-  const mockOrderCounts = monthly_sales_chart.map(income =>
-    income > 0 ? Math.floor(income / 100) + Math.floor(Math.random() * 10) : 0
-  );
-
   const series = [
     { name: t('dashboard.charts.income'), data: monthly_sales_chart },
-    { name: t('sidebar.orders'), data: mockOrderCounts },
+    { name: t('sidebar.orders'), data: monthly_orders_chart || [] },
   ];
 
   return (

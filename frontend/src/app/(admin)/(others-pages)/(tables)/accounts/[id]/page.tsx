@@ -12,8 +12,8 @@ import Loader from '@/components/ui/load/Loader';
 import { EyeCloseIcon, EyeIcon } from '@/icons';
 import { AppDispatch, RootState } from '@/store/store';
 import { updateAccount } from '@/store/auth/authHandler';
-import { fetchAccounts } from '@/store/accounts/accountHandler';
-import { User } from '../add/page';
+import { fetchAdmins } from '@/store/admins/adminsHandler';
+import { Admin, UpdateAdminDto } from '@/types/auto-sales';
 import { useFormErrors } from '@/hooks/useFormErrors';
 import { useTranslation } from 'react-i18next';
 
@@ -21,45 +21,46 @@ export default function EditAccountPage() {
     const dispatch = useDispatch<AppDispatch>();
     const router = useRouter();
     const params = useParams();
-    const accountId = params?.id ? String(params.id) : null;
-    const { errors, setApiError, clearFieldError } = useFormErrors<Partial<User>>();
+    const accountId = params?.id ? Number(params.id) : null;
+    const { errors, setApiError, clearFieldError } = useFormErrors<Partial<UpdateAdminDto>>();
 
-    const { accounts } = useSelector((state: RootState) => state.accounts);
+    const { admins, isFetching } = useSelector((state: RootState) => state.admins);
     const { user: currentUser } = useSelector((state: RootState) => state.auth);
 
     const [showPassword, setShowPassword] = useState(false);
     const [wantToUpdatePassword, setWantToUpdatePassword] = useState(false);
-    const [account, setAccount] = useState<User | null>(null);
+    const [account, setAccount] = useState<UpdateAdminDto & { id: number } | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [accountLoaded, setAccountLoaded] = useState(false);
     const { t } = useTranslation('admin');
 
-    // Fetch accounts if not loaded
+    // Fetch admins if not loaded
     useEffect(() => {
-        if (!accounts) {
-            dispatch(fetchAccounts());
+        if (admins.length === 0 && !isFetching) {
+            dispatch(fetchAdmins());
         }
-    }, [dispatch, accounts]);
+    }, [dispatch, admins.length, isFetching]);
 
     // Load account data
     useEffect(() => {
-        if (accountId && accounts && !accountLoaded) {
-            const existingAccount = accounts.find((a: User) => a.id == accountId);
+        if (accountId && admins.length > 0) {
+            const existingAccount = admins.find((a: Admin) => a.id === accountId);
             if (existingAccount) {
                 setAccount({
-                    ...existingAccount,
-                    password: ''
+                    id: existingAccount.id,
+                    name: existingAccount.name,
+                    email: existingAccount.email,
+                    role: existingAccount.role,
+                    // Password fields are not pre-filled
                 });
-                setAccountLoaded(true);
             }
         }
-    }, [accountId, accounts, accountLoaded]);
+    }, [accountId, admins]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setAccount(prev => prev ? { ...prev, [name]: value } : null);
-        if (errors[name as keyof User]) {
-            clearFieldError(name as keyof User);
+        if (errors[name as keyof UpdateAdminDto]) {
+            clearFieldError(name as keyof UpdateAdminDto);
         }
     };
 
@@ -72,6 +73,7 @@ export default function EditAccountPage() {
             const payload = { ...account };
             if (!wantToUpdatePassword) {
                 delete payload.password;
+                delete payload.confirmPassword;
             }
 
             await dispatch(updateAccount(payload));
@@ -88,9 +90,9 @@ export default function EditAccountPage() {
     };
 
     // Check if current user can edit this account
-    const isOwnAccount = currentUser?.id == accountId;
-    const isSuperAdmin = currentUser?.role === 'super';
-    const canEditFields = isOwnAccount;
+    const isOwnAccount = currentUser?.id === accountId;
+    const isSuperAdmin = currentUser?.role === 'super_admin';
+    const canEditFields = isOwnAccount || isSuperAdmin;
     const canEditRole = isSuperAdmin && !isOwnAccount;
 
     if (!account) {
@@ -113,45 +115,30 @@ export default function EditAccountPage() {
                     <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
                         {isOwnAccount
                             ? t('admins.editOwnDescription')
-                            : t('admins.editDescription', { username: account.username })}
+                            : t('admins.editDescription', { name: account.name })}
                     </p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                        {/* Username */}
-                        <div className="sm:col-span-1">
-                            <Label>{t('admins.form.username')}</Label>
+                        {/* Name */}
+                        <div className="sm:col-span-2">
+                            <Label>{t('admins.form.name')}</Label>
                             <Input
                                 type="text"
-                                name="username"
-                                placeholder={t('admins.form.usernamePlaceholder')}
-                                value={account.username}
+                                name="name"
+                                placeholder={t('admins.form.namePlaceholder')}
+                                value={account.name}
                                 onChange={handleChange}
                                 disabled={!canEditFields}
                                 required
-                                error={!!errors.username}
-                                hint={errors.username}
-                            />
-                        </div>
-
-                        {/* Phone */}
-                        <div className="sm:col-span-1">
-                            <Label>{t('admins.form.phone')}</Label>
-                            <Input
-                                type="text"
-                                name="phone"
-                                placeholder={t('admins.form.phonePlaceholder')}
-                                value={account.phone || ''}
-                                onChange={handleChange}
-                                disabled={!canEditFields}
-                                error={!!errors.phone}
-                                hint={errors.phone}
+                                error={!!errors.name}
+                                hint={errors.name}
                             />
                         </div>
 
                         {/* Email */}
-                        <div className="sm:col-span-1">
+                        <div className="sm:col-span-2">
                             <Label>{t('admins.form.email')}</Label>
                             <Input
                                 type="email"
@@ -167,13 +154,12 @@ export default function EditAccountPage() {
                         </div>
 
                         {/* Role */}
-                        <div className="sm:col-span-1">
+                        <div className="sm:col-span-2">
                             <Label>{t('admins.form.role')}</Label>
                             <Select
                                 options={[
-                                    { value: 'super', label: t('admins.roles.super') },
-                                    { value: 'sub_super', label: t('admins.roles.sub_super') },
-                                    { value: 'manager', label: t('admins.roles.manager') },
+                                    { value: 'admin', label: t('admins.roles.admin') },
+                                    { value: 'super_admin', label: t('admins.roles.super_admin') },
                                 ]}
                                 defaultValue={account.role}
                                 onChange={(value) => setAccount(prev => prev ? { ...prev, role: value } : null)}
@@ -188,51 +174,6 @@ export default function EditAccountPage() {
                                 </p>
                             )}
                         </div>
-
-                        {/* Password Section - Only for own account */}
-                        {isOwnAccount && (
-                            <>
-                                <div className="sm:col-span-2 pt-4 border-t border-gray-200 dark:border-gray-700">
-                                    <Checkbox
-                                        label={t('admins.updatePasswordCheckbox')}
-                                        checked={wantToUpdatePassword}
-                                        onChange={(checked) => setWantToUpdatePassword(checked)}
-                                    />
-                                </div>
-
-                                {wantToUpdatePassword && (
-                                    <div className="sm:col-span-2">
-                                        <Label>{t('admins.form.password')}</Label>
-                                        <div className="relative">
-                                            <Input
-                                                type={showPassword ? "text" : "password"}
-                                                placeholder={t('admins.form.passwordPlaceholder')}
-                                                name="password"
-                                                value={account.password || ''}
-                                                onChange={handleChange}
-                                                minLength={8}
-                                                required={wantToUpdatePassword}
-                                                error={!!errors.password}
-                                                hint={errors.password}
-                                            />
-                                            <span
-                                                onClick={() => setShowPassword(!showPassword)}
-                                                className="absolute z-30 -translate-y-1/2 cursor-pointer right-4 top-1/2"
-                                            >
-                                                {showPassword ? (
-                                                    <EyeIcon className="fill-gray-500 dark:fill-gray-400" />
-                                                ) : (
-                                                    <EyeCloseIcon className="fill-gray-500 dark:fill-gray-400" />
-                                                )}
-                                            </span>
-                                        </div>
-                                        <p className="mt-1 text-xs text-gray-500">
-                                            {t('admins.validation.passwordLength')}
-                                        </p>
-                                    </div>
-                                )}
-                            </>
-                        )}
                     </div>
 
                     {/* Form Actions */}

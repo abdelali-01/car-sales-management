@@ -14,6 +14,11 @@ export type OrderStatus = 'pending' | 'confirmed' | 'completed' | 'canceled';
 export type PaymentStatus = 'unpaid' | 'advance' | 'paid';
 
 export type PaymentMethod = 'cash' | 'transfer' | 'cheque';
+export type OrderType = 'inside' | 'outside';
+export type ProcessStatus = 'pending' | 'transition' | 'paper_prepare' | 'in_delivery' | 'in_the_port';
+
+export type AdminRole = 'admin' | 'super_admin';
+
 
 // === Entities ===
 
@@ -24,6 +29,30 @@ export interface OfferImage {
     publicId: string;
     createdAt?: string;
 }
+
+export interface OrderedCar {
+    id: number;
+    brand: string;
+    model: string;
+    year: number;
+    color: string;
+    vin?: string;
+    description?: string;
+    orderId: number;
+    createdAt: string;
+    updatedAt: string;
+}
+
+export interface OrderDocument {
+
+    id: number;
+    name: string;
+    url: string;
+    type?: string;
+    orderId: number;
+    createdAt: string;
+}
+
 
 export interface Offer {
     id: number;
@@ -39,6 +68,7 @@ export interface Offer {
     status: OfferStatus;
     images?: OfferImage[];
     createdAt: string;
+    remarks: string;
 }
 
 export interface VisitorInterestOffer {
@@ -66,23 +96,34 @@ export interface Visitor {
 
 export interface Order {
     id: number;
-    offerId: number;
+    offerId?: number;
     visitorId?: number;
     clientId?: number;
     clientName: string;
+
     clientPhone: string;
     clientEmail?: string;
     agreedPrice: number;
     deposit: number;
     profit?: number;
     remarks?: string;
+
     status: OrderStatus;
+    type: OrderType;
+    processStatus: ProcessStatus;
+    deliveryCompany?: string;
+    containerId?: string;
+    passportImage?: string;
+    documents?: OrderDocument[];
     createdAt: string;
     updatedAt: string;
     // Nested/populated fields (optional, for display)
     offer?: Offer;
+    orderedCar?: OrderedCar;
     visitor?: Visitor;
 }
+
+
 
 export interface Client {
     id: number;
@@ -165,4 +206,28 @@ export interface ActivityItem {
     type: 'offer' | 'visitor' | 'order' | 'payment';
     description: string;
     timestamp: string;
+}
+
+// === Admin Types ===
+
+export interface Admin {
+    id: number;
+    name: string;
+    email: string;
+    role: AdminRole;
+    createdAt: string;
+}
+
+export interface CreateAdminDto {
+    name: string;
+    email: string;
+    password: string;
+    role?: AdminRole;
+}
+
+export interface UpdateAdminDto {
+    name?: string;
+    email?: string;
+    password?: string;
+    role?: AdminRole;
 }
