@@ -35,7 +35,7 @@ import { StatisticsModule } from './statistics/statistics.module';
         // database: configService.get('DB_DATABASE'),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
         synchronize: true, // DISABLE IN PRODUCTION - use migrations instead
-        logging: false,
+        logging: true,
         ssl: {
           rejectUnauthorized: false, // REQUIRED for Neon
         },

@@ -186,7 +186,7 @@ export default function OffersTable() {
                                         )}
                                     </div>
                                 </TableCell>
-                                <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm">
+                                <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm text-start">
                                     {t('offers.columns.km')}
                                 </TableCell>
                                 <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm">

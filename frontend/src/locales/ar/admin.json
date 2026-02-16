@@ -23,14 +23,21 @@
     "topSelling": "أكثر المنتجات مبيعاً هذا الشهر",
     "sold": "مباع",
     "noPopularProducts": "لا توجد بيانات للمنتجات الشائعة",
+    "popularCars": {
+      "title": "السيارات الأكثر شعبية",
+      "subtitle": "النماذج الأكثر مبيعاً",
+      "noData": "لا توجد بيانات متاحة"
+    },
     "noImg": "لا صورة",
     "recentOrders": "الطلبات الأخيرة",
     "viewAll": "عرض الكل",
     "metrics": {
       "monthlyIncome": "دخل هذا الشهر",
+      "monthlyProfit": "الربح الشهري",
       "monthlyOrders": "طلبات هذا الشهر",
       "totalOrders": "إجمالي الطلبات",
       "totalProducts": "إجمالي المنتجات",
+      "availableCars": "السيارات المتاحة",
       "totalIncome": "إجمالي الدخل",
       "pendingOrders": "الطلبات المعلقة"
     },

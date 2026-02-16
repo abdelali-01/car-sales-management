@@ -99,7 +99,7 @@ export const loggedOut = (router: AppRouterInstance) => async (dispatch: AppDisp
     try {
         const res = await api.post(ENDPOINTS.AUTH.LOGOUT, {});
 
-        if (res.data.success) {
+        if (res.status === 200 || res.status === 201) {
             dispatch(setUser(null)); // Clear user state
             router.push('/signin');
         }

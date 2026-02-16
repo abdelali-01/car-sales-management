@@ -23,14 +23,21 @@
     "topSelling": "Produits les plus vendus ce mois",
     "sold": "Vendu",
     "noPopularProducts": "Aucune donnée de produits populaires disponible",
+    "popularCars": {
+      "title": "Voitures Populaires",
+      "subtitle": "Modèles les plus vendus",
+      "noData": "Aucune donnée disponible"
+    },
     "noImg": "Pas d'img",
     "recentOrders": "Commandes Récentes",
     "viewAll": "Voir Tout",
     "metrics": {
       "monthlyIncome": "Revenu de ce mois",
+      "monthlyProfit": "Profit Mensuel",
       "monthlyOrders": "Commandes de ce mois",
       "totalOrders": "Total des Commandes",
       "totalProducts": "Total des Produits",
+      "availableCars": "Voitures Disponibles",
       "totalIncome": "Revenu Total",
       "pendingOrders": "Commandes en Attente"
     },

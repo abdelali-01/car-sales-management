@@ -23,14 +23,21 @@
     "topSelling": "Top selling products this month",
     "sold": "Sold",
     "noPopularProducts": "No popular products data available",
+    "popularCars": {
+      "title": "Popular Cars",
+      "subtitle": "Top selling models",
+      "noData": "No popular cars data available"
+    },
     "noImg": "No img",
     "recentOrders": "Recent Orders",
     "viewAll": "View All",
     "metrics": {
       "monthlyIncome": "This Month's Income",
+      "monthlyProfit": "Monthly Profit",
       "monthlyOrders": "This Month's Orders",
       "totalOrders": "Total Orders",
       "totalProducts": "Total Products",
+      "availableCars": "Available Cars",
       "totalIncome": "Total Income",
       "pendingOrders": "Pending Orders"
     },

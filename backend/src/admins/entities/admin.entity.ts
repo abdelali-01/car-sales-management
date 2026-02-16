@@ -30,6 +30,12 @@ export class Admin {
   })
   role: AdminRole;
 
+  @Column({ name: 'resetPasswordToken', type: 'varchar', nullable: true })
+  resetPasswordToken: string | null;
+
+  @Column({ name: 'resetPasswordExpires', type: 'timestamp', nullable: true })
+  resetPasswordExpires: Date | null;
+
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 

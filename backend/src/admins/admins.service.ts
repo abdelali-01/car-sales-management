@@ -14,7 +14,7 @@ export class AdminsService {
   constructor(
     @InjectRepository(Admin)
     private adminsRepository: Repository<Admin>,
-  ) {}
+  ) { }
 
   async create(createAdminDto: CreateAdminDto): Promise<Admin> {
     const existingAdmin = await this.adminsRepository.findOne({
@@ -48,12 +48,20 @@ export class AdminsService {
     return admin;
   }
 
+  async findOneByResetToken(token: string): Promise<Admin | null> {
+    return this.adminsRepository.findOne({ where: { resetPasswordToken: token } });
+  }
+
   async findByEmail(email: string): Promise<Admin | null> {
     return this.adminsRepository.findOne({ where: { email } });
   }
 
   async update(id: number, updateAdminDto: UpdateAdminDto): Promise<Admin> {
     const admin = await this.findOne(id);
+
+    if (!admin) {
+      throw new NotFoundException(`Admin with ID ${id} not found`);
+    }
 
     if (updateAdminDto.email && updateAdminDto.email !== admin.email) {
       const existingAdmin = await this.adminsRepository.findOne({

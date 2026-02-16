@@ -7,6 +7,7 @@ import {
   Request,
   HttpCode,
   HttpStatus,
+  Param,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
@@ -15,7 +16,7 @@ import { SessionAuthGuard } from './guards/session-auth.guard';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) { }
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
@@ -29,13 +30,13 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   async logout(@Request() req) {
     return new Promise((resolve, reject) => {
-      req.session.destroy((err: any) => {
-        if (err) {
-          reject(err);
+      req.logout((logoutErr: any) => {
+        if (logoutErr) {
+          reject(logoutErr);
         } else {
-          req.logout((logoutErr: any) => {
-            if (logoutErr) {
-              reject(logoutErr);
+          req.session.destroy((err: any) => {
+            if (err) {
+              reject(err);
             } else {
               resolve({ message: 'Logged out successfully' });
             }
@@ -54,5 +55,23 @@ export class AuthController {
       email: req.user.email,
       role: req.user.role,
     };
+  }
+
+  @Post('forgot-password')
+  async forgotPassword(@Body('email') email: string) {
+    return this.authService.forgotPassword(email);
+  }
+
+  @Get('reset-password/:token')
+  async verifyResetToken(@Param('token') token: string) {
+    return this.authService.verifyResetToken(token);
+  }
+
+  @Post('reset-password/:token')
+  async resetPassword(
+    @Param('token') token: string,
+    @Body('password') password: string,
+  ) {
+    return this.authService.resetPassword(token, password);
   }
 }
