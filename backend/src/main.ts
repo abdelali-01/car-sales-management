@@ -41,6 +41,7 @@ async function bootstrap() {
   const PgSession = connectPgSimple(session);
   const databaseUrl = configService.get('DATABASE_URL');
 
+  
   app.use(
     session({
       // NOTE: Using in-memory sessions for development
@@ -63,8 +64,8 @@ async function bootstrap() {
       cookie: {
         maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
         httpOnly: true,
-        secure: false, // Set to true in production with HTTPS
-        sameSite: 'lax',
+        secure: configService.get<string>('NODE_ENV') === 'production',
+        sameSite: configService.get<string>('NODE_ENV') === 'production' ? 'none' : 'lax',
       },
     }),
   );
