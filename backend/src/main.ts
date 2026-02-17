@@ -33,7 +33,7 @@ async function bootstrap() {
 
   // CORS with credentials support
   app.enableCors({
-    origin: true, // Configure this to specific origins in production
+    origin: configService.get('FRONTEND_URL') || 'http://localhost:3000',
     credentials: true,
   });
 
@@ -41,7 +41,8 @@ async function bootstrap() {
   const PgSession = connectPgSimple(session);
   const databaseUrl = configService.get('DATABASE_URL');
 
-  
+  const expressApp = app.getHttpAdapter().getInstance();
+  expressApp.set('trust proxy', 1);
   app.use(
     session({
       // NOTE: Using in-memory sessions for development
