@@ -306,7 +306,7 @@ const AppSidebar: React.FC = () => {
       onMouseLeave={() => setIsHovered(false)}
     >
       <div
-        className={`py-8 flex  ${!isExpanded && !isHovered ? "lg:justify-center" : "justify-start"
+        className={`py-8 hidden lg:flex  ${!isExpanded && !isHovered ? "lg:justify-center" : "justify-start"
           }`}
       >
         <div className="d-flex justify-center w-full">
@@ -322,7 +322,7 @@ const AppSidebar: React.FC = () => {
 
       </div>
       <div className="flex flex-col overflow-y-auto duration-300 ease-linear no-scrollbar">
-        <nav className="mb-6">
+        <nav className="mb-6 mt-2">
           <div className="flex flex-col gap-4">
             {/* OVERVIEW */}
             <div>
