@@ -11,7 +11,7 @@ import {
     setError,
 } from './adminsSlice';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_SERVER || 'http://localhost:5000/api';
 
 // Fetch all admins
 export const fetchAdmins = createAsyncThunk(

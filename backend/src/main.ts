@@ -1,5 +1,5 @@
 import { NestFactory } from '@nestjs/core';
-import { ValidationPipe } from '@nestjs/common';
+import { ConsoleLogger, ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 import session from 'express-session';
 import connectPgSimple from 'connect-pg-simple';
@@ -36,6 +36,11 @@ async function bootstrap() {
     origin: configService.get('FRONTEND_URL') || 'http://localhost:3000',
     credentials: true,
   });
+
+
+  console.log('FRONTEND_URL', configService.get('FRONTEND_URL'));
+  console.log('NODE_ENV', configService.get('NODE_ENV'));
+  console.log('DATABASE_URL', configService.get('DATABASE_URL'));
 
   // Session configuration with PostgreSQL store
   const PgSession = connectPgSimple(session);
