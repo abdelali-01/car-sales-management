@@ -37,11 +37,6 @@ async function bootstrap() {
     credentials: true,
   });
 
-
-  console.log('FRONTEND_URL', configService.get('FRONTEND_URL'));
-  console.log('NODE_ENV', configService.get('NODE_ENV'));
-  console.log('DATABASE_URL', configService.get('DATABASE_URL'));
-
   // Session configuration with PostgreSQL store
   const PgSession = connectPgSimple(session);
   const databaseUrl = configService.get('DATABASE_URL');
