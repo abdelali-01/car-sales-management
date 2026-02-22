@@ -97,8 +97,6 @@ export default function AddOfferPage() {
                 ownerPhone: formData.ownerPhone,
                 status: formData.status,
                 remarks: description,
-                deliveryCompany: formData.deliveryCompany,
-                profit: formData.profit,
             }));
 
             const filesToUpload = images.filter(img => img.file).map(img => img.file!);

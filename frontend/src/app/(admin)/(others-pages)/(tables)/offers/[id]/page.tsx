@@ -137,8 +137,6 @@ export default function EditOfferPage() {
                 status: formData.status,
                 deletedImageIds: deletedImageIds,
                 remarks: description,
-                deliveryCompany: formData.deliveryCompany,
-                profit: formData.profit,
             }));
 
             const filesToUpload = images.filter(img => img.file).map(img => img.file!);

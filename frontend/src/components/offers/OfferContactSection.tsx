@@ -52,7 +52,7 @@ export default function OfferContactSection({
                     />
                 </div>
 
-                <div>
+                {/* <div>
                     <Label htmlFor="deliveryCompany">Delivery Company</Label>
                     <Input
                         id="deliveryCompany"
@@ -61,7 +61,7 @@ export default function OfferContactSection({
                         value={deliveryCompany || ''}
                         onChange={(e) => onChange('deliveryCompany', e.target.value)}
                     />
-                </div>
+                </div> */}
             </div>
         </div>
     );
