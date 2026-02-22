@@ -62,6 +62,7 @@ export default function EditOfferPage() {
                 profit: 0,
                 status: currentOffer.status as 'available' | 'reserved' | 'sold'
             });
+            setDescription(currentOffer.remarks);
             // Populate images
             if (currentOffer.images && currentOffer.images.length > 0) {
                 setImages(currentOffer.images.map(img => ({
