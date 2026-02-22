@@ -11,7 +11,9 @@ export class FileUploadService {
     constructor(private configService: ConfigService) {
         this.uploadDir = this.configService.get<string>('UPLOAD_DIR') || 'uploads';
         const port = this.configService.get<string>('PORT') || '5000';
-        this.backendUrl = `http://localhost:${port}`;
+        this.backendUrl =
+            this.configService.get<string>('BACKEND_URL') ||
+            `http://localhost:${port}`;
     }
 
     /**

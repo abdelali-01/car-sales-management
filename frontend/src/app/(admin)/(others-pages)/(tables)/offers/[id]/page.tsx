@@ -136,6 +136,9 @@ export default function EditOfferPage() {
                 ownerPhone: formData.ownerPhone,
                 status: formData.status,
                 deletedImageIds: deletedImageIds,
+                remarks: description,
+                deliveryCompany: formData.deliveryCompany,
+                profit: formData.profit,
             }));
 
             const filesToUpload = images.filter(img => img.file).map(img => img.file!);

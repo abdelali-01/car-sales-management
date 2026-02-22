@@ -69,6 +69,8 @@ export interface Offer {
     images?: OfferImage[];
     createdAt: string;
     remarks: string;
+    deliveryCompany?: string;
+    profit?: number;
 }
 
 export interface VisitorInterestOffer {
