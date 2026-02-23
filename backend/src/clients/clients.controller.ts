@@ -20,7 +20,7 @@ import { ApiResponseDto } from '../common/dto/api-response.dto';
 @Controller('clients')
 @UseGuards(SessionAuthGuard)
 export class ClientsController {
-  constructor(private readonly clientsService: ClientsService) {}
+  constructor(private readonly clientsService: ClientsService) { }
 
   @Post()
   async create(@Body() createClientDto: CreateClientDto) {

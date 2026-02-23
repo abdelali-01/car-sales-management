@@ -49,7 +49,7 @@ export class OffersService {
       location?: string;
     },
   ): Promise<{ data: Offer[]; total: number; page: number; limit: number }> {
-    const { page = 1, limit = 10, status, brand, location } = query;
+    const { page = 1, limit = 10000, status, brand, location } = query;
 
     const queryBuilder = this.offersRepository
       .createQueryBuilder('offer')

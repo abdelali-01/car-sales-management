@@ -37,7 +37,7 @@ export class VisitorsService {
       carBrand?: string;
     },
   ): Promise<{ data: Visitor[]; total: number; page: number; limit: number }> {
-    const { page = 1, limit = 10, status, carBrand } = query;
+    const { page = 1, limit = 10000, status, carBrand } = query;
 
     const queryBuilder = this.visitorsRepository
       .createQueryBuilder('visitor')

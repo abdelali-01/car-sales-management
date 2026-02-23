@@ -48,7 +48,7 @@ export class PaymentsService {
       clientId?: number;
     },
   ): Promise<{ data: Payment[]; total: number; page: number; limit: number }> {
-    const { page = 1, limit = 10, method, orderId, clientId } = query;
+    const { page = 1, limit = 10000, method, orderId, clientId } = query;
 
     const queryBuilder = this.paymentsRepository
       .createQueryBuilder('payment')

@@ -23,7 +23,7 @@ export class ClientsService {
       name?: string;
     },
   ): Promise<{ data: Client[]; total: number; page: number; limit: number }> {
-    const { page = 1, limit = 10, name } = query;
+    const { page = 1, limit = 10000, name } = query;
 
     const queryBuilder = this.clientsRepository
       .createQueryBuilder('client')

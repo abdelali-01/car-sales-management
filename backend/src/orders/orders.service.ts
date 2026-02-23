@@ -162,7 +162,7 @@ export class OrdersService {
       clientId?: number;
     },
   ): Promise<{ data: Order[]; total: number; page: number; limit: number }> {
-    const { page = 1, limit = 10, status, clientId } = query;
+    const { page = 1, limit = 10000, status, clientId } = query;
 
     const queryBuilder = this.ordersRepository
       .createQueryBuilder('order')
