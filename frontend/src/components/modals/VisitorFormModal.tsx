@@ -2,23 +2,26 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/store/store';
-import { createVisitor } from '@/store/visitors/visitorsHandler';
+import { createVisitor, updateVisitor } from '@/store/visitors/visitorsHandler';
+import { Visitor } from '@/types/auto-sales';
 
 interface VisitorFormModalProps {
     closeModal: () => void;
+    visitor?: Visitor; // if provided → edit mode
 }
 
-export default function VisitorFormModal({ closeModal }: VisitorFormModalProps) {
+export default function VisitorFormModal({ closeModal, visitor }: VisitorFormModalProps) {
     const dispatch = useDispatch<AppDispatch>();
+    const isEdit = !!visitor;
 
     const [formData, setFormData] = useState({
-        name: '',
-        phone: '',
-        email: '',
-        carBrand: '',
-        carModel: '',
-        budget: 0,
-        remarks: '',
+        name: visitor?.name ?? '',
+        phone: visitor?.phone ?? '',
+        email: visitor?.email ?? '',
+        carBrand: visitor?.carBrand ?? '',
+        carModel: visitor?.carModel ?? '',
+        budget: visitor?.budget ?? 0,
+        remarks: visitor?.remarks ?? '',
     });
 
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -35,10 +38,14 @@ export default function VisitorFormModal({ closeModal }: VisitorFormModalProps) 
         e.preventDefault();
         setIsSubmitting(true);
         try {
-            await dispatch(createVisitor(formData as any));
+            if (isEdit && visitor) {
+                await dispatch(updateVisitor(visitor.id, formData));
+            } else {
+                await dispatch(createVisitor(formData as any));
+            }
             closeModal();
         } catch (error) {
-            console.error('Error creating visitor:', error);
+            console.error('Error saving visitor:', error);
         } finally {
             setIsSubmitting(false);
         }
@@ -47,7 +54,7 @@ export default function VisitorFormModal({ closeModal }: VisitorFormModalProps) 
     return (
         <div>
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
-                Add New Visitor
+                {isEdit ? 'Edit Visitor' : 'Add New Visitor'}
             </h2>
             <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
@@ -106,7 +113,7 @@ export default function VisitorFormModal({ closeModal }: VisitorFormModalProps) 
                     </button>
                     <button type="submit" disabled={isSubmitting}
                         className="px-4 py-2.5 rounded-lg bg-brand-500 text-white hover:bg-brand-600 text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-                        {isSubmitting ? 'Saving...' : 'Add Visitor'}
+                        {isSubmitting ? 'Saving...' : isEdit ? 'Save Changes' : 'Add Visitor'}
                     </button>
                 </div>
             </form>

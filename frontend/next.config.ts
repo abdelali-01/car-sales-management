@@ -31,6 +31,7 @@ const nextConfig: NextConfig = {
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,
+      issuer: /\.[jt]sx?$/, // Only apply SVGR when imported from JS/TS files, not from CSS
       use: ["@svgr/webpack"],
     });
     return config;

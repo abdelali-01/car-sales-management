@@ -23,6 +23,12 @@ export class Offer {
   @Column()
   year: number;
 
+  @Column({ nullable: true })
+  month: number;
+
+  @Column({ nullable: true })
+  day: number;
+
   @Column()
   km: number;
 
@@ -31,6 +37,12 @@ export class Offer {
 
   @Column()
   location: string;
+
+  @Column({ nullable: true })
+  region: string;
+
+  @Column({ name: 'origin_country', nullable: true })
+  originCountry: string;
 
   @Column({ type: 'text', nullable: true })
   remarks: string;

@@ -27,6 +27,18 @@ export class CreateOfferDto {
   @Min(1900)
   year: number;
 
+  @IsOptional()
+  @IsNumber()
+  @Type(() => Number)
+  @Min(1)
+  month?: number;
+
+  @IsOptional()
+  @IsNumber()
+  @Type(() => Number)
+  @Min(1)
+  day?: number;
+
   @IsNotEmpty()
   @IsNumber()
   @Type(() => Number)
@@ -43,6 +55,16 @@ export class CreateOfferDto {
   @IsString()
   @MaxLength(200)
   location: string;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(100)
+  region?: string;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(100)
+  originCountry?: string;
 
   @IsOptional()
   @IsString()

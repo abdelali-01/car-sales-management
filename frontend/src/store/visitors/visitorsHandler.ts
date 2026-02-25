@@ -6,6 +6,7 @@ import {
     updateVisitorStatus as updateVisitorStatusAction,
     setCurrentVisitor,
     updateVisitorRemarks as updateVisitorRemarksAction,
+    updateVisitor as updateVisitorAction,
     addInterestToVisitor,
     removeInterestFromVisitor,
     updateInterestPriority as updateInterestPriorityAction,
@@ -119,6 +120,24 @@ export const updateVisitorStatus = (visitorId: number, status: string) => async 
     } catch (error) {
         const message = getErrorMessage(error);
         console.error('Error updating visitor status:', error);
+        dispatch(addToast({ type: 'error', message }));
+        throw error;
+    }
+};
+
+// Update visitor
+export const updateVisitor = (visitorId: number, data: Partial<Omit<Visitor, 'id' | 'createdAt' | 'interests'>>) => async (dispatch: AppDispatch) => {
+    try {
+        const res = await api.patch(ENDPOINTS.VISITORS.BY_ID(visitorId), data);
+
+        if (res.data.success) {
+            dispatch(updateVisitorAction(res.data.data));
+            dispatch(addToast({ type: 'success', message: 'Visitor updated successfully' }));
+            return res.data.data;
+        }
+    } catch (error) {
+        const message = getErrorMessage(error);
+        console.error('Error updating visitor:', error);
         dispatch(addToast({ type: 'error', message }));
         throw error;
     }

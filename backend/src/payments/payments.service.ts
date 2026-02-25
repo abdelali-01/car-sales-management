@@ -26,15 +26,18 @@ export class PaymentsService {
   ) { }
 
   async create(createPaymentDto: CreatePaymentDto): Promise<Payment> {
-    // Validate that the order exists
-    const order = await this.ordersService.findOne(createPaymentDto.orderId);
-
-    // Validate client if provided
-    if (createPaymentDto.clientId) {
+    // Only validate order if orderId provided
+    if (createPaymentDto.orderId) {
+      const order = await this.ordersService.findOne(createPaymentDto.orderId);
+      // Validate client if provided; otherwise auto-populate from order
+      if (createPaymentDto.clientId) {
+        await this.clientsService.findOne(createPaymentDto.clientId);
+      } else if (order.clientId) {
+        createPaymentDto.clientId = order.clientId;
+      }
+    } else if (createPaymentDto.clientId) {
+      // Free payment — just validate the client exists
       await this.clientsService.findOne(createPaymentDto.clientId);
-    } else if (order.clientId) {
-      // Auto-populate clientId from order if not provided
-      createPaymentDto.clientId = order.clientId;
     }
 
     const payment = this.paymentsRepository.create(createPaymentDto);

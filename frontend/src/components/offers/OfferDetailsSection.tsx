@@ -3,16 +3,22 @@ import React from 'react';
 import Input from '@/components/form/input/InputField';
 import Label from '@/components/form/Label';
 import TextArea from '@/components/form/input/TextArea';
+import YearPrecisionPicker, { DatePrecision } from './YearPrecisionPicker';
+import OriginPicker from './OriginPicker';
 import { useTranslation } from 'react-i18next';
 
 interface OfferDetailsSectionProps {
     brand: string;
     model: string;
     year: number;
+    month?: number;
+    day?: number;
+    precision: DatePrecision;
     km: number;
-    location: string;
+    region?: string;
+    originCountry?: string;
     description: string;
-    onChange: (field: string, value: string | number) => void;
+    onChange: (field: string, value: string | number | undefined) => void;
     errors?: Record<string, string>;
 }
 
@@ -20,8 +26,12 @@ export default function OfferDetailsSection({
     brand,
     model,
     year,
+    month,
+    day,
+    precision,
     km,
-    location,
+    region = '',
+    originCountry = '',
     description,
     onChange,
     errors = {}
@@ -63,20 +73,24 @@ export default function OfferDetailsSection({
                     </div>
                 </div>
 
-                {/* Row 2: Year, KM, Location */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                    <div>
-                        <Label htmlFor="year">{t('offers.form.year')}</Label>
-                        <Input
-                            id="year"
-                            type="number"
-                            placeholder="2024"
-                            value={year || ''}
-                            onChange={(e) => onChange('year', Number(e.target.value))}
-                            error={!!errors.year}
-                            hint={errors.year}
-                        />
-                    </div>
+                {/* Year Precision Picker */}
+                <div>
+                    <Label htmlFor="year">{t('offers.form.year')}</Label>
+                    <YearPrecisionPicker
+                        year={year}
+                        month={month}
+                        day={day}
+                        precision={precision}
+                        onPrecisionChange={(p) => onChange('precision', p)}
+                        onYearChange={(y) => onChange('year', y)}
+                        onMonthChange={(m) => onChange('month', m)}
+                        onDayChange={(d) => onChange('day', d)}
+                        error={errors.year}
+                    />
+                </div>
+
+                {/* Row: KM & Location */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div>
                         <Label htmlFor="km">{t('offers.form.km')}</Label>
                         <Input
@@ -87,17 +101,21 @@ export default function OfferDetailsSection({
                             onChange={(e) => onChange('km', Number(e.target.value))}
                         />
                     </div>
+                    {/* Origin / Place of Origin */}
                     <div>
-                        <Label htmlFor="location">{t('offers.form.location')}</Label>
-                        <Input
-                            id="location"
-                            type="text"
-                            placeholder="e.g. Algiers"
-                            value={location}
-                            onChange={(e) => onChange('location', e.target.value)}
+                        <Label htmlFor="region">Location</Label>
+                        <OriginPicker
+                            region={region}
+                            originCountry={originCountry}
+                            onChange={(data) => {
+                                if (data.region !== undefined) onChange('region', data.region);
+                                if (data.originCountry !== undefined) onChange('originCountry', data.originCountry);
+                            }}
                         />
                     </div>
                 </div>
+
+
 
                 {/* Description */}
                 <div>

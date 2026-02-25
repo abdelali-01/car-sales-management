@@ -111,11 +111,10 @@ export const updateClientFinancials = (clientId: number, data: { totalSpent?: nu
         const res = await api.patch(ENDPOINTS.CLIENTS.FINANCIALS(clientId), data);
 
         if (res.data.success) {
-            const updated = res.data.client;
             dispatch(updateClientFinancialsAction({
                 id: clientId,
-                totalSpent: updated.totalSpent,
-                remainingBalance: updated.remainingBalance
+                totalSpent: data.totalSpent ?? 0,
+                remainingBalance: data.remainingBalance ?? 0,
             }));
             dispatch(addToast({ type: 'success', message: 'Client financials updated successfully' }));
         }

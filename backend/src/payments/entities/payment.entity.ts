@@ -15,7 +15,7 @@ export class Payment {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ name: 'order_id' })
+  @Column({ name: 'order_id', nullable: true })
   orderId: number;
 
   @Column({ name: 'client_id', nullable: true })
@@ -38,7 +38,7 @@ export class Payment {
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
-  @ManyToOne(() => Order, { nullable: false })
+  @ManyToOne(() => Order, { nullable: true })
   @JoinColumn({ name: 'order_id' })
   order: Order;
 

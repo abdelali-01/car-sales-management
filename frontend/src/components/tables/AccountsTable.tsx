@@ -12,7 +12,7 @@ import Loader from '../ui/load/Loader';
 import { Admin } from '@/types/auto-sales';
 import { useTranslation } from 'react-i18next';
 
-const ITEMS_PER_PAGE = 7;
+const ITEMS_PER_PAGE = 10;
 
 // Role configuration with colors (using available Badge colors)
 const ROLE_CONFIG = {

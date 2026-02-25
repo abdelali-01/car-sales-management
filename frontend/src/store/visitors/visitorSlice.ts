@@ -53,6 +53,17 @@ const visitorSlice = createSlice({
                 state.currentVisitor.remarks = action.payload.remarks;
             }
         },
+        updateVisitor: (state, action: PayloadAction<Visitor>) => {
+            if (state.currentVisitor && state.currentVisitor.id === action.payload.id) {
+                state.currentVisitor = { ...state.currentVisitor, ...action.payload };
+            }
+            if (state.visitors) {
+                const idx = state.visitors.findIndex(v => v.id === action.payload.id);
+                if (idx !== -1) {
+                    state.visitors[idx] = { ...state.visitors[idx], ...action.payload };
+                }
+            }
+        },
         addInterestToVisitor: (state, action: PayloadAction<VisitorInterestOffer>) => {
             if (state.currentVisitor) {
                 if (!state.currentVisitor.interests) {
@@ -102,6 +113,7 @@ export const {
     updateVisitorStatus,
     setCurrentVisitor,
     updateVisitorRemarks,
+    updateVisitor,
     addInterestToVisitor,
     removeInterestFromVisitor,
     updateInterestPriority,

@@ -13,8 +13,9 @@ import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { Offer } from '@/types/auto-sales';
 import OffersFilterPanel, { OffersFilterButton, OfferFilters, defaultFilters, applyFilters, countActiveFilters } from '@/components/offers/OffersFilterPanel';
+import { formatOrigin } from '@/components/offers/OriginPicker';
 
-const ITEMS_PER_PAGE = 7;
+const ITEMS_PER_PAGE = 10;
 
 export default function OffersTable() {
     const dispatch = useDispatch<AppDispatch>();
@@ -271,7 +272,7 @@ export default function OffersTable() {
                                             {formatPrice(offer.price)}
                                         </TableCell>
                                         <TableCell className="px-4 py-3 text-gray-600 dark:text-gray-400 text-sm">
-                                            {offer.location || '—'}
+                                            {formatOrigin(offer.region || '', offer.originCountry || '') || offer.location || '—'}
                                         </TableCell>
                                         <TableCell className="px-4 py-3">
                                             {getStatusBadge(offer.status)}

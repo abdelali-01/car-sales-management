@@ -59,9 +59,13 @@ export interface Offer {
     brand: string;
     model: string;
     year: number;
+    month?: number;
+    day?: number;
     km: number;
     price: number;
     location: string;
+    region?: string;
+    originCountry?: string;
     ownerName: string;
     ownerPhone: string;
     ownerEmail?: string;

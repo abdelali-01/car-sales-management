@@ -4,8 +4,10 @@ import { Visitor } from '@/types/auto-sales';
 import { AppDispatch } from '@/store/store';
 import { updateVisitorStatus } from '@/store/visitors/visitorsHandler';
 import Badge from '../ui/badge/Badge';
-import { PhoneIcon, EnvelopeIcon, CurrencyDollarIcon, CalendarIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
+import { PhoneIcon, EnvelopeIcon, CurrencyDollarIcon, CalendarIcon, ChevronDownIcon, PencilSquareIcon } from '@heroicons/react/24/outline';
 import { getWhatsAppLink, getCallLink, formatPrice } from '@/utils';
+import { Modal } from '../ui/modal';
+import VisitorFormModal from '../modals/VisitorFormModal';
 
 interface VisitorInfoSectionProps {
     visitor: Visitor;
@@ -15,6 +17,7 @@ interface VisitorInfoSectionProps {
 export default function VisitorInfoSection({ visitor, visitorId }: VisitorInfoSectionProps) {
     const dispatch = useDispatch<AppDispatch>();
     const [isEditingStatus, setIsEditingStatus] = useState(false);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
     const statusOptions = [
         { value: 'new', label: 'New', color: 'info' },
@@ -56,42 +59,54 @@ export default function VisitorInfoSection({ visitor, visitorId }: VisitorInfoSe
                     </p>
                 </div>
 
-                {/* Status Dropdown */}
-                <div className="relative">
-                    {isEditingStatus ? (
-                        <div className="absolute right-0 top-0 z-10 mt-1 w-40 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-lg">
-                            {statusOptions.map((option) => (
-                                <button
-                                    key={option.value}
-                                    onClick={() => handleStatusChange(option.value)}
-                                    className="w-full px-3 py-2 text-left text-sm hover:bg-gray-50 dark:hover:bg-gray-700 first:rounded-t-lg last:rounded-b-lg transition-colors"
-                                >
-                                    <Badge color={option.color as any}>{option.label}</Badge>
-                                </button>
-                            ))}
-                        </div>
-                    ) : (
-                        <button
-                            onClick={() => setIsEditingStatus(true)}
-                            className="flex items-center gap-1 hover:opacity-80 transition-opacity"
-                        >
-                            {getStatusBadge(visitor.status)}
-                            <ChevronDownIcon className="w-3.5 h-3.5 text-gray-400" />
-                        </button>
-                    )}
+                <div className="flex items-center gap-2">
+                    {/* Edit Button */}
+                    <button
+                        onClick={() => setIsEditModalOpen(true)}
+                        className="p-2 text-gray-500 hover:text-brand-600 dark:text-gray-400 dark:hover:text-brand-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                        title="Edit Visitor"
+                    >
+                        <PencilSquareIcon className="w-5 h-5" />
+                    </button>
 
-                    {/* Backdrop to close dropdown */}
-                    {isEditingStatus && (
-                        <div
-                            className="fixed inset-0 z-0"
-                            onClick={() => setIsEditingStatus(false)}
-                        />
-                    )}
+                    {/* Status Dropdown */}
+                    <div className="relative">
+                        {isEditingStatus ? (
+                            <div className="absolute right-0 top-0 z-10 mt-1 w-40 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-lg">
+                                {statusOptions.map((option) => (
+                                    <button
+                                        key={option.value}
+                                        onClick={() => handleStatusChange(option.value)}
+                                        className="w-full px-3 py-2 text-left text-sm hover:bg-gray-50 dark:hover:bg-gray-700 first:rounded-t-lg last:rounded-b-lg transition-colors"
+                                    >
+                                        <Badge color={option.color as any}>{option.label}</Badge>
+                                    </button>
+                                ))}
+                            </div>
+                        ) : (
+                            <button
+                                onClick={() => setIsEditingStatus(true)}
+                                className="flex items-center gap-1 hover:opacity-80 transition-opacity"
+                            >
+                                {getStatusBadge(visitor.status)}
+                                <ChevronDownIcon className="w-3.5 h-3.5 text-gray-400" />
+                            </button>
+                        )}
+
+                        {/* Backdrop to close dropdown */}
+                        {isEditingStatus && (
+                            <div
+                                className="fixed inset-0 z-0"
+                                onClick={() => setIsEditingStatus(false)}
+                            />
+                        )}
+                    </div>
                 </div>
             </div>
 
             {/* Contact Actions */}
             <div className="flex gap-3 mb-6">
+
                 <a
                     href={getWhatsAppLink(visitor.phone)}
                     target="_blank"
@@ -114,6 +129,7 @@ export default function VisitorInfoSection({ visitor, visitorId }: VisitorInfoSe
 
             {/* Visitor Details */}
             <div className="space-y-4">
+
                 <div className="flex items-start gap-3">
                     <PhoneIcon className="w-5 h-5 text-gray-400 mt-0.5" />
                     <div>
@@ -164,6 +180,10 @@ export default function VisitorInfoSection({ visitor, visitorId }: VisitorInfoSe
                     </div>
                 </div>
             </div>
+
+            <Modal isOpen={isEditModalOpen} onClose={() => setIsEditModalOpen(false)} className='max-w-xl p-6'>
+                <VisitorFormModal closeModal={() => setIsEditModalOpen(false)} visitor={visitor} />
+            </Modal>
         </div>
     );
 }

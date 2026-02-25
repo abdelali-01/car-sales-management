@@ -8,7 +8,7 @@ import Badge from '../ui/badge/Badge';
 import { MagnifyingGlassIcon, ChevronLeftIcon, ChevronRightIcon, CheckIcon } from '@heroicons/react/24/outline';
 import { fetchPayments } from '@/store/payments/paymentsHandler';
 
-const ITEMS_PER_PAGE = 7;
+const ITEMS_PER_PAGE = 10;
 
 export default function PaymentsTable() {
     const dispatch = useDispatch<AppDispatch>();

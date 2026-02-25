@@ -18,10 +18,9 @@ export default function ClientDetailsPage() {
     const dispatch = useDispatch<AppDispatch>();
 
     const { currentClient, loading: clientLoading } = useSelector((state: RootState) => state.clients);
-    // Note: orders state usually contains a list 'orders'. When fetching for a specific client, we might overwrite the main list.
-    // If we want to avoid that, we should use a separate state or just accept it's a detail view.
-    // Given the architecture, filtering the global list is acceptable for now.
-    const { orders, loading: ordersLoading } = useSelector((state: RootState) => state.orders);
+    const { orders: allOrders, loading: ordersLoading } = useSelector((state: RootState) => state.orders);
+    // Filter orders for this specific client to avoid shared-store contamination
+    const orders = allOrders?.filter(o => o.clientId === id) ?? null;
     const { clientPayments, loading: paymentsLoading } = useSelector((state: RootState) => state.payments);
 
     useEffect(() => {

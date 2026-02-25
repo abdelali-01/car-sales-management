@@ -12,6 +12,7 @@ import { AppDispatch } from '@/store/store';
 import { createOffer, uploadOfferImages } from '@/store/offers/offersHandler';
 import { useFormErrors } from '@/hooks/useFormErrors';
 import { useTranslation } from 'react-i18next';
+import { DatePrecision } from '@/components/offers/YearPrecisionPicker';
 
 export default function AddOfferPage() {
     const dispatch = useDispatch<AppDispatch>();
@@ -26,21 +27,28 @@ export default function AddOfferPage() {
         brand: '',
         model: '',
         year: new Date().getFullYear(),
+        month: undefined as number | undefined,
+        day: undefined as number | undefined,
         km: 0,
         price: 0,
         location: '',
+        region: '',
+        originCountry: '',
         ownerName: '',
         ownerPhone: '',
         deliveryCompany: '',
         profit: 0,
         status: 'available' as 'available' | 'reserved' | 'sold',
     });
+    const [datePrecision, setDatePrecision] = useState<DatePrecision>('year');
 
     const [description, setDescription] = useState('');
 
-    const handleFieldChange = (field: string, value: string | number) => {
+    const handleFieldChange = (field: string, value: string | number | undefined) => {
         if (field === 'description') {
             setDescription(value as string);
+        } else if (field === 'precision') {
+            setDatePrecision(value as DatePrecision);
         } else {
             setFormData(prev => ({ ...prev, [field]: value }));
             if (errors[field]) {
@@ -90,9 +98,13 @@ export default function AddOfferPage() {
                 brand: formData.brand,
                 model: formData.model,
                 year: formData.year,
+                month: formData.month,
+                day: formData.day,
                 km: formData.km,
                 price: formData.price,
                 location: formData.location,
+                region: formData.region || undefined,
+                originCountry: formData.originCountry || undefined,
                 ownerName: formData.ownerName,
                 ownerPhone: formData.ownerPhone,
                 status: formData.status,
@@ -125,8 +137,13 @@ export default function AddOfferPage() {
                         brand={formData.brand}
                         model={formData.model}
                         year={formData.year}
+                        month={formData.month}
+                        day={formData.day}
+                        precision={datePrecision}
                         km={formData.km}
                         location={formData.location}
+                        region={formData.region}
+                        originCountry={formData.originCountry}
                         description={description}
                         onChange={handleFieldChange}
                         errors={errors}

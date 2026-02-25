@@ -10,7 +10,7 @@ import { useDeleteModal } from '@/context/DeleteModalContext';
 import { useRouter } from 'next/navigation';
 import { VisitorListSkeleton } from '@/components/skeleton/VisitorSkeleton';
 
-const ITEMS_PER_PAGE = 7;
+const ITEMS_PER_PAGE = 10;
 
 export default function VisitorsTable() {
     const dispatch = useDispatch<AppDispatch>();

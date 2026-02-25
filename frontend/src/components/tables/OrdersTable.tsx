@@ -9,7 +9,7 @@ import { MagnifyingGlassIcon, ChevronLeftIcon, ChevronRightIcon, CheckCircleIcon
 import { fetchOrders, confirmOrder, completeOrder, cancelOrder } from '@/store/orders/orderHandler';
 import OrdersFilterPanel, { OrdersFilterButton, OrderFilters, defaultOrderFilters, applyOrderFilters, countActiveOrderFilters } from '@/components/orders/OrdersFilterPanel';
 
-const ITEMS_PER_PAGE = 7;
+const ITEMS_PER_PAGE = 10;
 
 import { useRouter } from 'next/navigation';
 

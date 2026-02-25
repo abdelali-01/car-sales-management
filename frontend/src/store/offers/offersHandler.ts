@@ -18,9 +18,9 @@ export const fetchOffers = (params?: {
     try {
         const queryParams = new URLSearchParams();
         if (params?.page) queryParams.append('page', params.page.toString());
-        if (params?.limit) queryParams.append('limit', params.limit.toString());
         if (params?.status) queryParams.append('status', params.status);
         if (params?.brand) queryParams.append('brand', params.brand);
+        queryParams.append('limit', '10000');
 
         const url = queryParams.toString()
             ? `${ENDPOINTS.OFFERS.BASE}?${queryParams.toString()}`
