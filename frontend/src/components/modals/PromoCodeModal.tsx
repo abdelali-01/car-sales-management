@@ -70,7 +70,7 @@ export default function PromoCodeModal({ closeModal, selectedItem }: PromoCodeMo
                                 className="w-full"
                                 options={[
                                     { label: 'Percentage (%)', value: 'percentage' },
-                                    { label: 'Fixed Amount (DA)', value: 'fixed' }
+                                    { label: 'Fixed Amount (M)', value: 'fixed' }
                                 ]}
                             />
                         </div>

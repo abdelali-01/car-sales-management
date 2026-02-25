@@ -127,7 +127,7 @@ export default function ClientPaymentsCard({ payments, loading, orders, clientId
                                             autoFocus
                                             placeholder="0.00"
                                         />
-                                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-400 font-medium pointer-events-none">DZD</span>
+                                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-400 font-medium pointer-events-none">M</span>
                                     </div>
                                     <div className="flex bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm overflow-hidden">
                                         <button
@@ -150,7 +150,7 @@ export default function ClientPaymentsCard({ payments, loading, orders, clientId
                                 </div>
                             ) : (
                                 <div className="flex items-center gap-2">
-                                    <span className="text-sm font-bold text-gray-900 dark:text-white">{totalSpent.toLocaleString()} DZD</span>
+                                    <span className="text-sm font-bold text-gray-900 dark:text-white">{totalSpent.toLocaleString()} M</span>
                                     <button
                                         onClick={handleStartEdit}
                                         className="p-1 text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
@@ -163,11 +163,11 @@ export default function ClientPaymentsCard({ payments, loading, orders, clientId
                         </div>
                         <div className="flex justify-between items-center">
                             <span className="text-sm text-gray-500 dark:text-gray-400">Total Paid</span>
-                            <span className="text-sm font-bold text-green-600 dark:text-green-400">{totalPaid.toLocaleString()} DZD</span>
+                            <span className="text-sm font-bold text-green-600 dark:text-green-400">{totalPaid.toLocaleString()} M</span>
                         </div>
                         <div className="pt-2 border-t border-gray-200 dark:border-gray-600 flex justify-between items-center">
                             <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Remaining Balance</span>
-                            <span className="text-base font-bold text-red-600 dark:text-red-400">{remainingBalance.toLocaleString()} DZD</span>
+                            <span className="text-base font-bold text-red-600 dark:text-red-400">{remainingBalance.toLocaleString()} M</span>
                         </div>
                     </div>
                 </div>
@@ -192,7 +192,7 @@ export default function ClientPaymentsCard({ payments, loading, orders, clientId
                                     </div>
                                     <div>
                                         <p className="text-sm font-semibold text-gray-900 dark:text-white">
-                                            {Number(payment.amount).toLocaleString()} DZD
+                                            {Number(payment.amount).toLocaleString()} M
                                         </p>
                                         <p className="text-xs text-gray-500 dark:text-gray-400">
                                             {format(new Date(payment.createdAt), 'MMM dd, yyyy')} • {payment.method}

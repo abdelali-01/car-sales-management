@@ -15,7 +15,7 @@ export default function OrderSummary({
     discountValue
 }: OrderSummaryProps) {
     const total = subtotal + shippingPrice - (discountValue || 0);
-    const formatPrice = (price: number) => `DA ${price.toLocaleString()}`;
+    const formatPrice = (price: number) => `${price.toLocaleString()} M`;
 
     return (
         <div className="rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800/50 p-5 lg:p-6">

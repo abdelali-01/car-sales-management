@@ -69,7 +69,7 @@ export default function ClientsTable() {
     };
 
     const formatPrice = (price: number) => {
-        return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'DZD', minimumFractionDigits: 0 }).format(price).replace('DZD', 'DA');
+        return new Intl.NumberFormat('en-US', { minimumFractionDigits: 0 }).format(price) + ' M';
     };
 
     if (!clients) return <Loader />;
@@ -118,25 +118,25 @@ export default function ClientsTable() {
                                     </TableCell>
                                 </TableRow>
                             ) : (
-                                    paginatedClients.map(client => (
-                            <TableRow key={client.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
-                                <TableCell className="px-4 py-3 min-w-[180px]">
-                                    <div onClick={() => window.location.href = `/clients/${client.id}`} className="cursor-pointer group">
-                                        <span className="font-medium text-gray-900 dark:text-white text-sm group-hover:text-brand-500 transition-colors">{client.name}</span>
-                                        {client.address && <p className="text-xs text-gray-500 dark:text-gray-400">{client.address}</p>}
-                                    </div>
-                                </TableCell>
-                                <TableCell className="px-4 py-3 text-gray-600 dark:text-gray-400 text-sm">{client.phone}</TableCell>
-                                <TableCell className="px-4 py-3 text-gray-600 dark:text-gray-400 text-sm">{client.email || '—'}</TableCell>
-                                <TableCell className="px-4 py-3 text-gray-900 dark:text-white font-medium text-sm">{formatPrice(client.totalSpent)}</TableCell>
-                                <TableCell className="px-4 py-3 text-sm">
-                                    <span className={client.remainingBalance > 0 ? 'text-red-500 font-medium' : 'text-green-500 font-medium'}>
-                                        {formatPrice(client.remainingBalance)}
-                                    </span>
-                                </TableCell>
-                                <TableCell className="px-4 py-3 text-gray-600 dark:text-gray-400 text-sm">{formatDate(client.createdAt)}</TableCell>
-                            </TableRow>
-                            ))
+                                paginatedClients.map(client => (
+                                    <TableRow key={client.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                                        <TableCell className="px-4 py-3 min-w-[180px]">
+                                            <div onClick={() => window.location.href = `/clients/${client.id}`} className="cursor-pointer group">
+                                                <span className="font-medium text-gray-900 dark:text-white text-sm group-hover:text-brand-500 transition-colors">{client.name}</span>
+                                                {client.address && <p className="text-xs text-gray-500 dark:text-gray-400">{client.address}</p>}
+                                            </div>
+                                        </TableCell>
+                                        <TableCell className="px-4 py-3 text-gray-600 dark:text-gray-400 text-sm">{client.phone}</TableCell>
+                                        <TableCell className="px-4 py-3 text-gray-600 dark:text-gray-400 text-sm">{client.email || '—'}</TableCell>
+                                        <TableCell className="px-4 py-3 text-gray-900 dark:text-white font-medium text-sm">{formatPrice(client.totalSpent)}</TableCell>
+                                        <TableCell className="px-4 py-3 text-sm">
+                                            <span className={client.remainingBalance > 0 ? 'text-red-500 font-medium' : 'text-green-500 font-medium'}>
+                                                {formatPrice(client.remainingBalance)}
+                                            </span>
+                                        </TableCell>
+                                        <TableCell className="px-4 py-3 text-gray-600 dark:text-gray-400 text-sm">{formatDate(client.createdAt)}</TableCell>
+                                    </TableRow>
+                                ))
                             )}
                         </TableBody>
                     </Table>

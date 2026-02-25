@@ -63,7 +63,7 @@ export default function MonthlySalesChart() {
     tooltip: {
       x: { show: false },
       y: {
-        formatter: (val: number) => `${val.toLocaleString()} DA`,
+        formatter: (val: number) => `${val.toLocaleString()} M`,
       },
     },
   };

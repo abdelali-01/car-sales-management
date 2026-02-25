@@ -44,7 +44,7 @@
     "charts": {
       "monthlyStats": "Monthly Statistics",
       "description": "Income and orders overview for the current year",
-      "income": "Income (DA)",
+      "income": "Income ( M )",
       "noData": "No chart data available",
       "monthlyIncome": "Monthly Income"
     },

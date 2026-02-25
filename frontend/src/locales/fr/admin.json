@@ -44,7 +44,7 @@
     "charts": {
       "monthlyStats": "Statistiques Mensuelles",
       "description": "Aperçu des revenus et commandes pour l'année en cours",
-      "income": "Revenu (DA)",
+      "income": "Revenu ( M )",
       "noData": "Aucune donnée de graphique disponible",
       "monthlyIncome": "Revenu Mensuel"
     },

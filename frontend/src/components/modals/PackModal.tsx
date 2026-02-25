@@ -15,7 +15,7 @@ import { Product as MainProduct, Attribute } from './ProductModal';
 
 // Function to filter attributes that have options with prices different from the base price
 const filterAttributesWithDifferentPrices = (attributes: Attribute[] | undefined, basePrice: number): Attribute[] => {
-    console.log('attribute from filter' , attributes)
+    console.log('attribute from filter', attributes)
     if (!attributes || !Array.isArray(attributes)) return [];
     // Show an attribute if AT LEAST ONE of its options has a price different from the base price.
     return attributes.filter(attr =>
@@ -43,7 +43,7 @@ export default function PackModal({ closeModal, selectedItem }: PackModalProps) 
     // State to track selected attributes for each product
     const [selectedAttributes, setSelectedAttributes] = useState<{ [productId: number]: { [attrName: string]: string } }>({});
     console.log(selectedItem);
-    
+
     // Initialize selected attributes when editing an existing pack
     useEffect(() => {
         if (selectedItem && selectedItem.products) {
@@ -52,8 +52,8 @@ export default function PackModal({ closeModal, selectedItem }: PackModalProps) 
             selectedItem.products.forEach(product => {
                 if (product.attributes) {
                     // Handle both string and object formats for attributes
-                    const attrs = typeof product.attributes === 'string' 
-                        ? JSON.parse(product.attributes) 
+                    const attrs = typeof product.attributes === 'string'
+                        ? JSON.parse(product.attributes)
                         : product.attributes;
                     initialAttributes[product.id] = attrs;
                     console.log(`Product ${product.id} attributes:`, attrs);
@@ -322,7 +322,7 @@ export default function PackModal({ closeModal, selectedItem }: PackModalProps) 
                                                 {product.name}
                                             </div>
                                             <div className='text-sm text-gray-500 dark:text-gray-400'>
-                                                {product.price} DA
+                                                {product.price} M
                                             </div>
                                             {hasAttributesWithDifferentPrices && (
                                                 <div className='text-xs text-warning-600 dark:text-warning-400 mt-1'>
@@ -332,8 +332,8 @@ export default function PackModal({ closeModal, selectedItem }: PackModalProps) 
                                         </div>
                                         <div className='absolute top-2 right-2'>
                                             <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${isSelected
-                                                    ? 'border-success-500 bg-success-500'
-                                                    : 'border-gray-300 dark:border-gray-600'
+                                                ? 'border-success-500 bg-success-500'
+                                                : 'border-gray-300 dark:border-gray-600'
                                                 }`}>
                                                 {isSelected && (
                                                     <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -369,7 +369,7 @@ export default function PackModal({ closeModal, selectedItem }: PackModalProps) 
                                             />
                                             <div>
                                                 <div className="font-medium text-gray-800 dark:text-white">{selectedProduct.name}</div>
-                                                <div className="text-sm text-gray-500 dark:text-gray-400">{selectedProduct.price} DA</div>
+                                                <div className="text-sm text-gray-500 dark:text-gray-400">{selectedProduct.price} M</div>
                                             </div>
                                         </div>
 
@@ -393,7 +393,7 @@ export default function PackModal({ closeModal, selectedItem }: PackModalProps) 
                                                                     : 'bg-gray-50 text-gray-700 border-gray-300 hover:bg-gray-100 dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600 dark:hover:bg-gray-600'
                                                                     }`}
                                                             >
-                                                                {option.value} ({option.price} DA)
+                                                                {option.value} ({option.price} M)
                                                             </button>
                                                         ))}
                                                     </div>
@@ -423,7 +423,7 @@ export default function PackModal({ closeModal, selectedItem }: PackModalProps) 
                                 <Label className='font-semibold text-gray-400'>Total Products Price</Label>
                                 <div className='p-3 bg-gray-50 dark:bg-white/[0.02] rounded-lg'>
                                     <div className='text-lg font-semibold text-gray-800 dark:text-white'>
-                                        {totalProductsPrice} DA
+                                        {totalProductsPrice} M
                                     </div>
                                 </div>
                             </div>
@@ -440,7 +440,7 @@ export default function PackModal({ closeModal, selectedItem }: PackModalProps) 
                                 <div className='text-right'>
                                     <div className='text-sm text-gray-500 dark:text-gray-400'>Your Client Save</div>
                                     <div className='text-lg font-semibold text-success-500'>
-                                        {totalProductsPrice - Number(pack.price)} DA
+                                        {totalProductsPrice - Number(pack.price)} M
                                     </div>
                                 </div>
                             </div>

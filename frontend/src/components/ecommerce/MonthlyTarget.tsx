@@ -63,7 +63,7 @@ export default function MonthlyTarget() {
           </div>
         </div>
         <p className="mx-auto mt-5 w-full max-w-[380px] text-center text-sm text-gray-500 sm:text-base">
-            You sold {trodatSells.current} tompons this month. It’s {trodatSells.isUp ? "higher" : "lower"} than last month. {trodatSells.isUp ? "Keep up the good work!" : "Let’s aim higher next month!"}
+          You sold {trodatSells.current} tompons this month. It’s {trodatSells.isUp ? "higher" : "lower"} than last month. {trodatSells.isUp ? "Keep up the good work!" : "Let’s aim higher next month!"}
         </p>
       </div>
 
@@ -100,10 +100,10 @@ export default function MonthlyTarget() {
 
         <div>
           <p className="mb-1 text-center text-gray-500 text-theme-xs dark:text-gray-400 sm:text-sm">
-            Income 
+            Income
           </p>
           <p className="flex items-center justify-center gap-1 text-base font-semibold text-gray-800 dark:text-white/90 sm:text-lg">
-            {total.current} DA
+            {total.current} M
             <svg
               width="16"
               height="16"

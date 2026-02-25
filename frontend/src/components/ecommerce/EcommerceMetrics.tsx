@@ -42,7 +42,7 @@ export const EcommerceMetrics = () => {
                 {t('dashboard.metrics.monthlyProfit', 'Monthly Profit')}
               </span>
               <h4 className="mt-2 font-bold text-gray-800 text-title-sm dark:text-white/90">
-                {monthly_profit.toLocaleString()} DA
+                {monthly_profit.toLocaleString()} M
               </h4>
             </div>
           </div>

@@ -80,7 +80,7 @@ export default function VisitorsTable() {
 
     const formatPrice = (price?: number) => {
         if (!price) return '—';
-        return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'DZD', minimumFractionDigits: 0 }).format(price).replace('DZD', 'DA');
+        return new Intl.NumberFormat('en-US', { minimumFractionDigits: 0 }).format(price) + ' M';
     };
 
     const getStatusBadge = (status: string) => {

@@ -83,8 +83,8 @@ export default function PaymentFormModal({ closeModal, clientId, orders }: Payme
                     type="button"
                     onClick={() => handleTypeToggle('order')}
                     className={`flex-1 py-2 px-3 rounded-md text-sm font-medium transition-all duration-200 ${paymentType === 'order'
-                            ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
-                            : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                        ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
+                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
                         }`}
                 >
                     Order Payment
@@ -93,8 +93,8 @@ export default function PaymentFormModal({ closeModal, clientId, orders }: Payme
                     type="button"
                     onClick={() => handleTypeToggle('free')}
                     className={`flex-1 py-2 px-3 rounded-md text-sm font-medium transition-all duration-200 ${paymentType === 'free'
-                            ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
-                            : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                        ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
+                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
                         }`}
                 >
                     Free / Custom
@@ -119,7 +119,7 @@ export default function PaymentFormModal({ closeModal, clientId, orders }: Payme
                                 <option value="">Select Order</option>
                                 {orders.map(order => (
                                     <option key={order.id} value={order.id}>
-                                        Order #{order.id} — {order.offer ? `${order.offer.brand} ${order.offer.model}` : 'Unknown Car'} ({Number(order.agreedPrice).toLocaleString()} DZD)
+                                        Order #{order.id} — {order.offer ? `${order.offer.brand} ${order.offer.model}` : 'Unknown Car'} ({Number(order.agreedPrice).toLocaleString()} M)
                                     </option>
                                 ))}
                             </select>
@@ -147,7 +147,7 @@ export default function PaymentFormModal({ closeModal, clientId, orders }: Payme
                 <div className="grid grid-cols-2 gap-4">
                     <div>
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Amount (DA) <span className="text-red-500">*</span>
+                            Amount (M) <span className="text-red-500">*</span>
                         </label>
                         <input type="number" name="amount" required value={formData.amount} onChange={handleChange} min={0}
                             className="w-full px-4 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-brand-500" />

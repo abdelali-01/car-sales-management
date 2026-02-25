@@ -119,7 +119,7 @@ export default function GlobalFreeDeliveryModal({ closeModal, settings }: Global
                                     required
                                 />
                                 <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-medium">
-                                    DA
+                                    M
                                 </span>
                             </div>
                             <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">

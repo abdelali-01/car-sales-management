@@ -91,7 +91,7 @@ export default function FreeDeliverySettings() {
 
                             {settings?.isThresholdActive ? (
                                 <p className="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-2">
-                                    {settings.freeDeliveryThreshold.toLocaleString()} DA
+                                    {settings.freeDeliveryThreshold.toLocaleString()} M
                                 </p>
                             ) : (
                                 <p className="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-2">

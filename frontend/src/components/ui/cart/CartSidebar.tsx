@@ -24,9 +24,9 @@ const CartSidebar: React.FC = () => {
 
   const pathname = usePathname();
 
-  useEffect(()=>{
+  useEffect(() => {
     closeCart();
-  },[pathname]);
+  }, [pathname]);
 
   const content = {
     title: {
@@ -56,7 +56,7 @@ const CartSidebar: React.FC = () => {
     }
   };
 
-  console.log("Cart Sidebar Rendered" , cart);
+  console.log("Cart Sidebar Rendered", cart);
   const total = cart && cart.reduce((sum, item) => sum + item.price * item.cartQuantity, 0);
 
   return (
@@ -86,7 +86,7 @@ const CartSidebar: React.FC = () => {
                 </div>
                 <div className="flex-1">
                   <div className="font-semibold text-gray-900 dark:text-white">{item.name}</div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">{item.price} DA</div>
+                  <div className="text-sm text-gray-500 dark:text-gray-400">{item.price} M</div>
                   <div className="flex items-center gap-2 mt-2 dark:text-white">
                     <button onClick={() => dispatch(updateQuantity({ id: item.id, cartQuantity: Math.max(1, item.cartQuantity - 1), attributes: item.attributes }))} className="px-2 py-1 rounded bg-gray-200 dark:bg-gray-700">-</button>
                     <span>{item.cartQuantity}</span>
@@ -101,7 +101,7 @@ const CartSidebar: React.FC = () => {
         <div className="p-4 border-t border-gray-200 dark:border-gray-700">
           <div className="flex justify-between items-center mb-4">
             <span className="font-semibold text-lg dark:text-white">{content.total[i18n.language as keyof typeof content.total]}</span>
-            <span className="font-bold text-xl text-brand-500">{total} DA</span>
+            <span className="font-bold text-xl text-brand-500">{total} M</span>
           </div>
           <Link href={'/checkout'}>
             <Button className="w-full mb-2" disabled={cart.length === 0}>{content.checkout[i18n.language as keyof typeof content.checkout]}</Button>

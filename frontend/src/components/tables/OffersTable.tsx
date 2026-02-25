@@ -111,10 +111,8 @@ export default function OffersTable() {
 
     const formatPrice = (price: number) => {
         return new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'DZD',
             minimumFractionDigits: 0,
-        }).format(price).replace('DZD', 'DA');
+        }).format(price) + ' M';
     };
 
     const getStatusBadge = (status: string) => {

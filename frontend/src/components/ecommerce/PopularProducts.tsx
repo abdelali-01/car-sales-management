@@ -85,7 +85,7 @@ export default function PopularProducts() {
                       {product.name}
                     </p>
                     <span className="block text-gray-500 text-theme-xs dark:text-gray-400">
-                      {product.price} DA
+                      {product.price} M
                     </span>
                   </div>
                 </div>

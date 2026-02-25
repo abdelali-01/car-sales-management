@@ -85,7 +85,7 @@ export default function PopularProductsCard() {
                       {product.name}
                     </p>
                     <span className="block text-gray-500 text-theme-xs dark:text-gray-400">
-                      {product.price.toLocaleString()} DA
+                      {product.price.toLocaleString()} M
                     </span>
                   </div>
                 </div>

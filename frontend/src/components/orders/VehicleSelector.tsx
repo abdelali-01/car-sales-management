@@ -79,7 +79,7 @@ export default function VehicleSelector({ offers, selectedId, onSelect, disabled
                                 <span>{selectedOffer.km.toLocaleString()} km</span>
                                 <span className="w-1 h-1 rounded-full bg-gray-300 dark:bg-gray-600" />
                                 <span className="text-brand-600 dark:text-brand-400 font-semibold">
-                                    {selectedOffer.price.toLocaleString()} DA
+                                    {selectedOffer.price.toLocaleString()} M
                                 </span>
                             </div>
                         </div>
@@ -147,7 +147,7 @@ export default function VehicleSelector({ offers, selectedId, onSelect, disabled
                                                 {offer.brand} {offer.model}
                                             </h5>
                                             <span className="text-brand-600 dark:text-brand-400 text-sm font-bold">
-                                                {offer.price.toLocaleString()} DA
+                                                {offer.price.toLocaleString()} M
                                             </span>
                                         </div>
                                         <div className="text-xs text-gray-500 mt-1 flex items-center gap-2">

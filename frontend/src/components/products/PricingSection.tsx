@@ -39,7 +39,7 @@ export default function PricingSection({
                 {/* Row 1: Price & Previous Price */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div>
-                        <Label htmlFor="price">Price (DA)</Label>
+                        <Label htmlFor="price">Price (M)</Label>
                         <Input
                             id="price"
                             type="number"
@@ -51,7 +51,7 @@ export default function PricingSection({
                         />
                     </div>
                     <div>
-                        <Label htmlFor="prevPrice">Previous Price (DA)</Label>
+                        <Label htmlFor="prevPrice">Previous Price (M)</Label>
                         <Input
                             id="prevPrice"
                             type="number"

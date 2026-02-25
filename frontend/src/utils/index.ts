@@ -95,11 +95,11 @@ export function getCallLink(phone: string): string {
   return `tel:${phone}`;
 }
 
-export function formatPrice(price: number): string {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'DZD',
-    minimumFractionDigits: 0
-  }).format(price).replace('DZD', 'DA');
-}
+export const formatPrice = (price?: number) => {
+  if (price === undefined || price === null) return '—';
 
+  return new Intl.NumberFormat('en-US', {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(price) + ' M';
+};

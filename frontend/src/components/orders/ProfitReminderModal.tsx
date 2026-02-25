@@ -153,7 +153,7 @@ export default function ProfitReminderModal() {
                                     <div>
                                         <span className="text-xs text-gray-400 uppercase tracking-wider block mb-1">{t('orders.amount', 'Amount')}</span>
                                         <div className="text-sm font-medium text-gray-900 dark:text-white">
-                                            {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'DZD' }).format(currentOrder.agreedPrice).replace('DZD', 'DA')}
+                                            {new Intl.NumberFormat('en-US', { minimumFractionDigits: 0 }).format(currentOrder.agreedPrice)} M
                                         </div>
                                     </div>
                                 </div>
@@ -164,7 +164,7 @@ export default function ProfitReminderModal() {
                     {/* Profit Input */}
                     <div className="space-y-4">
                         <Input
-                            label={t('orders.enterProfit', 'Net Profit Amount (DA)')}
+                            label={t('orders.enterProfit', 'Net Profit Amount (M)')}
                             type="number"
                             name="profit"
                             placeholder="0.00"
@@ -172,7 +172,7 @@ export default function ProfitReminderModal() {
                             onChange={(e) => setProfit(e.target.value)}
                             min={0}
                             autoFocus
-                            icon={<span className="text-gray-500 text-sm font-semibold">DA</span>}
+                            icon={<span className="text-gray-500 text-sm font-semibold">M</span>}
                             className="py-3 text-lg"
                         />
                         <p className="text-sm text-gray-500 dark:text-gray-400">

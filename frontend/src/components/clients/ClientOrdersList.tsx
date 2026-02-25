@@ -85,7 +85,7 @@ export default function ClientOrdersList({ orders, loading }: ClientOrdersListPr
                                     <div className="flex flex-col text-right">
                                         <span className="text-xs text-gray-500 dark:text-gray-400">Agreed Price</span>
                                         <span className="font-bold text-brand-600 dark:text-brand-400">
-                                            {Number(order.agreedPrice ?? order.offer?.price ?? 0).toLocaleString()} DZD
+                                            {Number(order.agreedPrice ?? order.offer?.price ?? 0).toLocaleString()} M
                                         </span>
                                     </div>
                                 </div>

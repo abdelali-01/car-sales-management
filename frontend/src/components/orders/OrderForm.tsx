@@ -350,7 +350,7 @@ export default function OrderForm({ initialData, onSubmit, isSubmitting, isEditi
                             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Pricing</h3>
                             <div className="space-y-4">
                                 <Input
-                                    label="Agreed Price (DA)"
+                                    label="Agreed Price (M)"
                                     type="number"
                                     value={formData.agreedPrice}
                                     onChange={e => handleChange('agreedPrice', Number(e.target.value))}
@@ -358,7 +358,7 @@ export default function OrderForm({ initialData, onSubmit, isSubmitting, isEditi
                                     className="text-lg font-medium"
                                 />
                                 <Input
-                                    label="Deposit (DA)"
+                                    label="Deposit (M)"
                                     type="number"
                                     value={formData.deposit}
                                     onChange={e => handleChange('deposit', Number(e.target.value))}

@@ -94,7 +94,7 @@ export default function VisitorFormModal({ closeModal, visitor }: VisitorFormMod
                 </div>
 
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Budget (DA)</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Budget (M)</label>
                     <input type="number" name="budget" value={formData.budget} onChange={handleChange} min={0}
                         className="w-full px-4 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-brand-500" />
                 </div>

@@ -151,7 +151,7 @@ export default function ProductAttributesSection({
                                             </span>
                                             {opt.price > 0 && (
                                                 <span className="text-green-600 dark:text-green-400">
-                                                    +{opt.price} DA
+                                                    +{opt.price} M
                                                 </span>
                                             )}
                                             <span className="text-gray-500">
@@ -183,7 +183,7 @@ export default function ProductAttributesSection({
                                             />
                                         </div>
                                         <div>
-                                            <Label className="text-xs">Price Adjustment (DA)</Label>
+                                            <Label className="text-xs">Price Adjustment (M)</Label>
                                             <Input
                                                 type="number"
                                                 placeholder="0"
