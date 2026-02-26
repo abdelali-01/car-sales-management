@@ -1,4 +1,4 @@
-import { Outfit } from 'next/font/google';
+import { Outfit, Cairo } from 'next/font/google';
 import './globals.css';
 
 import { SidebarProvider } from '@/context/SidebarContext';
@@ -12,6 +12,12 @@ import PixelProvider from '@/lib/PixelProvider';
 
 const outfit = Outfit({
   subsets: ["latin"],
+  variable: "--font-outfit",
+});
+
+const cairo = Cairo({
+  subsets: ["arabic", "latin"],
+  variable: "--font-cairo",
 });
 
 export const metadata: Metadata = {
@@ -51,7 +57,7 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body className={`${outfit.className} dark:bg-gray-900`}>
+      <body className={`${outfit.variable} ${cairo.variable} dark:bg-gray-900`}>
         <StoreProvider>
           <I18nProvider>
             <ToastProvider />

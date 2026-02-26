@@ -8,7 +8,7 @@ import AppSidebar from "@/layout/AppSidebar";
 import Backdrop from "@/layout/Backdrop";
 import { RootState } from "@/store/store";
 import { usePathname, useRouter } from "next/navigation";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import ProfitReminderModal from "@/components/orders/ProfitReminderModal";
 
@@ -20,13 +20,28 @@ export default function AdminLayout({
   const { isExpanded, isHovered, isMobileOpen } = useSidebar();
   const { user } = useSelector((state: RootState) => state.auth);
 
+  // Track RTL mode reactively
+  const [isRTL, setIsRTL] = useState(false);
+  useEffect(() => {
+    const checkDir = () => setIsRTL(document.documentElement.dir === 'rtl');
+    checkDir();
+    const observer = new MutationObserver(checkDir);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['dir'] });
+    return () => observer.disconnect();
+  }, []);
 
-  // Dynamic class for main content margin based on sidebar state
-  const mainContentMargin = isMobileOpen
-    ? "ml-0"
+  // Dynamic class for main content margin based on sidebar state and direction
+  const sideOffset = isMobileOpen
+    ? "0"
     : isExpanded || isHovered
-      ? "lg:ml-[290px]"
-      : "lg:ml-[90px]";
+      ? "lg:[290px]"
+      : "lg:[90px]";
+
+  const mainContentMargin = isMobileOpen
+    ? ""
+    : isExpanded || isHovered
+      ? isRTL ? "lg:mr-[290px]" : "lg:ml-[290px]"
+      : isRTL ? "lg:mr-[90px]" : "lg:ml-[90px]";
 
   if (!user) return null;
   return (

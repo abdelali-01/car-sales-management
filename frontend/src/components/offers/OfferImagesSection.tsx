@@ -85,7 +85,7 @@ export default function OfferImagesSection({
     return (
         <div className="rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800/50 p-5 lg:p-6 h-full flex flex-col">
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">
-                Images
+                {t('offers.form.images', 'Images')}
             </h2>
 
             {/* Image Preview - Grid Layout with Aspect Ratio */}
@@ -125,7 +125,7 @@ export default function OfferImagesSection({
                             </button>
                             {index === 0 && (
                                 <span className="absolute bottom-2 left-2 px-2 py-0.5 bg-brand-500 text-white text-xs rounded-full z-10">
-                                    Main
+                                    {t('offers.form.mainImage', 'Main')}
                                 </span>
                             )}
                         </div>
@@ -143,11 +143,11 @@ export default function OfferImagesSection({
                 >
                     <CloudArrowUpIcon className="w-12 h-12 mx-auto text-gray-400 dark:text-gray-500 mb-3" />
                     <p className="text-gray-600 dark:text-gray-400">
-                        <span className="text-brand-500 font-medium">Click to upload</span>
-                        {' '}or drag and drop
+                        <span className="text-brand-500 font-medium">{t('offers.form.clickUpload', 'Click to upload')}</span>
+                        {' '}{t('offers.form.dragDrop', 'or drag and drop')}
                     </p>
                     <p className="text-sm text-gray-500 mt-1">
-                        PNG, JPG or GIF (MAX. 800x400px)
+                        {t('offers.form.imageFormatInfo', 'PNG, JPG or GIF (MAX. 800x400px)')}
                     </p>
                     <input
                         ref={fileInputRef}

@@ -67,11 +67,11 @@ export default function EditOrderPage() {
     };
 
     if (loading && !order) return <Loader />;
-    if (!order) return <div className="p-8 text-center">Order not found</div>;
+    if (!order) return <div className="p-8 text-center">{t('orders.noOrders')}</div>;
 
     return (
         <div className="space-y-8">
-            <PageBreadcrumb paths={['orders']} pageTitle={t('orders.editOrder')} />
+            <PageBreadcrumb paths={[t('orders.title')]} pageTitle={t('orders.page.editTitle')} />
 
             <OrderForm
                 initialData={order}

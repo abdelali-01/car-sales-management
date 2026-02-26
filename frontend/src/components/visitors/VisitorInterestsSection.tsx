@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { Visitor } from '@/types/auto-sales';
@@ -50,6 +51,7 @@ export default function VisitorInterestsSection({ visitor, visitorId }: VisitorI
     const dispatch = useDispatch<AppDispatch>();
     const { openModal } = useDeleteModal();
     const { loading } = useSelector((state: RootState) => state.visitors);
+    const { t } = useTranslation('admin');
     const [remarks, setRemarks] = useState(visitor.remarks || '');
     const [isEditingRemarks, setIsEditingRemarks] = useState(false);
 
@@ -138,13 +140,13 @@ export default function VisitorInterestsSection({ visitor, visitorId }: VisitorI
     return (
         <div className="rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800/50 p-6">
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                Interests & Notes
+                {t('visitors.details.interestsNotes', 'Interests & Notes')}
             </h2>
 
             {/* Interests List */}
             <div className="mb-6">
                 <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-                    Interested Offers ({sortedInterests.length})
+                    {t('visitors.details.interestedOffers', 'Interested Offers')} ({sortedInterests.length})
                 </h3>
 
                 {loading ? (
@@ -155,7 +157,7 @@ export default function VisitorInterestsSection({ visitor, visitorId }: VisitorI
                     </div>
                 ) : sortedInterests.length === 0 ? (
                     <p className="text-sm text-gray-500 dark:text-gray-400 py-4 text-center border border-dashed border-gray-200 dark:border-gray-700 rounded-lg">
-                        No interests added yet
+                        {t('visitors.details.noInterests', 'No interests added yet')}
                     </p>
                 ) : (
                     <div className="space-y-3">
@@ -178,7 +180,7 @@ export default function VisitorInterestsSection({ visitor, visitorId }: VisitorI
                                             ? 'text-gray-300 dark:text-gray-600 cursor-not-allowed'
                                             : 'text-brand-600 dark:text-brand-400 hover:bg-brand-50 dark:hover:bg-brand-900/20 hover:scale-110'
                                             }`}
-                                        title={index === 0 ? 'Already at top' : isUpdating ? 'Updating...' : 'Move up'}
+                                        title={index === 0 ? t('visitors.details.alreadyTop', 'Already at top') : isUpdating ? t('visitors.details.updating', 'Updating...') : t('visitors.details.moveUp', 'Move up')}
                                     >
                                         <ChevronUpIcon className="w-5 h-5" />
                                     </button>
@@ -189,7 +191,7 @@ export default function VisitorInterestsSection({ visitor, visitorId }: VisitorI
                                             ? 'text-gray-300 dark:text-gray-600 cursor-not-allowed'
                                             : 'text-brand-600 dark:text-brand-400 hover:bg-brand-50 dark:hover:bg-brand-900/20 hover:scale-110'
                                             }`}
-                                        title={index === sortedInterests.length - 1 ? 'Already at bottom' : isUpdating ? 'Updating...' : 'Move down'}
+                                        title={index === sortedInterests.length - 1 ? t('visitors.details.alreadyBottom', 'Already at bottom') : isUpdating ? t('visitors.details.updating', 'Updating...') : t('visitors.details.moveDown', 'Move down')}
                                     >
                                         <ChevronDownIcon className="w-5 h-5" />
                                     </button>
@@ -255,15 +257,15 @@ export default function VisitorInterestsSection({ visitor, visitorId }: VisitorI
                                                 }}
                                                 disabled={interest.offer?.status === 'sold'}
                                                 className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors shadow-sm flex items-center gap-1.5 ${interest.offer?.status === 'sold'
-                                                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed dark:bg-gray-700 dark:text-gray-500'
-                                                        : 'text-white bg-green-600 hover:bg-green-700'
+                                                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed dark:bg-gray-700 dark:text-gray-500'
+                                                    : 'text-white bg-green-600 hover:bg-green-700'
                                                     }`}
-                                                title={interest.offer?.status === 'sold' ? 'Offer Sold' : 'Create Order'}
+                                                title={interest.offer?.status === 'sold' ? t('visitors.details.offerSold', 'Offer Sold') : t('visitors.details.createOrder', 'Create Order')}
                                             >
                                                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
                                                 </svg>
-                                                {interest.offer?.status === 'sold' ? 'Sold' : 'Order'}
+                                                {interest.offer?.status === 'sold' ? t('visitors.details.sold', 'Sold') : t('visitors.details.order', 'Order')}
                                             </button>
                                         </div>
                                     </div>
@@ -277,7 +279,7 @@ export default function VisitorInterestsSection({ visitor, visitorId }: VisitorI
                                             `${interest.offer?.brand} ${interest.offer?.model}`
                                         )}
                                         className="p-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
-                                        title="Remove interest"
+                                        title={t('common.remove', 'Remove')}
                                     >
                                         <TrashIcon className="w-5 h-5" />
                                     </button>
@@ -292,7 +294,7 @@ export default function VisitorInterestsSection({ visitor, visitorId }: VisitorI
             <div>
                 <div className="flex items-center justify-between mb-3">
                     <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                        Notes
+                        {t('visitors.details.notes', 'Notes')}
                     </h3>
                     {!isEditingRemarks ? (
                         <button
@@ -300,7 +302,7 @@ export default function VisitorInterestsSection({ visitor, visitorId }: VisitorI
                             className="flex items-center gap-1 text-xs text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-300"
                         >
                             <PencilIcon className="w-3.5 h-3.5" />
-                            Edit
+                            {t('common.edit', 'Edit')}
                         </button>
                     ) : (
                         <button
@@ -308,7 +310,7 @@ export default function VisitorInterestsSection({ visitor, visitorId }: VisitorI
                             className="flex items-center gap-1 text-xs text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300"
                         >
                             <CheckIcon className="w-3.5 h-3.5" />
-                            Save
+                            {t('common.save', 'Save')}
                         </button>
                     )}
                 </div>
@@ -317,7 +319,7 @@ export default function VisitorInterestsSection({ visitor, visitorId }: VisitorI
                     value={remarks}
                     onChange={(e) => setRemarks(e.target.value)}
                     disabled={!isEditingRemarks}
-                    placeholder="Add notes about this visitor..."
+                    placeholder={t('visitors.details.addNotes', 'Add notes about this visitor...')}
                     className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent disabled:bg-gray-50 dark:disabled:bg-gray-900 disabled:cursor-not-allowed"
                     rows={4}
                 />

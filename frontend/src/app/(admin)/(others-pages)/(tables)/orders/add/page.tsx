@@ -39,9 +39,9 @@ export default function AddOrderPage() {
             {/* PageBreadcrumb might take paths prop or title directly depending on implementation */}
             {/* Assuming it handles simple title or checks paths */}
             <div className="flex items-center gap-2 text-sm text-gray-500">
-                <span onClick={() => router.push('/orders')} className="cursor-pointer hover:text-brand-500">Orders</span>
+                <span onClick={() => router.push('/orders')} className="cursor-pointer hover:text-brand-500">{t('orders.title')}</span>
                 <span>/</span>
-                <span className="font-medium text-gray-900 dark:text-gray-100">Add Order</span>
+                <span className="font-medium text-gray-900 dark:text-gray-100">{t('orders.page.addTitle')}</span>
             </div>
 
             <OrderForm

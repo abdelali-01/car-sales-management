@@ -24,27 +24,27 @@ export default function OfferContactSection({
     return (
         <div className="rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800/50 p-5 lg:p-6 h-full">
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">
-                Contact & Delivery Company
+                {t('offers.form.contactDetails', 'Contact Details')}
             </h2>
 
             <div className="space-y-5">
                 <div>
-                    <Label htmlFor="ownerName">Owner Name</Label>
+                    <Label htmlFor="ownerName">{t('offers.form.ownerName', 'Owner Name')}</Label>
                     <Input
                         id="ownerName"
                         type="text"
-                        placeholder="Full Name"
+                        placeholder={t('offers.form.fullNamePlaceholder', 'Full Name')}
                         value={ownerName || ''}
                         onChange={(e) => onChange('ownerName', e.target.value)}
                     />
                 </div>
 
                 <div>
-                    <Label htmlFor="ownerPhone">Owner Phone</Label>
+                    <Label htmlFor="ownerPhone">{t('offers.form.ownerPhone', 'Owner Phone')}</Label>
                     <Input
                         id="ownerPhone"
                         type="text"
-                        placeholder="0550..."
+                        placeholder={t('offers.form.phonePlaceholder', '05...')}
                         value={ownerPhone || ''}
                         onChange={(e) => onChange('ownerPhone', e.target.value)}
                         error={!!errors.ownerPhone}

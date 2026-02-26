@@ -11,6 +11,7 @@ import { ENDPOINTS } from '@/services/endpoints';
 import { addToast } from '@/store/toast/toastSlice';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/store/store';
+import { useTranslation } from 'react-i18next';
 
 interface OfferInterestedVisitorsSectionProps {
     offerId: number;
@@ -22,6 +23,7 @@ export default function OfferInterestedVisitorsSection({ offerId }: OfferInteres
     const { openModal } = useDeleteModal();
     const [visitors, setVisitors] = useState<Visitor[]>([]);
     const [loading, setLoading] = useState(true);
+    const { t } = useTranslation('admin');
 
     // Add visitors state
     const [isAddSectionOpen, setIsAddSectionOpen] = useState(false);
@@ -89,7 +91,7 @@ export default function OfferInterestedVisitorsSection({ offerId }: OfferInteres
 
             dispatch(addToast({
                 type: 'success',
-                message: `Added ${selectedVisitorIds.length} visitor(s) to interested list`
+                message: t('offers.visitors.addedSuccess', 'Added {{count}} visitor(s) to interested list', { count: selectedVisitorIds.length })
             }));
 
             setIsAddSectionOpen(false);
@@ -97,7 +99,7 @@ export default function OfferInterestedVisitorsSection({ offerId }: OfferInteres
             setSearchQuery('');
             fetchInterestedVisitors();
         } catch (error) {
-            dispatch(addToast({ type: 'error', message: 'Failed to add visitors' }));
+            dispatch(addToast({ type: 'error', message: t('offers.visitors.addError', 'Failed to add visitors') }));
         } finally {
             setIsAddingVisitors(false);
         }
@@ -107,10 +109,10 @@ export default function OfferInterestedVisitorsSection({ offerId }: OfferInteres
         openModal(visitorId, async (id: string | number) => {
             try {
                 await api.delete(ENDPOINTS.VISITORS.INTEREST_BY_OFFER(Number(id), offerId));
-                dispatch(addToast({ type: 'success', message: 'Visitor interest removed' }));
+                dispatch(addToast({ type: 'success', message: t('offers.visitors.removeSuccess', 'Visitor interest removed') }));
                 fetchInterestedVisitors();
             } catch (error) {
-                dispatch(addToast({ type: 'error', message: 'Failed to remove interest' }));
+                dispatch(addToast({ type: 'error', message: t('offers.visitors.removeError', 'Failed to remove interest') }));
             }
         });
     };
@@ -126,11 +128,11 @@ export default function OfferInterestedVisitorsSection({ offerId }: OfferInteres
     // Match visitor table status badges
     const getStatusBadge = (status: string) => {
         switch (status.toLowerCase()) {
-            case 'new': return <Badge color='info' size="sm">New</Badge>;
-            case 'contacted': return <Badge color='warning' size="sm">Contacted</Badge>;
-            case 'interested': return <Badge color='primary' size="sm">Interested</Badge>;
-            case 'converted': return <Badge color='success' size="sm">Converted</Badge>;
-            case 'lost': return <Badge color='error' size="sm">Lost</Badge>;
+            case 'new': return <Badge color='info' size="sm">{t('visitors.status.new', 'New')}</Badge>;
+            case 'contacted': return <Badge color='warning' size="sm">{t('visitors.status.contacted', 'Contacted')}</Badge>;
+            case 'interested': return <Badge color='primary' size="sm">{t('visitors.status.interested', 'Interested')}</Badge>;
+            case 'converted': return <Badge color='success' size="sm">{t('visitors.status.converted', 'Converted')}</Badge>;
+            case 'lost': return <Badge color='error' size="sm">{t('visitors.status.lost', 'Lost')}</Badge>;
             default: return <Badge color='light' size="sm">{status}</Badge>;
         }
     };
@@ -148,7 +150,7 @@ export default function OfferInterestedVisitorsSection({ offerId }: OfferInteres
         return (
             <div className="rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800/50 p-5 lg:p-6 h-full">
                 <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                    Interested Visitors
+                    {t('offers.visitors.title', 'Interested Visitors')}
                 </h2>
                 <div className="space-y-3">
                     {[1, 2].map(i => (
@@ -169,7 +171,7 @@ export default function OfferInterestedVisitorsSection({ offerId }: OfferInteres
         <div className="rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800/50 p-5 lg:p-6 h-full">
             <div className="flex items-center justify-between mb-5">
                 <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-                    Interested Visitors
+                    {t('offers.visitors.title', 'Interested Visitors')}
                     <span className="ml-2 text-sm font-normal text-gray-500 dark:text-gray-400">
                         ({visitors.length})
                     </span>
@@ -181,12 +183,12 @@ export default function OfferInterestedVisitorsSection({ offerId }: OfferInteres
                     {isAddSectionOpen ? (
                         <>
                             <XMarkIcon className="w-4 h-4" />
-                            Cancel
+                            {t('common.cancel', 'Cancel')}
                         </>
                     ) : (
                         <>
                             <PlusIcon className="w-4 h-4" />
-                            Add Visitor
+                            {t('offers.visitors.addVisitor', 'Add Visitor')}
                         </>
                     )}
                 </button>
@@ -197,13 +199,13 @@ export default function OfferInterestedVisitorsSection({ offerId }: OfferInteres
                 <div className="mb-5 p-4 border-2 border-brand-200 dark:border-brand-800 bg-gradient-to-br from-brand-50 to-white dark:from-brand-900/10 dark:to-gray-800 rounded-xl space-y-4 shadow-sm">
                     {/* Search Field */}
                     <div className="relative">
-                        <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                        <MagnifyingGlassIcon className="absolute left-3 rtl:right-3 rtl:left-auto top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                         <input
                             type="text"
-                            placeholder="Search by name or phone number..."
+                            placeholder={t('offers.visitors.searchPlaceholder', 'Search by name or phone number...')}
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full pl-11 pr-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all"
+                            className="w-full pl-11 rtl:pr-11 rtl:pl-4 pr-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all"
                         />
                     </div>
 
@@ -213,7 +215,7 @@ export default function OfferInterestedVisitorsSection({ offerId }: OfferInteres
                             <div className="text-center py-8">
                                 <UserCircleIcon className="w-12 h-12 mx-auto text-gray-300 dark:text-gray-600 mb-2" />
                                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                                    {searchQuery ? 'No visitors found matching your search' : 'All visitors are already interested in this offer'}
+                                    {searchQuery ? t('offers.visitors.noSearchResults', 'No visitors found matching your search') : t('offers.visitors.allAlreadyInterested', 'All visitors are already interested in this offer')}
                                 </p>
                             </div>
                         ) : (
@@ -279,12 +281,12 @@ export default function OfferInterestedVisitorsSection({ offerId }: OfferInteres
                             {isAddingVisitors ? (
                                 <>
                                     <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                                    Adding...
+                                    {t('common.saving', 'Adding...')}
                                 </>
                             ) : (
                                 <>
                                     <CheckCircleIcon className="w-5 h-5" />
-                                    Add {selectedVisitorIds.length} Visitor{selectedVisitorIds.length > 1 ? 's' : ''}
+                                    {t('offers.visitors.addSelected', 'Add {{count}} Visitor(s)', { count: selectedVisitorIds.length })}
                                 </>
                             )}
                         </button>
@@ -297,10 +299,10 @@ export default function OfferInterestedVisitorsSection({ offerId }: OfferInteres
                 <div className="text-center py-12 border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-xl">
                     <UserCircleIcon className="w-16 h-16 mx-auto text-gray-300 dark:text-gray-600 mb-3" />
                     <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">
-                        No interested visitors yet
+                        {t('offers.visitors.noInterestedVisitors', 'No interested visitors yet')}
                     </p>
                     <p className="text-xs text-gray-400 dark:text-gray-500">
-                        Click "Add Visitor" to start building your interest list
+                        {t('offers.visitors.addPrompt', 'Click "Add Visitor" to start building your interest list')}
                     </p>
                 </div>
             ) : (
@@ -337,7 +339,7 @@ export default function OfferInterestedVisitorsSection({ offerId }: OfferInteres
                                     {(visitor as any).interestPriority && (
                                         <span className="flex items-center gap-1 text-brand-600 dark:text-brand-400 font-medium">
                                             <CheckCircleIconSolid className="w-4 h-4" />
-                                            Priority {(visitor as any).interestPriority}
+                                            {t('offers.visitors.priority')} {(visitor as any).interestPriority}
                                         </span>
                                     )}
                                 </div>

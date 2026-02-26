@@ -166,6 +166,7 @@ export default function AddAccountPage() {
                             </Label>
                             <div className="relative">
                                 <Input
+                                    className="px-8"
                                     placeholder={t('admins.form.passwordPlaceholder')}
                                     type={showPassword ? "text" : "password"}
                                     required
@@ -178,7 +179,7 @@ export default function AddAccountPage() {
                                 />
                                 <span
                                     onClick={() => setShowPassword(!showPassword)}
-                                    className="absolute z-30 -translate-y-1/2 cursor-pointer right-4 top-1/2"
+                                    className="absolute z-30 -translate-y-1/2 cursor-pointer mx-2 top-1/2"
                                 >
                                     {showPassword ? (
                                         <EyeIcon className="fill-gray-500 dark:fill-gray-400" />
@@ -196,6 +197,7 @@ export default function AddAccountPage() {
                             </Label>
                             <div className="relative">
                                 <Input
+                                    className="px-8"
                                     placeholder={t('admins.form.confirmPasswordPlaceholder')}
                                     type={showConfirmPassword ? "text" : "password"}
                                     required
@@ -208,7 +210,7 @@ export default function AddAccountPage() {
                                 />
                                 <span
                                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                    className="absolute z-30 -translate-y-1/2 cursor-pointer right-4 top-1/2"
+                                    className="absolute z-30 -translate-y-1/2 cursor-pointer mx-2 top-1/2"
                                 >
                                     {showConfirmPassword ? (
                                         <EyeIcon className="fill-gray-500 dark:fill-gray-400" />

@@ -12,8 +12,10 @@ import OrdersFilterPanel, { OrdersFilterButton, OrderFilters, defaultOrderFilter
 const ITEMS_PER_PAGE = 10;
 
 import { useRouter } from 'next/navigation';
+import { useTranslation } from 'react-i18next';
 
 export default function OrdersTable() {
+    const { t } = useTranslation('admin');
     const dispatch = useDispatch<AppDispatch>();
     const router = useRouter();
     const orders = useSelector((state: RootState) => state.orders.orders);
@@ -104,11 +106,11 @@ export default function OrdersTable() {
     };
 
     const getStatusBadge = (status: string) => {
-        switch (status) {
-            case 'pending': return <Badge color='warning' size="sm">Pending</Badge>;
-            case 'confirmed': return <Badge color='info' size="sm">Confirmed</Badge>;
-            case 'completed': return <Badge color='success' size="sm">Completed</Badge>;
-            case 'canceled': return <Badge color='error' size="sm">Cancelled</Badge>;
+        switch (status?.toLowerCase()) {
+            case 'pending': return <Badge color='warning' size="sm">{t('orders.status.pending')}</Badge>;
+            case 'confirmed': return <Badge color='info' size="sm">{t('orders.status.confirmed')}</Badge>;
+            case 'completed': return <Badge color='success' size="sm">{t('orders.status.completed')}</Badge>;
+            case 'canceled': return <Badge color='error' size="sm">{t('orders.status.canceled')}</Badge>;
             default: return <Badge color='light' size="sm">{status}</Badge>;
         }
     };
@@ -121,7 +123,7 @@ export default function OrdersTable() {
             <div className="flex items-center justify-between gap-3">
                 <div className="relative w-full sm:w-64">
                     <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                    <input type="text" placeholder="Search client, car..."
+                    <input type="text" placeholder={t('orders.search')}
                         value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}
                         className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent text-sm" />
                 </div>
@@ -146,25 +148,25 @@ export default function OrdersTable() {
                     <Table>
                         <TableHeader className="bg-gray-50 dark:bg-gray-800/80">
                             <TableRow>
-                                <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm text-start">Car / Offer</TableCell>
+                                <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm text-start">{t('orders.columns.carOffer')}</TableCell>
                                 <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm">
                                     <div className="flex items-center gap-1 cursor-pointer hover:text-brand-500" onClick={() => handleSort('clientName')}>
-                                        Customer {sortField === 'clientName' && <span className="text-brand-500">{sortOrder === 'asc' ? '↑' : '↓'}</span>}
+                                        {t('orders.columns.customer')} {sortField === 'clientName' && <span className="text-brand-500">{sortOrder === 'asc' ? '↑' : '↓'}</span>}
                                     </div>
                                 </TableCell>
-                                <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm">Type</TableCell>
-                                <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm text-start">Phone</TableCell>
+                                <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm">{t('orders.columns.type')}</TableCell>
+                                <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm text-start">{t('orders.columns.phone')}</TableCell>
                                 <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm text-start">
                                     <div className="flex items-center gap-1 cursor-pointer hover:text-brand-500" onClick={() => handleSort('agreedPrice')}>
-                                        Agreed Price {sortField === 'agreedPrice' && <span className="text-brand-500">{sortOrder === 'asc' ? '↑' : '↓'}</span>}
+                                        {t('orders.columns.agreedPrice')} {sortField === 'agreedPrice' && <span className="text-brand-500">{sortOrder === 'asc' ? '↑' : '↓'}</span>}
                                     </div>
                                 </TableCell>
-                                <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm text-start">Deposit</TableCell>
-                                <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm text-start">Process Status</TableCell>
-                                <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm text-start">Status</TableCell>
+                                <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm text-start">{t('orders.columns.deposit')}</TableCell>
+                                <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm text-start">{t('orders.columns.processStatus')}</TableCell>
+                                <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm text-start">{t('orders.columns.status')}</TableCell>
                                 <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm text-start">
                                     <div className="flex items-center gap-1 cursor-pointer hover:text-brand-500" onClick={() => handleSort('createdAt')}>
-                                        Date {sortField === 'createdAt' && <span className="text-brand-500">{sortOrder === 'asc' ? '↑' : '↓'}</span>}
+                                        {t('orders.columns.date')} {sortField === 'createdAt' && <span className="text-brand-500">{sortOrder === 'asc' ? '↑' : '↓'}</span>}
                                     </div>
                                 </TableCell>
                             </TableRow>
@@ -173,7 +175,7 @@ export default function OrdersTable() {
                             {paginatedOrders.length === 0 ? (
                                 <TableRow>
                                     <TableCell colSpan={9} className="px-4 py-8 text-center text-gray-500 dark:text-gray-400">
-                                        {searchQuery || showFilters ? 'No orders match your search.' : 'No orders yet.'}
+                                        {searchQuery || showFilters ? t('orders.noSearchResults') : t('orders.noOrders')}
                                     </TableCell>
                                 </TableRow>
                             ) : (
@@ -202,7 +204,7 @@ export default function OrdersTable() {
                                                             ? `${order.offer.brand} ${order.offer.model}`
                                                             : order.orderedCar
                                                                 ? `${order.orderedCar.brand} ${order.orderedCar.model}`
-                                                                : 'Custom Order'}
+                                                                : t('orders.type.outside')}
                                                     </p>
                                                     <p className="text-xs text-gray-500">
                                                         {order.offer
@@ -219,9 +221,9 @@ export default function OrdersTable() {
                                             <div className="flex flex-col">
                                                 <span className="font-medium text-gray-900 dark:text-white text-sm">{order.clientName}</span>
                                                 {order.clientId ? (
-                                                    <Badge color="success" size="sm" className="w-fit mt-0.5 text-[10px] px-1.5 py-0.5">Client</Badge>
+                                                    <Badge color="success" size="sm" className="w-fit mt-0.5 text-[10px] px-1.5 py-0.5">{t('orders.form.existingClient')}</Badge>
                                                 ) : (
-                                                    <Badge color="light" size="sm" className="w-fit mt-0.5 text-[10px] px-1.5 py-0.5">Visitor</Badge>
+                                                    <Badge color="light" size="sm" className="w-fit mt-0.5 text-[10px] px-1.5 py-0.5">{t('orders.form.visitor')}</Badge>
                                                 )}
                                             </div>
                                         </TableCell>
@@ -229,7 +231,7 @@ export default function OrdersTable() {
 
                                         <TableCell className="px-4 py-3 text-gray-600 dark:text-gray-400 text-sm">
                                             <Badge color={order.type === 'inside' ? 'info' : 'warning'} size="sm">
-                                                {order.type?.toUpperCase() || '—'}
+                                                {order.type === 'inside' ? t('orders.type.inside') : order.type === 'outside' ? t('orders.type.outside') : '—'}
                                             </Badge>
                                         </TableCell>
 
@@ -243,7 +245,7 @@ export default function OrdersTable() {
                                         </TableCell>
                                         <TableCell className="px-4 py-3">
                                             <Badge color="light" size="sm">
-                                                {order.processStatus?.replace(/_/g, ' ').toUpperCase() || 'PENDING'}
+                                                {order.processStatus ? t(`orders.processStatus.${order.processStatus}`) : t('orders.processStatus.pending')}
                                             </Badge>
                                         </TableCell>
                                         <TableCell className="px-4 py-3">{getStatusBadge(order.status)}</TableCell>

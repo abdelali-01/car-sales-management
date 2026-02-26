@@ -6,10 +6,12 @@ import { AppDispatch, RootState } from '@/store/store';
 import Loader from '../ui/load/Loader';
 import { MagnifyingGlassIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import { fetchClients } from '@/store/clients/clientsHandler';
+import { useTranslation } from 'react-i18next';
 
 const ITEMS_PER_PAGE = 10;
 
 export default function ClientsTable() {
+    const { t } = useTranslation('admin');
     const dispatch = useDispatch<AppDispatch>();
     const clients = useSelector((state: RootState) => state.clients.clients);
 
@@ -79,7 +81,7 @@ export default function ClientsTable() {
             <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
                 <div className="relative w-full sm:w-64">
                     <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                    <input type="text" placeholder="Search by name, phone, email..."
+                    <input type="text" placeholder={t('clients.search')}
                         value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}
                         className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent text-sm" />
                 </div>
@@ -92,20 +94,20 @@ export default function ClientsTable() {
                             <TableRow>
                                 <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm">
                                     <div className="flex items-center gap-1 cursor-pointer hover:text-brand-500" onClick={() => handleSort('name')}>
-                                        Name {sortField === 'name' && <span className="text-brand-500">{sortOrder === 'asc' ? '↑' : '↓'}</span>}
+                                        {t('clients.columns.name')} {sortField === 'name' && <span className="text-brand-500">{sortOrder === 'asc' ? '↑' : '↓'}</span>}
                                     </div>
                                 </TableCell>
-                                <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm text-start">Phone</TableCell>
-                                <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm text-start">Email</TableCell>
+                                <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm text-start">{t('clients.columns.phone')}</TableCell>
+                                <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm text-start">{t('clients.columns.email')}</TableCell>
                                 <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm text-start">
                                     <div className="flex items-center gap-1 cursor-pointer hover:text-brand-500" onClick={() => handleSort('totalSpent')}>
-                                        Total Spent {sortField === 'totalSpent' && <span className="text-brand-500">{sortOrder === 'asc' ? '↑' : '↓'}</span>}
+                                        {t('clients.columns.totalSpent')} {sortField === 'totalSpent' && <span className="text-brand-500">{sortOrder === 'asc' ? '↑' : '↓'}</span>}
                                     </div>
                                 </TableCell>
-                                <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm text-start">Remaining</TableCell>
+                                <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm text-start">{t('clients.columns.remaining')}</TableCell>
                                 <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm text-start">
                                     <div className="flex items-center gap-1 cursor-pointer hover:text-brand-500" onClick={() => handleSort('createdAt')}>
-                                        Date {sortField === 'createdAt' && <span className="text-brand-500">{sortOrder === 'asc' ? '↑' : '↓'}</span>}
+                                        {t('clients.columns.date')} {sortField === 'createdAt' && <span className="text-brand-500">{sortOrder === 'asc' ? '↑' : '↓'}</span>}
                                     </div>
                                 </TableCell>
                             </TableRow>
@@ -114,7 +116,7 @@ export default function ClientsTable() {
                             {paginatedClients.length === 0 ? (
                                 <TableRow>
                                     <TableCell colSpan={6} className="px-4 py-8 text-center text-gray-500 dark:text-gray-400">
-                                        {searchQuery ? 'No clients match your search.' : 'No clients yet.'}
+                                        {searchQuery ? t('clients.noSearchResults') : t('clients.noClients')}
                                     </TableCell>
                                 </TableRow>
                             ) : (
@@ -146,7 +148,7 @@ export default function ClientsTable() {
             {totalPages > 1 && (
                 <div className="flex items-center justify-between px-2">
                     <span className="text-sm text-gray-600 dark:text-gray-400">
-                        Showing {((currentPage - 1) * ITEMS_PER_PAGE) + 1} - {Math.min(currentPage * ITEMS_PER_PAGE, filteredClients.length)} of {filteredClients.length}
+                        {t('clients.showing')} {((currentPage - 1) * ITEMS_PER_PAGE) + 1} - {Math.min(currentPage * ITEMS_PER_PAGE, filteredClients.length)} {t('clients.of')} {filteredClients.length}
                     </span>
                     <div className="flex items-center gap-1">
                         <button onClick={() => setCurrentPage(p => Math.max(1, p - 1))} disabled={currentPage === 1}

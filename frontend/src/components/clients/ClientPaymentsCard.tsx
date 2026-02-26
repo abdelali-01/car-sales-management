@@ -9,6 +9,7 @@ import { updateClientFinancials } from '@/store/clients/clientsHandler';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/store/store';
 import { PencilSquareIcon, XMarkIcon, CheckIcon } from '@heroicons/react/24/outline';
+import { useTranslation } from 'react-i18next';
 
 interface ClientPaymentsCardProps {
     payments: Payment[] | null;
@@ -26,6 +27,7 @@ const methodIcons: Record<string, any> = {
 };
 
 export default function ClientPaymentsCard({ payments, loading, orders, clientId, totalSpent = 0 }: ClientPaymentsCardProps) {
+    const { t } = useTranslation('admin');
     const { isOpen, openModal, closeModal } = useModal();
     const dispatch = useDispatch<AppDispatch>();
     const [isEditing, setIsEditing] = useState(false);
@@ -98,12 +100,12 @@ export default function ClientPaymentsCard({ payments, loading, orders, clientId
             <div className="flex items-center justify-between mb-6">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                     <CreditCardIcon className="w-6 h-6 text-brand-500" />
-                    Payment History
+                    {t('clients.payments.paymentHistory')}
                 </h3>
                 <button
                     onClick={openModal}
                     className="p-1.5 rounded-lg text-brand-600 hover:bg-brand-50 dark:text-brand-400 dark:hover:bg-brand-900/30 transition-colors"
-                    title="Add Payment"
+                    title={t('clients.payments.addPayment')}
                 >
                     <PlusIcon className="w-5 h-5" />
                 </button>
@@ -111,10 +113,10 @@ export default function ClientPaymentsCard({ payments, loading, orders, clientId
 
             <div className="grid grid-cols-1 gap-3 mb-6">
                 <div className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-4 border border-gray-100 dark:border-gray-700">
-                    <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Financial Overview</h4>
+                    <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">{t('clients.payments.title')}</h4>
                     <div className="space-y-3">
                         <div className="flex justify-between items-center h-8">
-                            <span className="text-sm text-gray-500 dark:text-gray-400">Total Spent</span>
+                            <span className="text-sm text-gray-500 dark:text-gray-400">{t('clients.payments.totalSpent')}</span>
                             {isEditing ? (
                                 <div className="flex items-center gap-2">
                                     <div className="relative">
@@ -127,7 +129,7 @@ export default function ClientPaymentsCard({ payments, loading, orders, clientId
                                             autoFocus
                                             placeholder="0.00"
                                         />
-                                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-400 font-medium pointer-events-none">M</span>
+                                        <span className="absolute right-3 rtl:left-3 rtl:right-auto top-1/2 -translate-y-1/2 text-xs text-gray-400 font-medium pointer-events-none">M</span>
                                     </div>
                                     <div className="flex bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm overflow-hidden">
                                         <button
@@ -162,11 +164,11 @@ export default function ClientPaymentsCard({ payments, loading, orders, clientId
                             )}
                         </div>
                         <div className="flex justify-between items-center">
-                            <span className="text-sm text-gray-500 dark:text-gray-400">Total Paid</span>
+                            <span className="text-sm text-gray-500 dark:text-gray-400">{t('clients.payments.totalPaid')}</span>
                             <span className="text-sm font-bold text-green-600 dark:text-green-400">{totalPaid.toLocaleString()} M</span>
                         </div>
                         <div className="pt-2 border-t border-gray-200 dark:border-gray-600 flex justify-between items-center">
-                            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Remaining Balance</span>
+                            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{t('clients.payments.remainingBalance')}</span>
                             <span className="text-base font-bold text-red-600 dark:text-red-400">{remainingBalance.toLocaleString()} M</span>
                         </div>
                     </div>
@@ -176,7 +178,7 @@ export default function ClientPaymentsCard({ payments, loading, orders, clientId
             {!payments || payments.length === 0 ? (
                 <div className="flex flex-col items-center justify-center flex-1 py-10 text-center">
                     <CreditCardIcon className="w-12 h-12 text-gray-300 dark:text-gray-600 mb-3" />
-                    <p className="text-gray-500 dark:text-gray-400">No payment history available.</p>
+                    <p className="text-gray-500 dark:text-gray-400">{t('clients.payments.noPayments')}</p>
                 </div>
             ) : (
                 <div className="relative flex-1">
@@ -195,7 +197,7 @@ export default function ClientPaymentsCard({ payments, loading, orders, clientId
                                             {Number(payment.amount).toLocaleString()} M
                                         </p>
                                         <p className="text-xs text-gray-500 dark:text-gray-400">
-                                            {format(new Date(payment.createdAt), 'MMM dd, yyyy')} • {payment.method}
+                                            {format(new Date(payment.createdAt), 'MMM dd, yyyy')} • {t(`clients.payments.form.methods.${payment.method.toLowerCase()}`, { defaultValue: payment.method })}
                                         </p>
                                     </div>
                                 </div>

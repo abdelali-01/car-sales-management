@@ -1,5 +1,6 @@
 'use client';
 import React, { useEffect, useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Table, TableRow, TableHeader, TableCell, TableBody } from '../ui/table';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/store/store';
@@ -17,6 +18,7 @@ export default function VisitorsTable() {
     const router = useRouter();
     const visitors = useSelector((state: RootState) => state.visitors.visitors);
     const { openModal } = useDeleteModal();
+    const { t } = useTranslation('admin');
 
     const [searchQuery, setSearchQuery] = useState('');
     const [statusFilter, setStatusFilter] = useState<string>('');
@@ -85,11 +87,11 @@ export default function VisitorsTable() {
 
     const getStatusBadge = (status: string) => {
         switch (status) {
-            case 'new': return <Badge color='info' size="sm">New</Badge>;
-            case 'contacted': return <Badge color='warning' size="sm">Contacted</Badge>;
-            case 'interested': return <Badge color='primary' size="sm">Interested</Badge>;
-            case 'converted': return <Badge color='success' size="sm">Converted</Badge>;
-            case 'lost': return <Badge color='error' size="sm">Lost</Badge>;
+            case 'new': return <Badge color='info' size="sm">{t('visitors.status.new', 'New')}</Badge>;
+            case 'contacted': return <Badge color='warning' size="sm">{t('visitors.status.contacted', 'Contacted')}</Badge>;
+            case 'interested': return <Badge color='primary' size="sm">{t('visitors.status.interested', 'Interested')}</Badge>;
+            case 'converted': return <Badge color='success' size="sm">{t('visitors.status.converted', 'Converted')}</Badge>;
+            case 'lost': return <Badge color='error' size="sm">{t('visitors.status.lost', 'Lost')}</Badge>;
             default: return <Badge color='light' size="sm">{status}</Badge>;
         }
     };
@@ -107,7 +109,7 @@ export default function VisitorsTable() {
                     <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                     <input
                         type="text"
-                        placeholder="Search by name, phone, car..."
+                        placeholder={t('visitors.searchPlaceholder', 'Search by name, phone, car...')}
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent text-sm"
@@ -118,12 +120,12 @@ export default function VisitorsTable() {
                     onChange={(e) => setStatusFilter(e.target.value)}
                     className="px-4 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
                 >
-                    <option value="">All Statuses</option>
-                    <option value="new">New</option>
-                    <option value="contacted">Contacted</option>
-                    <option value="interested">Interested</option>
-                    <option value="converted">Converted</option>
-                    <option value="lost">Lost</option>
+                    <option value="">{t('visitors.allStatuses', 'All Statuses')}</option>
+                    <option value="new">{t('visitors.status.new', 'New')}</option>
+                    <option value="contacted">{t('visitors.status.contacted', 'Contacted')}</option>
+                    <option value="interested">{t('visitors.status.interested', 'Interested')}</option>
+                    <option value="converted">{t('visitors.status.converted', 'Converted')}</option>
+                    <option value="lost">{t('visitors.status.lost', 'Lost')}</option>
                 </select>
             </div>
 
@@ -134,31 +136,33 @@ export default function VisitorsTable() {
                             <TableRow>
                                 <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm text-start">
                                     <div className="flex items-center gap-1 cursor-pointer hover:text-brand-500" onClick={() => handleSort('name')}>
-                                        Name {sortField === 'name' && <span className="text-brand-500">{sortOrder === 'asc' ? '↑' : '↓'}</span>}
+                                        {t('visitors.table.name', 'Name')} {sortField === 'name' && <span className="text-brand-500">{sortOrder === 'asc' ? '↑' : '↓'}</span>}
                                     </div>
                                 </TableCell>
-                                <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm text-start">Phone</TableCell>
-                                <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm text-start">Car Interest</TableCell>
+                                <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm text-start">{t('visitors.table.phone', 'Phone')}</TableCell>
+                                <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm text-start">{t('visitors.table.carInterest', 'Car Interest')}</TableCell>
                                 <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm text-start">
                                     <div className="flex items-center gap-1 cursor-pointer hover:text-brand-500" onClick={() => handleSort('budget')}>
-                                        Budget {sortField === 'budget' && <span className="text-brand-500">{sortOrder === 'asc' ? '↑' : '↓'}</span>}
+                                        {t('visitors.table.budget', 'Budget')} {sortField === 'budget' && <span className="text-brand-500">{sortOrder === 'asc' ? '↑' : '↓'}</span>}
                                     </div>
                                 </TableCell>
-                                <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm text-start">Status</TableCell>
+                                <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm text-start">{t('visitors.table.status', 'Status')}</TableCell>
                                 <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm text-start">
                                     <div className="flex items-center gap-1 cursor-pointer hover:text-brand-500" onClick={() => handleSort('createdAt')}>
-                                        Date {sortField === 'createdAt' && <span className="text-brand-500">{sortOrder === 'asc' ? '↑' : '↓'}</span>}
+                                        {t('visitors.table.date', 'Date')} {sortField === 'createdAt' && <span className="text-brand-500">{sortOrder === 'asc' ? '↑' : '↓'}</span>}
                                     </div>
                                 </TableCell>
-                                <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm">Actions</TableCell>
+                                <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm">{t('visitors.table.actions', 'Actions')}</TableCell>
+
                             </TableRow>
                         </TableHeader>
                         <TableBody className="divide-y divide-gray-100 dark:divide-gray-700">
                             {paginatedVisitors.length === 0 ? (
                                 <TableRow>
                                     <TableCell colSpan={7} className="px-4 py-8 text-center text-gray-500 dark:text-gray-400">
-                                        {searchQuery || statusFilter ? 'No visitors match your search.' : 'No visitors yet.'}
+                                        {searchQuery || statusFilter ? t('visitors.noMatch', 'No visitors match your search.') : t('visitors.noVisitors', 'No visitors yet.')}
                                     </TableCell>
+
                                 </TableRow>
                             ) : (
                                 paginatedVisitors.map(visitor => (
@@ -187,7 +191,7 @@ export default function VisitorsTable() {
                                                 <button
                                                     onClick={() => openModal(visitor.id, handleDelete)}
                                                     className="p-2 rounded-lg text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
-                                                    title="Delete visitor"
+                                                    title={t('visitors.deleteVisitor', 'Delete visitor')}
                                                 >
                                                     <TrashIcon className="w-5 h-5" />
                                                 </button>
@@ -204,7 +208,7 @@ export default function VisitorsTable() {
             {totalPages > 1 && (
                 <div className="flex items-center justify-between px-2">
                     <span className="text-sm text-gray-600 dark:text-gray-400">
-                        Showing {((currentPage - 1) * ITEMS_PER_PAGE) + 1} - {Math.min(currentPage * ITEMS_PER_PAGE, filteredVisitors.length)} of {filteredVisitors.length}
+                        {t('common.showing', 'Showing')} {((currentPage - 1) * ITEMS_PER_PAGE) + 1} - {Math.min(currentPage * ITEMS_PER_PAGE, filteredVisitors.length)} {t('common.of', 'of')} {filteredVisitors.length}
                     </span>
                     <div className="flex items-center gap-1">
                         <button onClick={() => setCurrentPage(p => Math.max(1, p - 1))} disabled={currentPage === 1}

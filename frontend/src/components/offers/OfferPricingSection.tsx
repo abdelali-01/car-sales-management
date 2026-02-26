@@ -35,7 +35,7 @@ export default function OfferPricingSection({
     return (
         <div className="rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800/50 p-5 lg:p-6">
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">
-                Pricing & Contact
+                {t('offers.form.pricingContact', 'Pricing & Contact')}
             </h2>
 
             <div className="space-y-5">
@@ -70,7 +70,7 @@ export default function OfferPricingSection({
                         <Input
                             id="ownerName"
                             type="text"
-                            placeholder="Full Name"
+                            placeholder={t('offers.form.fullNamePlaceholder', 'Full Name')}
                             value={ownerName || ''}
                             onChange={(e) => onChange('ownerName', e.target.value)}
                         />
@@ -80,7 +80,7 @@ export default function OfferPricingSection({
                         <Input
                             id="ownerPhone"
                             type="text"
-                            placeholder="0550..."
+                            placeholder={t('offers.form.phonePlaceholder', '05...')}
                             value={ownerPhone || ''}
                             onChange={(e) => onChange('ownerPhone', e.target.value)}
                             error={!!errors.ownerPhone}
@@ -88,7 +88,7 @@ export default function OfferPricingSection({
                         />
                     </div>
                     <div>
-                        <Label htmlFor="ownerEmail">Owner Email</Label>
+                        <Label htmlFor="ownerEmail">{t('offers.form.ownerEmail', 'Owner Email')}</Label>
                         <Input
                             id="ownerEmail"
                             type="email"

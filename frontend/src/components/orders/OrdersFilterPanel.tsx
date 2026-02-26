@@ -2,6 +2,7 @@
 import React from 'react';
 import { FunnelIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { Order } from '@/types/auto-sales';
+import { useTranslation } from 'react-i18next';
 
 /* ── Filter state shape ─────────────────────────────────── */
 
@@ -66,6 +67,7 @@ interface OrdersFilterButtonProps {
 }
 
 export function OrdersFilterButton({ activeCount, isOpen, onToggle }: OrdersFilterButtonProps) {
+    const { t } = useTranslation('admin');
     return (
         <button
             onClick={onToggle}
@@ -75,7 +77,7 @@ export function OrdersFilterButton({ activeCount, isOpen, onToggle }: OrdersFilt
                 }`}
         >
             <FunnelIcon className="w-4 h-4" />
-            Filters
+            {t('orders.filters.button')}
             {activeCount > 0 && (
                 <span className="flex items-center justify-center w-5 h-5 rounded-full bg-brand-500 text-white text-xs font-bold">
                     {activeCount}
@@ -106,6 +108,7 @@ export default function OrdersFilterPanel({
     onReset,
     isOpen,
 }: OrdersFilterPanelProps) {
+    const { t } = useTranslation('admin');
     const activeCount = countActiveOrderFilters(filters);
 
     const update = (key: keyof OrderFilters, value: string) => {
@@ -124,65 +127,65 @@ export default function OrdersFilterPanel({
                     {/* Order Type */}
                     <div>
                         <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1.5">
-                            Order Type
+                            {t('orders.columns.type')}
                         </label>
                         <select
                             value={filters.type}
                             onChange={e => update('type', e.target.value)}
                             className={selectCls}
                         >
-                            <option value="">All Types</option>
-                            <option value="inside">Inside</option>
-                            <option value="outside">Outside</option>
+                            <option value="">{t('orders.filters.allTypes')}</option>
+                            <option value="inside">{t('orders.filters.inside')}</option>
+                            <option value="outside">{t('orders.filters.outside')}</option>
                         </select>
                     </div>
 
                     {/* Order Status */}
                     <div>
                         <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1.5">
-                            Status
+                            {t('orders.columns.status')}
                         </label>
                         <select
                             value={filters.status}
                             onChange={e => update('status', e.target.value)}
                             className={selectCls}
                         >
-                            <option value="">All Statuses</option>
-                            <option value="pending">Pending</option>
-                            <option value="confirmed">Confirmed</option>
-                            <option value="completed">Completed</option>
-                            <option value="canceled">Canceled</option>
+                            <option value="">{t('orders.filters.allStatuses')}</option>
+                            <option value="pending">{t('orders.filters.pending')}</option>
+                            <option value="confirmed">{t('orders.filters.confirmed')}</option>
+                            <option value="completed">{t('orders.filters.completed')}</option>
+                            <option value="canceled">{t('orders.filters.canceled')}</option>
                         </select>
                     </div>
 
                     {/* Process Status */}
                     <div>
                         <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1.5">
-                            Process Status
+                            {t('orders.columns.processStatus')}
                         </label>
                         <select
                             value={filters.processStatus}
                             onChange={e => update('processStatus', e.target.value)}
                             className={selectCls}
                         >
-                            <option value="">All Processes</option>
-                            <option value="pending">Pending</option>
-                            <option value="transition">Transition</option>
-                            <option value="paper_prepare">Paper Prepare</option>
-                            <option value="in_delivery">In Delivery</option>
-                            <option value="in_the_port">In The Port</option>
+                            <option value="">{t('orders.filters.allProcesses')}</option>
+                            <option value="pending">{t('orders.filters.pending')}</option>
+                            <option value="transition">{t('orders.filters.transition')}</option>
+                            <option value="paper_prepare">{t('orders.filters.paperPrepare')}</option>
+                            <option value="in_delivery">{t('orders.filters.inDelivery')}</option>
+                            <option value="in_the_port">{t('orders.filters.inThePort')}</option>
                         </select>
                     </div>
 
                     {/* Date Range */}
                     <div>
                         <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1.5">
-                            Date Range
+                            {t('filters.dateRange')}
                         </label>
                         <div className="flex items-center gap-2">
                             <input
                                 type="date"
-                                placeholder="From"
+                                placeholder={t('filters.minDate')}
                                 value={filters.dateFrom}
                                 onChange={e => update('dateFrom', e.target.value)}
                                 className={inputCls}
@@ -190,7 +193,7 @@ export default function OrdersFilterPanel({
                             <span className="text-gray-400 text-xs">–</span>
                             <input
                                 type="date"
-                                placeholder="To"
+                                placeholder={t('filters.maxDate')}
                                 value={filters.dateTo}
                                 onChange={e => update('dateTo', e.target.value)}
                                 className={inputCls}
@@ -203,8 +206,8 @@ export default function OrdersFilterPanel({
                 <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
                     <span className="text-xs text-gray-500 dark:text-gray-400">
                         {activeCount > 0
-                            ? `${activeCount} filter(s) active`
-                            : 'No filters applied'}
+                            ? t('filters.activeCount', { count: activeCount })
+                            : t('filters.noFilters')}
                     </span>
                     {activeCount > 0 && (
                         <button
@@ -212,7 +215,7 @@ export default function OrdersFilterPanel({
                             className="flex items-center gap-1.5 text-sm font-medium text-red-500 hover:text-red-600 transition-colors"
                         >
                             <XMarkIcon className="w-4 h-4" />
-                            Reset Filters
+                            {t('orders.filters.reset')}
                         </button>
                     )}
                 </div>

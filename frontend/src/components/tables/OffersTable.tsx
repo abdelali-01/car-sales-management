@@ -112,16 +112,16 @@ export default function OffersTable() {
     const formatPrice = (price: number) => {
         return new Intl.NumberFormat('en-US', {
             minimumFractionDigits: 0,
-        }).format(price) + ' M';
+        }).format(price) + ' ' + t('common.currency', 'M');
     };
 
     const getStatusBadge = (status: string) => {
-        switch (status) {
-            case 'AVAILABLE':
+        switch (status?.toLowerCase()) {
+            case 'available':
                 return <Badge color='success' size="sm">{t('offers.available')}</Badge>;
-            case 'RESERVED':
+            case 'reserved':
                 return <Badge color='warning' size="sm">{t('offers.reserved')}</Badge>;
-            case 'SOLD':
+            case 'sold':
                 return <Badge color='error' size="sm">{t('offers.sold')}</Badge>;
             default:
                 return <Badge color='light' size="sm">{status}</Badge>;
@@ -270,7 +270,7 @@ export default function OffersTable() {
                                             {formatPrice(offer.price)}
                                         </TableCell>
                                         <TableCell className="px-4 py-3 text-gray-600 dark:text-gray-400 text-sm">
-                                            {formatOrigin(offer.region || '', offer.originCountry || '') || offer.location || '—'}
+                                            <span dir='ltr'>{formatOrigin(offer.region || '', offer.originCountry || '') || offer.location || '—'}</span>
                                         </TableCell>
                                         <TableCell className="px-4 py-3">
                                             {getStatusBadge(offer.status)}
@@ -296,16 +296,16 @@ export default function OffersTable() {
 
             {/* Pagination */}
             {totalPages > 1 && (
-                <div className="flex items-center justify-between px-2">
+                <div className="flex flex-col sm:flex-row items-center justify-between px-2 gap-4 mt-4">
                     <span className="text-sm text-gray-600 dark:text-gray-400">
-                        {t('common.showing')} {((currentPage - 1) * ITEMS_PER_PAGE) + 1} - {Math.min(currentPage * ITEMS_PER_PAGE, filteredOffers.length)} {t('common.of')} {filteredOffers.length}
+                        {t('common.showing')} {Math.min(((currentPage - 1) * ITEMS_PER_PAGE) + 1, filteredOffers.length)} {t('common.to')} {Math.min(currentPage * ITEMS_PER_PAGE, filteredOffers.length)} {t('common.of')} {filteredOffers.length} {t('common.items')}
                     </span>
 
                     <div className="flex items-center gap-1">
                         <button
                             onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
                             disabled={currentPage === 1}
-                            className="p-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                            className="p-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors rtl:rotate-180"
                         >
                             <ChevronLeftIcon className="w-4 h-4" />
                         </button>
@@ -338,7 +338,7 @@ export default function OffersTable() {
                         <button
                             onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
                             disabled={currentPage === totalPages}
-                            className="p-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                            className="p-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors rtl:rotate-180"
                         >
                             <ChevronRightIcon className="w-4 h-4" />
                         </button>

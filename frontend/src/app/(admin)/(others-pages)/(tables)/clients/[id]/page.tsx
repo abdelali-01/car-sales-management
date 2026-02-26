@@ -11,8 +11,10 @@ import { fetchOrders } from '@/store/orders/orderHandler';
 import { fetchClientPayments } from '@/store/payments/paymentsHandler';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/store/store';
+import { useTranslation } from 'react-i18next';
 
 export default function ClientDetailsPage() {
+    const { t } = useTranslation('admin');
     const params = useParams();
     const id = Number(params.id);
     const dispatch = useDispatch<AppDispatch>();
@@ -34,7 +36,7 @@ export default function ClientDetailsPage() {
     return (
         <div className="space-y-6">
             <PageBreadcrumb
-                paths={["clients"]} pageTitle={currentClient ? currentClient.name : 'Client Details'}
+                paths={["clients"]} pageTitle={currentClient ? currentClient.name : t('clients.details')}
             />
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

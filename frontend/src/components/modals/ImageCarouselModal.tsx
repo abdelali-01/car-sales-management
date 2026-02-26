@@ -42,7 +42,7 @@ export default function ImageCarouselModal({
             {/* Close Button */}
             <button
                 onClick={onClose}
-                className="absolute top-6 right-6 z-[10000] p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+                className="absolute top-6 right-6 rtl:left-6 rtl:right-auto z-[10000] p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
                 aria-label="Close gallery"
             >
                 <XMarkIcon className="w-10 h-10" />

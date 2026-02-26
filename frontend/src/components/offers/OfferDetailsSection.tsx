@@ -41,7 +41,7 @@ export default function OfferDetailsSection({
     return (
         <div className="rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800/50 p-5 lg:p-6">
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">
-                Car Details
+                {t('offers.form.carDetails', 'Car Details')}
             </h2>
 
             <div className="space-y-5">
@@ -52,7 +52,7 @@ export default function OfferDetailsSection({
                         <Input
                             id="brand"
                             type="text"
-                            placeholder="e.g. Toyota"
+                            placeholder={t('offers.form.brandPlaceholder', 'e.g. Toyota')}
                             value={brand}
                             onChange={(e) => onChange('brand', e.target.value)}
                             error={!!errors.brand}
@@ -64,7 +64,7 @@ export default function OfferDetailsSection({
                         <Input
                             id="model"
                             type="text"
-                            placeholder="e.g. Corolla"
+                            placeholder={t('offers.form.modelPlaceholder', 'e.g. Corolla')}
                             value={model}
                             onChange={(e) => onChange('model', e.target.value)}
                             error={!!errors.model}
@@ -103,7 +103,7 @@ export default function OfferDetailsSection({
                     </div>
                     {/* Origin / Place of Origin */}
                     <div>
-                        <Label htmlFor="region">Location</Label>
+                        <Label htmlFor="region">{t('offers.form.location', 'Location')}</Label>
                         <OriginPicker
                             region={region}
                             originCountry={originCountry}
@@ -121,7 +121,7 @@ export default function OfferDetailsSection({
                 <div>
                     <Label htmlFor="description">{t('offers.form.description')}</Label>
                     <TextArea
-                        placeholder="Enter car description..."
+                        placeholder={t('offers.form.descPlaceholder', 'Enter car description...')}
                         value={description}
                         onChange={(val) => onChange('description', val)}
                         rows={5}

@@ -63,8 +63,8 @@ export default function RecentOrders() {
           </h3>
         </div>
       </div>
-      <div className="max-w-full overflow-x-auto">
-        <Table>
+      <div className="max-w-full  overflow-x-auto">
+        <Table className="w-[600px]">
           {/* Table Header */}
           <TableHeader className="border-gray-100 dark:border-gray-800 border-y">
             <TableRow>

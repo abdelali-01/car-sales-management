@@ -41,7 +41,7 @@ export default function OfferPricingStatusSection({
     return (
         <div className="rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800/50 p-5 lg:p-6">
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">
-                Pricing & Status
+                {t('offers.form.pricingStatus', 'Pricing & Status')}
             </h2>
 
             <div className="space-y-5">

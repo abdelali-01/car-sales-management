@@ -1,5 +1,6 @@
 'use client';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/store/store';
 import { createVisitor, updateVisitor } from '@/store/visitors/visitorsHandler';
@@ -12,6 +13,7 @@ interface VisitorFormModalProps {
 
 export default function VisitorFormModal({ closeModal, visitor }: VisitorFormModalProps) {
     const dispatch = useDispatch<AppDispatch>();
+    const { t } = useTranslation('admin');
     const isEdit = !!visitor;
 
     const [formData, setFormData] = useState({
@@ -54,66 +56,66 @@ export default function VisitorFormModal({ closeModal, visitor }: VisitorFormMod
     return (
         <div>
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
-                {isEdit ? 'Edit Visitor' : 'Add New Visitor'}
+                {isEdit ? t('visitors.form.editTitle', 'Edit Visitor') : t('visitors.form.addTitle', 'Add New Visitor')}
             </h2>
             <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Name *</label>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('visitors.form.name', 'Name')} *</label>
                         <input type="text" name="name" required value={formData.name} onChange={handleChange}
-                            placeholder="Full name"
+                            placeholder={t('visitors.form.namePlaceholder', 'Full name')}
                             className="w-full px-4 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-brand-500" />
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Phone *</label>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('visitors.form.phone', 'Phone')} *</label>
                         <input type="tel" name="phone" required value={formData.phone} onChange={handleChange}
-                            placeholder="Phone number"
+                            placeholder={t('visitors.form.phonePlaceholder', 'Phone number')}
                             className="w-full px-4 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-brand-500" />
                     </div>
                 </div>
 
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('visitors.form.email', 'Email')}</label>
                     <input type="email" name="email" value={formData.email} onChange={handleChange}
                         className="w-full px-4 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-brand-500" />
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Car Brand</label>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('visitors.form.carBrand', 'Car Brand')}</label>
                         <input type="text" name="carBrand" value={formData.carBrand} onChange={handleChange}
-                            placeholder="e.g. Toyota"
+                            placeholder={t('visitors.form.brandPlaceholder', 'e.g. Toyota')}
                             className="w-full px-4 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-brand-500" />
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Car Model</label>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('visitors.form.carModel', 'Car Model')}</label>
                         <input type="text" name="carModel" value={formData.carModel} onChange={handleChange}
-                            placeholder="e.g. Corolla"
+                            placeholder={t('visitors.form.modelPlaceholder', 'e.g. Corolla')}
                             className="w-full px-4 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-brand-500" />
                     </div>
                 </div>
 
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Budget (M)</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('visitors.form.budget', 'Budget (M)')}</label>
                     <input type="number" name="budget" value={formData.budget} onChange={handleChange} min={0}
                         className="w-full px-4 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-brand-500" />
                 </div>
 
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Remarks</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('visitors.form.remarks', 'Remarks')}</label>
                     <textarea name="remarks" value={formData.remarks} onChange={handleChange} rows={3}
-                        placeholder="Additional notes..."
+                        placeholder={t('visitors.form.remarksPlaceholder', 'Additional notes...')}
                         className="w-full px-4 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 resize-none" />
                 </div>
 
                 <div className="flex justify-end gap-3 pt-4">
                     <button type="button" onClick={closeModal}
                         className="px-4 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 text-sm font-medium transition-colors">
-                        Cancel
+                        {t('common.cancel', 'Cancel')}
                     </button>
                     <button type="submit" disabled={isSubmitting}
                         className="px-4 py-2.5 rounded-lg bg-brand-500 text-white hover:bg-brand-600 text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-                        {isSubmitting ? 'Saving...' : isEdit ? 'Save Changes' : 'Add Visitor'}
+                        {isSubmitting ? t('common.saving', 'Saving...') : isEdit ? t('common.saveChanges', 'Save Changes') : t('visitors.form.submit', 'Add Visitor')}
                     </button>
                 </div>
             </form>

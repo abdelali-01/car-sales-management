@@ -2,6 +2,7 @@
 import React from 'react';
 import Button from '@/components/ui/button/Button';
 import { useRouter } from 'next/navigation';
+import { useTranslation } from 'react-i18next';
 
 interface ProductFormActionsProps {
     isSubmitting: boolean;
@@ -15,6 +16,7 @@ export default function ProductFormActions({
     onSubmit
 }: ProductFormActionsProps) {
     const router = useRouter();
+    const { t } = useTranslation('admin');
 
     const handleCancel = () => {
         router.push('/offers');
@@ -28,7 +30,7 @@ export default function ProductFormActions({
                 onClick={handleCancel}
                 disabled={isSubmitting}
             >
-                Cancel
+                {t('common.cancel', 'Cancel')}
             </Button>
             <Button
                 type="button"
@@ -36,10 +38,10 @@ export default function ProductFormActions({
                 disabled={isSubmitting}
             >
                 {isSubmitting
-                    ? 'Saving...'
+                    ? t('common.saving', 'Saving...')
                     : isEditing
-                        ? 'Update Offer'
-                        : 'Publish Offer'
+                        ? t('offers.form.updateOffer', 'Update Offer')
+                        : t('offers.form.publishOffer', 'Publish Offer')
                 }
             </Button>
         </div>
