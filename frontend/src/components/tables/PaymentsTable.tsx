@@ -7,10 +7,12 @@ import Loader from '../ui/load/Loader';
 import Badge from '../ui/badge/Badge';
 import { MagnifyingGlassIcon, ChevronLeftIcon, ChevronRightIcon, CheckIcon } from '@heroicons/react/24/outline';
 import { fetchPayments } from '@/store/payments/paymentsHandler';
+import { useTranslation } from 'react-i18next';
 
 const ITEMS_PER_PAGE = 10;
 
 export default function PaymentsTable() {
+    const { t, i18n } = useTranslation('admin');
     const dispatch = useDispatch<AppDispatch>();
     const payments = useSelector((state: RootState) => state.payments.payments);
 
@@ -65,7 +67,7 @@ export default function PaymentsTable() {
 
     const formatDate = (dateString?: string) => {
         if (!dateString) return '—';
-        return new Date(dateString).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+        return new Date(dateString).toLocaleDateString(i18n.language, { day: '2-digit', month: 'short', year: 'numeric' });
     };
 
     const formatPrice = (price: number) => {

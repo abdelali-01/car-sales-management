@@ -12,7 +12,7 @@ import Input from '../ui/input/Input';
 
 export default function ProfitReminderModal() {
     const dispatch = useDispatch<AppDispatch>();
-    const { t } = useTranslation('admin');
+    const { t, i18n } = useTranslation('admin');
     const { orders } = useSelector((state: RootState) => state.orders);
     const [isOpen, setIsOpen] = useState(false);
     const [currentStep, setCurrentStep] = useState(0);
@@ -137,7 +137,7 @@ export default function ProfitReminderModal() {
                                         </span>
                                         <span>•</span>
                                         <span className="font-medium">
-                                            {new Date(currentOrder.createdAt).toLocaleDateString()}
+                                            {new Date(currentOrder.createdAt).toLocaleDateString(i18n.language)}
                                         </span>
                                     </div>
                                 </div>

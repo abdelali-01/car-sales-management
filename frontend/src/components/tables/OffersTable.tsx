@@ -22,7 +22,7 @@ export default function OffersTable() {
     const router = useRouter();
     const offers = useSelector((state: RootState) => state.offers.offers) as Offer[] | null;
     const { openModal: openDeleteModal } = useDeleteModal();
-    const { t } = useTranslation('admin');
+    const { t, i18n } = useTranslation('admin');
 
     // Search and filter state
     const [searchQuery, setSearchQuery] = useState('');
@@ -102,7 +102,7 @@ export default function OffersTable() {
 
     const formatDate = (dateString?: string) => {
         if (!dateString) return '—';
-        return new Date(dateString).toLocaleDateString('en-GB', {
+        return new Date(dateString).toLocaleDateString(i18n.language, {
             day: '2-digit',
             month: 'short',
             year: 'numeric'

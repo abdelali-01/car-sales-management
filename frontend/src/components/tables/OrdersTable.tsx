@@ -15,7 +15,7 @@ import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 
 export default function OrdersTable() {
-    const { t } = useTranslation('admin');
+    const { t, i18n } = useTranslation('admin');
     const dispatch = useDispatch<AppDispatch>();
     const router = useRouter();
     const orders = useSelector((state: RootState) => state.orders.orders);
@@ -98,7 +98,7 @@ export default function OrdersTable() {
 
     const formatDate = (dateString?: string) => {
         if (!dateString) return '—';
-        return new Date(dateString).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+        return new Date(dateString).toLocaleDateString(i18n.language, { day: '2-digit', month: 'short', year: 'numeric' });
     };
 
     const formatPrice = (price: number) => {

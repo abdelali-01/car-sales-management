@@ -18,7 +18,7 @@ export default function VisitorsTable() {
     const router = useRouter();
     const visitors = useSelector((state: RootState) => state.visitors.visitors);
     const { openModal } = useDeleteModal();
-    const { t } = useTranslation('admin');
+    const { t, i18n } = useTranslation('admin');
 
     const [searchQuery, setSearchQuery] = useState('');
     const [statusFilter, setStatusFilter] = useState<string>('');
@@ -77,7 +77,7 @@ export default function VisitorsTable() {
 
     const formatDate = (dateString?: string) => {
         if (!dateString) return '—';
-        return new Date(dateString).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+        return new Date(dateString).toLocaleDateString(i18n.language, { day: '2-digit', month: 'short', year: 'numeric' });
     };
 
     const formatPrice = (price?: number) => {

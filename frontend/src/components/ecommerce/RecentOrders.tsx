@@ -23,7 +23,7 @@ interface RecentOrder {
 
 export default function RecentOrders() {
   const { recent_orders, loadingOrders } = useSelector((state: RootState) => state.statistics);
-  const { t } = useTranslation('admin');
+  const { t, i18n } = useTranslation('admin');
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -42,7 +42,7 @@ export default function RecentOrders() {
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
+    return date.toLocaleDateString(i18n.language, {
       year: 'numeric',
       month: 'short',
       day: 'numeric'

@@ -20,7 +20,7 @@ export default function VisitorInfoSection({ visitor, visitorId }: VisitorInfoSe
     const [isEditingStatus, setIsEditingStatus] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
-    const { t } = useTranslation('admin');
+    const { t, i18n } = useTranslation('admin');
 
     const statusOptions = [
         { value: 'new', label: t('visitors.status.new', 'New'), color: 'info' },
@@ -43,7 +43,7 @@ export default function VisitorInfoSection({ visitor, visitorId }: VisitorInfoSe
     };
 
     const formatDate = (dateString: string) => {
-        return new Date(dateString).toLocaleDateString('en-GB', {
+        return new Date(dateString).toLocaleDateString(i18n.language, {
             day: '2-digit',
             month: 'short',
             year: 'numeric'

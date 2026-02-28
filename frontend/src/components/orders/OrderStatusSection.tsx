@@ -3,6 +3,7 @@ import React from 'react';
 import Label from '@/components/form/Label';
 import Select from '@/components/form/Select';
 import Badge from '@/components/ui/badge/Badge';
+import { useTranslation } from 'react-i18next';
 
 interface OrderStatusSectionProps {
     status: 'pending' | 'confirmed' | 'completed' | 'canceled';
@@ -15,6 +16,7 @@ export default function OrderStatusSection({
     createdAt,
     onChange
 }: OrderStatusSectionProps) {
+    const { t, i18n } = useTranslation('admin');
     const statusOptions = [
         { value: 'pending', label: 'Pending' },
         { value: 'confirmed', label: 'Confirmed' },
@@ -35,7 +37,7 @@ export default function OrderStatusSection({
     const formatDate = (dateStr?: string) => {
         if (!dateStr) return '—';
         const date = new Date(dateStr);
-        return date.toLocaleDateString('en-GB', {
+        return date.toLocaleDateString(i18n.language, {
             day: '2-digit',
             month: 'short',
             year: 'numeric',

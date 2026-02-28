@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next';
 const ITEMS_PER_PAGE = 10;
 
 export default function ClientsTable() {
-    const { t } = useTranslation('admin');
+    const { t, i18n } = useTranslation('admin');
     const dispatch = useDispatch<AppDispatch>();
     const clients = useSelector((state: RootState) => state.clients.clients);
 
@@ -67,7 +67,7 @@ export default function ClientsTable() {
 
     const formatDate = (dateString?: string) => {
         if (!dateString) return '—';
-        return new Date(dateString).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+        return new Date(dateString).toLocaleDateString(i18n.language, { day: '2-digit', month: 'short', year: 'numeric' });
     };
 
     const formatPrice = (price: number) => {

@@ -95,6 +95,38 @@ export function getCallLink(phone: string): string {
   return `tel:${phone}`;
 }
 
+export const formatDate = (dateString: string | Date | undefined | null, locale: string = 'en-US') => {
+  if (!dateString) return '—';
+  try {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return '—';
+    return new Intl.DateTimeFormat(locale, {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+    }).format(date);
+  } catch {
+    return '—';
+  }
+};
+
+export const formatDateTime = (dateString: string | Date | undefined | null, locale: string = 'en-US') => {
+  if (!dateString) return '—';
+  try {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return '—';
+    return new Intl.DateTimeFormat(locale, {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    }).format(date);
+  } catch {
+    return '—';
+  }
+};
+
 export const formatPrice = (price?: number) => {
   if (price === undefined || price === null) return '—';
 
