@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/navigation';
@@ -11,14 +11,16 @@ import { shareOfferViaWhatsApp, formatPrice } from '@/utils';
 
 interface VisitorOffersSectionProps {
     offers: Offer[];
+    allOffers?: Offer[];
     visitor: Visitor;
     visitorId: number;
 }
 
-export default function VisitorOffersSection({ offers, visitor, visitorId }: VisitorOffersSectionProps) {
+export default function VisitorOffersSection({ offers, allOffers = [], visitor, visitorId }: VisitorOffersSectionProps) {
     const dispatch = useDispatch<AppDispatch>();
     const router = useRouter();
     const { t } = useTranslation('admin');
+    const [searchQuery, setSearchQuery] = useState('');
 
     const handleAddToInterests = async (e: React.MouseEvent, offerId: number) => {
         e.stopPropagation();
@@ -51,13 +53,41 @@ export default function VisitorOffersSection({ offers, visitor, visitorId }: Vis
         return visitor.interests?.some(i => i.offerId === offerId) || false;
     };
 
+    const searchResults = allOffers.filter(offer => {
+        if (offer.status !== 'available') return false;
+
+        const searchLower = searchQuery.toLowerCase();
+        return (
+            offer.brand.toLowerCase().includes(searchLower) ||
+            offer.model.toLowerCase().includes(searchLower) ||
+            offer.year.toString().includes(searchLower) ||
+            offer.location.toLowerCase().includes(searchLower)
+        );
+    });
+
+    const displayedOffers = searchQuery.trim() !== '' ? searchResults : offers;
+
     return (
         <div className="rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800/50 p-6">
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                 {t('visitors.details.offersMayLike', 'Offers May Like')}
             </h2>
 
-            {offers.length === 0 ? (
+            {/* Search Bar */}
+            <div className="relative mb-4">
+                <input
+                    type="text"
+                    placeholder={t('offers.search', 'Search offers...')}
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition-all"
+                />
+                <svg className="w-5 h-5 text-gray-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+            </div>
+
+            {displayedOffers.length === 0 ? (
                 <div className="text-center py-8">
                     <p className="text-sm text-gray-500 dark:text-gray-400">
                         {t('visitors.details.noMatchingOffers', 'No matching offers available')}
@@ -68,7 +98,7 @@ export default function VisitorOffersSection({ offers, visitor, visitorId }: Vis
                 </div>
             ) : (
                 <div className="space-y-4">
-                    {offers.map((offer) => (
+                    {displayedOffers.map((offer) => (
                         <div
                             key={offer.id}
                             onClick={() => router.push(`/offers/${offer.id}`)}

@@ -51,10 +51,8 @@ export class CreateOfferDto {
   @Min(0)
   price: number;
 
-  @IsNotEmpty()
-  @IsString()
-  @MaxLength(200)
-  location: string;
+  @IsOptional()
+  location?: string;
 
   @IsOptional()
   @IsString()

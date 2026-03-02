@@ -86,6 +86,7 @@ export default function VisitorDetailPage() {
                 <div className="lg:col-span-1">
                     <VisitorOffersSection
                         offers={recommendedOffers}
+                        allOffers={offers || []}
                         visitor={currentVisitor}
                         visitorId={visitorId}
                     />
