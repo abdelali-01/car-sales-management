@@ -212,7 +212,7 @@ export default function EditOfferPage() {
                     />
 
                     {/* Interested Visitors */}
-                    <OfferInterestedVisitorsSection offerId={offerId} />
+                    <OfferInterestedVisitorsSection offerId={offerId} offer={currentOffer || undefined} />
                 </div>
 
                 {/* Right Column */}

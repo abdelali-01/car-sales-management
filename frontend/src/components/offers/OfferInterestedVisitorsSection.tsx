@@ -5,19 +5,21 @@ import { PlusIcon, TrashIcon, PhoneIcon, XMarkIcon, MagnifyingGlassIcon, UserCir
 import { CheckCircleIcon as CheckCircleIconSolid } from '@heroicons/react/24/solid';
 import { useDeleteModal } from '@/context/DeleteModalContext';
 import Badge from '@/components/ui/badge/Badge';
-import { Visitor } from '@/types/auto-sales';
+import { Visitor, Offer } from '@/types/auto-sales';
 import api from '@/services/api';
 import { ENDPOINTS } from '@/services/endpoints';
 import { addToast } from '@/store/toast/toastSlice';
+import { shareOfferViaWhatsApp } from '@/utils';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/store/store';
 import { useTranslation } from 'react-i18next';
 
 interface OfferInterestedVisitorsSectionProps {
     offerId: number;
+    offer?: Offer;
 }
 
-export default function OfferInterestedVisitorsSection({ offerId }: OfferInterestedVisitorsSectionProps) {
+export default function OfferInterestedVisitorsSection({ offerId, offer }: OfferInterestedVisitorsSectionProps) {
     const router = useRouter();
     const dispatch = useDispatch<AppDispatch>();
     const { openModal } = useDeleteModal();
@@ -122,7 +124,22 @@ export default function OfferInterestedVisitorsSection({ offerId }: OfferInteres
     };
 
     const handleWhatsApp = (phone: string) => {
-        window.open(`https://wa.me/${phone.replace(/\D/g, '')}`, '_blank');
+        if (!offer) {
+            window.open(`https://wa.me/${phone.replace(/\D/g, '').replace(/^0/, '213')}`, '_blank');
+            return;
+        }
+        const link = shareOfferViaWhatsApp(phone, {
+            brand: offer.brand,
+            model: offer.model,
+            year: offer.year,
+            km: offer.km,
+            remarks: offer.remarks,
+            price: offer.price,
+            location: offer.location,
+            imageUrl: offer.images?.[0]?.imageUrl,
+            offerUrl: `${window.location.origin}/offers/${offer.id}`
+        });
+        window.open(link, '_blank');
     };
 
     // Match visitor table status badges
