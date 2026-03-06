@@ -5,12 +5,18 @@ import { Client } from './entities/client.entity';
 import { CreateClientDto } from './dto/create-client.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
+import { Payment } from '../payments/entities/payment.entity';
+import { Order } from '../orders/entities/order.entity';
 
 @Injectable()
 export class ClientsService {
   constructor(
     @InjectRepository(Client)
     private clientsRepository: Repository<Client>,
+    @InjectRepository(Payment)
+    private paymentsRepository: Repository<Payment>,
+    @InjectRepository(Order)
+    private ordersRepository: Repository<Order>,
   ) { }
 
   async create(createClientDto: CreateClientDto): Promise<Client> {
@@ -58,11 +64,42 @@ export class ClientsService {
   async update(id: number, updateClientDto: UpdateClientDto): Promise<Client> {
     const client = await this.findOne(id);
     Object.assign(client, updateClientDto);
-    return this.clientsRepository.save(client);
+    const saved = await this.clientsRepository.save(client);
+
+    // Sync clientName/clientPhone/clientEmail on all linked orders
+    const updateFields: Record<string, string> = {};
+    if (updateClientDto.name) updateFields['client_name'] = saved.name;
+    if (updateClientDto.phone) updateFields['client_phone'] = saved.phone;
+    if (updateClientDto.email !== undefined) updateFields['client_email'] = saved.email;
+
+    if (Object.keys(updateFields).length > 0) {
+      await this.ordersRepository
+        .createQueryBuilder()
+        .update()
+        .set(Object.fromEntries(
+          Object.entries(updateFields).map(([col, val]) => [
+            col === 'client_name' ? 'clientName' : col === 'client_phone' ? 'clientPhone' : 'clientEmail',
+            val
+          ])
+        ))
+        .where('clientId = :id', { id })
+        .execute();
+    }
+
+    return saved;
   }
 
   async remove(id: number): Promise<void> {
     const client = await this.findOne(id);
+    // Nullify client_id on linked orders (orders should remain, just unlinked)
+    await this.ordersRepository
+      .createQueryBuilder()
+      .update()
+      .set({ clientId: null })
+      .where('clientId = :id', { id })
+      .execute();
+    // Delete linked payments to avoid FK violation
+    await this.paymentsRepository.delete({ clientId: id });
     await this.clientsRepository.remove(client);
   }
 

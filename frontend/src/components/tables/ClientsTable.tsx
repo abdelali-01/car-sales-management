@@ -4,8 +4,9 @@ import { Table, TableRow, TableHeader, TableCell, TableBody } from '../ui/table'
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/store/store';
 import Loader from '../ui/load/Loader';
-import { MagnifyingGlassIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
-import { fetchClients } from '@/store/clients/clientsHandler';
+import { TrashIcon, MagnifyingGlassIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
+import { fetchClients, deleteClient } from '@/store/clients/clientsHandler';
+import { useDeleteModal } from '@/context/DeleteModalContext';
 import { useTranslation } from 'react-i18next';
 
 const ITEMS_PER_PAGE = 10;
@@ -14,6 +15,7 @@ export default function ClientsTable() {
     const { t, i18n } = useTranslation('admin');
     const dispatch = useDispatch<AppDispatch>();
     const clients = useSelector((state: RootState) => state.clients.clients);
+    const { openModal: openDeleteModal } = useDeleteModal();
 
     const [searchQuery, setSearchQuery] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
@@ -110,12 +112,15 @@ export default function ClientsTable() {
                                         {t('clients.columns.date')} {sortField === 'createdAt' && <span className="text-brand-500">{sortOrder === 'asc' ? '↑' : '↓'}</span>}
                                     </div>
                                 </TableCell>
+                                <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm text-start">
+                                    {t('common.actions')}
+                                </TableCell>
                             </TableRow>
                         </TableHeader>
                         <TableBody className="divide-y divide-gray-100 dark:divide-gray-700">
                             {paginatedClients.length === 0 ? (
                                 <TableRow>
-                                    <TableCell colSpan={6} className="px-4 py-8 text-center text-gray-500 dark:text-gray-400">
+                                    <TableCell colSpan={7} className="px-4 py-8 text-center text-gray-500 dark:text-gray-400">
                                         {searchQuery ? t('clients.noSearchResults') : t('clients.noClients')}
                                     </TableCell>
                                 </TableRow>
@@ -137,6 +142,14 @@ export default function ClientsTable() {
                                             </span>
                                         </TableCell>
                                         <TableCell className="px-4 py-3 text-gray-600 dark:text-gray-400 text-sm">{formatDate(client.createdAt)}</TableCell>
+                                        <TableCell className="px-4 py-3">
+                                            <div onClick={(e: React.MouseEvent) => e.stopPropagation()}>
+                                                <TrashIcon
+                                                    className="cursor-pointer w-5 h-5 text-gray-400 hover:text-red-500 transition-colors"
+                                                    onClick={() => openDeleteModal(client.id, (id) => dispatch(deleteClient(Number(id))))}
+                                                />
+                                            </div>
+                                        </TableCell>
                                     </TableRow>
                                 ))
                             )}

@@ -36,7 +36,7 @@ export default function ClientDetailsPage() {
     return (
         <div className="space-y-6">
             <PageBreadcrumb
-                paths={["clients"]} pageTitle={currentClient ? currentClient.name : t('clients.details')}
+                paths={[{ name: t('sidebar.clients', { defaultValue: 'Clients' }), url: '/clients' }]} pageTitle={currentClient ? currentClient.name : t('clients.details')}
             />
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

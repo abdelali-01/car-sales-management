@@ -5,8 +5,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/store/store';
 import Loader from '../ui/load/Loader';
 import Badge from '../ui/badge/Badge';
-import { MagnifyingGlassIcon, ChevronLeftIcon, ChevronRightIcon, CheckCircleIcon, XCircleIcon, ClockIcon } from '@heroicons/react/24/outline';
-import { fetchOrders, confirmOrder, completeOrder, cancelOrder } from '@/store/orders/orderHandler';
+import { MagnifyingGlassIcon, ChevronLeftIcon, ChevronRightIcon, CheckCircleIcon, XCircleIcon, ClockIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { fetchOrders, confirmOrder, completeOrder, cancelOrder, deleteOrder } from '@/store/orders/orderHandler';
+import { useDeleteModal } from '@/context/DeleteModalContext';
 import OrdersFilterPanel, { OrdersFilterButton, OrderFilters, defaultOrderFilters, applyOrderFilters, countActiveOrderFilters } from '@/components/orders/OrdersFilterPanel';
 
 const ITEMS_PER_PAGE = 10;
@@ -19,6 +20,7 @@ export default function OrdersTable() {
     const dispatch = useDispatch<AppDispatch>();
     const router = useRouter();
     const orders = useSelector((state: RootState) => state.orders.orders);
+    const { openModal: openDeleteModal } = useDeleteModal();
 
     const [searchQuery, setSearchQuery] = useState('');
     const [filters, setFilters] = useState<OrderFilters>(defaultOrderFilters);
@@ -169,12 +171,15 @@ export default function OrdersTable() {
                                         {t('orders.columns.date')} {sortField === 'createdAt' && <span className="text-brand-500">{sortOrder === 'asc' ? '↑' : '↓'}</span>}
                                     </div>
                                 </TableCell>
+                                <TableCell isHeader className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-sm text-start">
+                                    {t('common.actions')}
+                                </TableCell>
                             </TableRow>
                         </TableHeader>
                         <TableBody className="divide-y divide-gray-100 dark:divide-gray-700">
                             {paginatedOrders.length === 0 ? (
                                 <TableRow>
-                                    <TableCell colSpan={9} className="px-4 py-8 text-center text-gray-500 dark:text-gray-400">
+                                    <TableCell colSpan={10} className="px-4 py-8 text-center text-gray-500 dark:text-gray-400">
                                         {searchQuery || showFilters ? t('orders.noSearchResults') : t('orders.noOrders')}
                                     </TableCell>
                                 </TableRow>
@@ -222,8 +227,10 @@ export default function OrdersTable() {
                                                 <span className="font-medium text-gray-900 dark:text-white text-sm">{order.clientName}</span>
                                                 {order.clientId ? (
                                                     <Badge color="success" size="sm" className="w-fit mt-0.5 text-[10px] px-1.5 py-0.5">{t('orders.form.existingClient')}</Badge>
-                                                ) : (
+                                                ) : order.visitorId ? (
                                                     <Badge color="light" size="sm" className="w-fit mt-0.5 text-[10px] px-1.5 py-0.5">{t('orders.form.visitor')}</Badge>
+                                                ) : (
+                                                    <Badge color="warning" size="sm" className="w-fit mt-0.5 text-[10px] px-1.5 py-0.5">{t('orders.form.newCustomer')}</Badge>
                                                 )}
                                             </div>
                                         </TableCell>
@@ -251,6 +258,14 @@ export default function OrdersTable() {
                                         <TableCell className="px-4 py-3">{getStatusBadge(order.status)}</TableCell>
 
                                         <TableCell className="px-4 py-3 text-gray-600 dark:text-gray-400 text-sm">{formatDate(order.createdAt)}</TableCell>
+                                        <TableCell className="px-4 py-3">
+                                            <div onClick={(e: React.MouseEvent) => e.stopPropagation()}>
+                                                <TrashIcon
+                                                    className="cursor-pointer w-5 h-5 text-gray-400 hover:text-red-500 transition-colors"
+                                                    onClick={() => openDeleteModal(order.id, (id) => dispatch(deleteOrder(Number(id))))}
+                                                />
+                                            </div>
+                                        </TableCell>
                                     </TableRow>
                                 ))
                             )}

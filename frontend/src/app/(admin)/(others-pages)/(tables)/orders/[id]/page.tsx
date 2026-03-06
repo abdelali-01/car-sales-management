@@ -71,7 +71,7 @@ export default function EditOrderPage() {
 
     return (
         <div className="space-y-8">
-            <PageBreadcrumb paths={[t('orders.title')]} pageTitle={t('orders.page.editTitle')} />
+            <PageBreadcrumb paths={[{ name: t('orders.title'), url: '/orders' }]} pageTitle={t('orders.page.editTitle')} />
 
             <OrderForm
                 initialData={order}

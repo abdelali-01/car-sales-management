@@ -50,6 +50,12 @@ const clientSlice = createSlice({
                 state.currentClient.remainingBalance = action.payload.remainingBalance;
             }
         },
+        removeClient: (state, action: PayloadAction<number>) => {
+            if (state.clients) {
+                state.clients = state.clients.filter(c => c.id !== action.payload);
+                state.totalCount -= 1;
+            }
+        },
         setLoading: (state, action: PayloadAction<boolean>) => {
             state.loading = action.payload;
         },
@@ -64,6 +70,7 @@ export const {
     setCurrentClient,
     addClient,
     updateClientFinancials,
+    removeClient,
     setLoading,
     setError
 } = clientSlice.actions;

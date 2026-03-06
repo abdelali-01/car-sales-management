@@ -38,11 +38,11 @@ export class Payment {
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
-  @ManyToOne(() => Order, { nullable: true })
+  @ManyToOne(() => Order, { nullable: true, onDelete: 'CASCADE' })
   @JoinColumn({ name: 'order_id' })
   order: Order;
 
-  @ManyToOne(() => Client, { nullable: true })
+  @ManyToOne(() => Client, { nullable: true, onDelete: 'CASCADE' })
   @JoinColumn({ name: 'client_id' })
   client: Client;
 }

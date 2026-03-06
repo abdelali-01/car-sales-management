@@ -251,3 +251,23 @@ export const deleteOrderDocument = (orderId: number, docId: number) => async (di
         throw error;
     }
 };
+
+// Delete order
+export const deleteOrder = (id: number) => async (dispatch: AppDispatch) => {
+    dispatch(setLoading(true));
+    try {
+        const res = await api.delete(ENDPOINTS.ORDERS.BY_ID(id));
+
+        if (res.data.success) {
+            dispatch(removeOrder(id));
+            dispatch(addToast({ type: 'success', message: 'Order deleted successfully' }));
+        }
+    } catch (error) {
+        const message = getErrorMessage(error);
+        console.error('Error deleting order:', error);
+        dispatch(addToast({ type: 'error', message }));
+        throw error;
+    } finally {
+        dispatch(setLoading(false));
+    }
+};

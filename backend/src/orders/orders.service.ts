@@ -24,6 +24,7 @@ import { PaymentsService } from '../payments/payments.service';
 import { OrderDocument } from './entities/order-document.entity';
 import { FileUploadService } from '../common/services/file-upload.service';
 import { CreateOrderDocumentDto } from './dto/create-order-document.dto';
+import { Payment } from '../payments/entities/payment.entity';
 
 
 @Injectable()
@@ -33,6 +34,8 @@ export class OrdersService {
     private ordersRepository: Repository<Order>,
     @InjectRepository(OrderDocument)
     private ordersDocumentRepository: Repository<OrderDocument>,
+    @InjectRepository(Payment)
+    private paymentsRepository: Repository<Payment>,
     private offersService: OffersService,
     private visitorsService: VisitorsService,
     private clientsService: ClientsService,
@@ -130,7 +133,6 @@ export class OrdersService {
           agreedPrice,
           savedOrder.id
         );
-
         // Update order with new client
         savedOrder.clientId = newClient.id;
         savedOrder.visitorId = null;
@@ -142,6 +144,35 @@ export class OrdersService {
           VisitorStatus.INTERESTED,
         );
       }
+    }
+
+    // Workflow 1b: Convert Custom Client to real Client on creation if deposit > 0
+    if (!createOrderDto.visitorId && !createOrderDto.clientId && Number(createOrderDto.deposit) > 0) {
+      const agreedPrice = Number(createOrderDto.agreedPrice) || 0;
+      const deposit = Number(createOrderDto.deposit);
+      const remainingBalance = agreedPrice - deposit;
+
+      const newClient = await this.clientsService.create({
+        name: createOrderDto.clientName,
+        phone: createOrderDto.clientPhone,
+        email: createOrderDto.clientEmail,
+        totalSpent: agreedPrice,
+        remainingBalance: remainingBalance >= 0 ? remainingBalance : 0,
+        address: '',
+        notes: `Converted from custom order #${savedOrder.id}`,
+      });
+
+      // Create deposit payment
+      await this.paymentsService.create({
+        orderId: savedOrder.id,
+        clientId: newClient.id,
+        amount: deposit,
+        method: PaymentMethod.CASH,
+        notes: 'Deposit from custom client conversion',
+      });
+
+      savedOrder.clientId = newClient.id;
+      await this.ordersRepository.save(savedOrder);
     }
 
     // Update offer status to RESERVED or SOLD based on order status
@@ -235,14 +266,10 @@ export class OrdersService {
     }
 
     // Workflow 1: Convert Visitor to Client if deposit > 0 in update
-    // Check if order has visitor AND (update has deposit > 0 OR (order has deposit > 0?? No, trigger is change))
-    // Simplest: If linked to visitor, and new deposit > 0, convert.
     if (order.visitorId && Number(updateOrderDto.deposit) > 0) {
       const visitor = await this.visitorsService.findOne(order.visitorId);
       if (visitor.status !== VisitorStatus.CONVERTED) {
-        // Use updated agreed price if available, else existing
         const agreedPrice = Number(updateOrderDto.agreedPrice) || Number(order.agreedPrice) || 0;
-
         const newClient = await this.convertVisitorToClient(
           visitor,
           Number(updateOrderDto.deposit),
@@ -250,8 +277,41 @@ export class OrdersService {
           order.id
         );
         order.clientId = newClient.id;
-        order.visitorId = null; // Unlink visitor
+        order.visitorId = null;
       }
+    }
+
+    // Workflow 1b: Convert Custom Client to real Client if deposit > 0
+    if (!order.visitorId && !order.clientId && Number(updateOrderDto.deposit) > 0) {
+      const name = updateOrderDto.clientName || order.clientName;
+      const phone = updateOrderDto.clientPhone || order.clientPhone;
+      const email = updateOrderDto.clientEmail || order.clientEmail;
+      const agreedPrice = Number(updateOrderDto.agreedPrice) || Number(order.agreedPrice) || 0;
+      const deposit = Number(updateOrderDto.deposit);
+      const remainingBalance = agreedPrice - deposit;
+
+      const newClient = await this.clientsService.create({
+        name,
+        phone,
+        email,
+        totalSpent: agreedPrice,
+        remainingBalance: remainingBalance >= 0 ? remainingBalance : 0,
+        address: '',
+        notes: `Converted from custom order #${order.id}`,
+      });
+
+      // Create deposit payment
+      if (deposit > 0) {
+        await this.paymentsService.create({
+          orderId: order.id,
+          clientId: newClient.id,
+          amount: deposit,
+          method: PaymentMethod.CASH,
+          notes: 'Deposit from custom client conversion',
+        });
+      }
+
+      order.clientId = newClient.id;
     }
 
 
@@ -322,6 +382,9 @@ export class OrdersService {
         VisitorStatus.CONTACTED,
       );
     }
+
+    // Delete payments linked to this order first to prevent FK constraint errors
+    await this.paymentsRepository.delete({ orderId: id });
 
     await this.ordersRepository.remove(order);
   }

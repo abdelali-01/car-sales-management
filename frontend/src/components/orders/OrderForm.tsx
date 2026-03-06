@@ -12,8 +12,9 @@ import Button from '../ui/button/Button';
 import CustomerSelector from './CustomerSelector';
 import VehicleSelector from './VehicleSelector';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { XMarkIcon, DocumentArrowUpIcon, UserIcon, UserGroupIcon, UserPlusIcon, TruckIcon, PhoneIcon, IdentificationIcon, DocumentIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { XMarkIcon, DocumentArrowUpIcon, UserIcon, UserGroupIcon, UserPlusIcon, TruckIcon, PhoneIcon, IdentificationIcon, DocumentIcon, TrashIcon, EyeIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
+import ImageCarouselModal from '@/components/modals/ImageCarouselModal';
 
 interface OrderFormProps {
     initialData?: Partial<Order>;
@@ -73,6 +74,7 @@ export default function OrderForm({ initialData, onSubmit, isSubmitting, isEditi
     const [passportFile, setPassportFile] = useState<File | null>(null);
     const [previewUrl, setPreviewUrl] = useState<string | null>(initialData?.passportImage || null);
     const [newDocuments, setNewDocuments] = useState<File[]>([]);
+    const [isPassportOpen, setIsPassportOpen] = useState(false);
 
     // Fetch Data on Mount
     useEffect(() => {
@@ -323,22 +325,31 @@ export default function OrderForm({ initialData, onSubmit, isSubmitting, isEditi
                                     </>
                                 ) : (
                                     <div className="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-xl border border-gray-100 dark:border-gray-700">
-                                        <div className="grid grid-cols-1 gap-4">
-                                            <div>
-                                                <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">{t('orders.form.fullName')}</label>
-                                                <div className="text-gray-900 dark:text-white font-medium">{formData.clientName || 'N/A'}</div>
+                                        {customerMode === 'custom' ? (
+                                            // Custom clients are editable in edit mode
+                                            <div className="grid grid-cols-1 gap-4">
+                                                <Input label={t('orders.form.fullName')} value={formData.clientName} onChange={e => handleChange('clientName', e.target.value)} required />
+                                                <Input label={t('orders.form.phoneNumber')} value={formData.clientPhone} onChange={e => handleChange('clientPhone', e.target.value)} required />
                                             </div>
-                                            <div>
-                                                <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">{t('orders.form.phoneNumber')}</label>
-                                                <div className="text-gray-900 dark:text-white font-medium">{formData.clientPhone || 'N/A'}</div>
-                                            </div>
-                                            {formData.clientEmail && (
+                                        ) : (
+                                            // Linked clients/visitors are displayed read-only (auto-synced from backend)
+                                            <div className="grid grid-cols-1 gap-4">
                                                 <div>
-                                                    <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">{t('orders.form.email')}</label>
-                                                    <div className="text-gray-900 dark:text-white font-medium">{formData.clientEmail}</div>
+                                                    <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">{t('orders.form.fullName')}</label>
+                                                    <div className="text-gray-900 dark:text-white font-medium">{formData.clientName || 'N/A'}</div>
                                                 </div>
-                                            )}
-                                        </div>
+                                                <div>
+                                                    <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">{t('orders.form.phoneNumber')}</label>
+                                                    <div className="text-gray-900 dark:text-white font-medium">{formData.clientPhone || 'N/A'}</div>
+                                                </div>
+                                                {formData.clientEmail && (
+                                                    <div>
+                                                        <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">{t('orders.form.email')}</label>
+                                                        <div className="text-gray-900 dark:text-white font-medium">{formData.clientEmail}</div>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        )}
                                     </div>
                                 )}
                             </div>
@@ -438,18 +449,33 @@ export default function OrderForm({ initialData, onSubmit, isSubmitting, isEditi
                             <input type="file" className="hidden" onChange={handleFileChange} accept="image/*" />
                         </label>
                     ) : (
-                        <div className="relative w-full h-48 rounded-xl overflow-hidden bg-gray-100 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 flex items-center justify-center group">
-                            <Image src={previewUrl} alt={t('orders.form.passport')} fill className="object-cover" unoptimized />
-                            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all" />
-                            <button
-                                type="button"
-                                onClick={handleRemovePassport}
-                                className="absolute top-2 right-2 p-1.5 bg-white/90 dark:bg-black/70 text-gray-600 dark:text-gray-300 rounded-full hover:bg-red-50 hover:text-red-500 transition-colors shadow-sm"
-                                title={t('orders.form.removeImage')}
+                        <>
+                            <div
+                                className="relative w-full h-48 rounded-xl overflow-hidden bg-gray-100 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 flex items-center justify-center group cursor-pointer"
+                                onClick={() => setIsPassportOpen(true)}
                             >
-                                <XMarkIcon className="w-4 h-4" />
-                            </button>
-                        </div>
+                                <Image src={previewUrl} alt={t('orders.form.passport')} fill className="object-cover" unoptimized />
+                                {/* Hover overlay */}
+                                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all flex items-center justify-center opacity-0 group-hover:opacity-100">
+                                    <EyeIcon className="w-8 h-8 text-white drop-shadow-lg" />
+                                </div>
+                                <button
+                                    type="button"
+                                    onClick={(e) => { e.stopPropagation(); handleRemovePassport(); }}
+                                    className="absolute top-2 right-2 p-1.5 bg-white/90 dark:bg-black/70 text-gray-600 dark:text-gray-300 rounded-full hover:bg-red-50 hover:text-red-500 transition-colors shadow-sm z-10"
+                                    title={t('orders.form.removeImage')}
+                                >
+                                    <XMarkIcon className="w-4 h-4" />
+                                </button>
+                            </div>
+                            {/* Passport Lightbox Modal */}
+                            <ImageCarouselModal
+                                isOpen={isPassportOpen}
+                                onClose={() => setIsPassportOpen(false)}
+                                images={[{ url: previewUrl, alt: t('orders.form.passport') }]}
+                                initialSlide={0}
+                            />
+                        </>
                     )}
                 </div>
 
@@ -558,10 +584,10 @@ export default function OrderForm({ initialData, onSubmit, isSubmitting, isEditi
                     variant="primary"
                     disabled={isSubmitting}
                 >
-                    {isSubmitting 
-                        ? t('orders.form.processing') 
-                        : isEditing 
-                            ? t('orders.form.updateOrder') 
+                    {isSubmitting
+                        ? t('orders.form.processing')
+                        : isEditing
+                            ? t('orders.form.updateOrder')
                             : t('orders.form.createOrder')}
                 </Button>
             </div>

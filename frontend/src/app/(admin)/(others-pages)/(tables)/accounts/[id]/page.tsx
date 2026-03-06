@@ -13,7 +13,7 @@ import { EyeCloseIcon, EyeIcon } from '@/icons';
 import { AppDispatch, RootState } from '@/store/store';
 import { updateAccount } from '@/store/auth/authHandler';
 import { fetchAdmins } from '@/store/admins/adminsHandler';
-import { Admin, UpdateAdminDto } from '@/types/auto-sales';
+import { Admin, UpdateAdminDto, AdminRole } from '@/types/auto-sales';
 import { useFormErrors } from '@/hooks/useFormErrors';
 import { useTranslation } from 'react-i18next';
 
@@ -24,7 +24,7 @@ export default function EditAccountPage() {
     const accountId = params?.id ? Number(params.id) : null;
     const { errors, setApiError, clearFieldError } = useFormErrors<Partial<UpdateAdminDto>>();
 
-    const { admins, isFetching } = useSelector((state: RootState) => state.admins);
+    const { admins, loading } = useSelector((state: RootState) => state.admins);
     const { user: currentUser } = useSelector((state: RootState) => state.auth);
 
     const [showPassword, setShowPassword] = useState(false);
@@ -35,10 +35,10 @@ export default function EditAccountPage() {
 
     // Fetch admins if not loaded
     useEffect(() => {
-        if (admins.length === 0 && !isFetching) {
+        if (admins.length === 0 && !loading) {
             dispatch(fetchAdmins());
         }
-    }, [dispatch, admins.length, isFetching]);
+    }, [dispatch, admins.length, loading]);
 
     // Load account data
     useEffect(() => {
@@ -73,7 +73,7 @@ export default function EditAccountPage() {
             const payload = { ...account };
             if (!wantToUpdatePassword) {
                 delete payload.password;
-                delete payload.confirmPassword;
+                delete (payload as any).confirmPassword;
             }
 
             await dispatch(updateAccount(payload));
@@ -105,7 +105,7 @@ export default function EditAccountPage() {
 
     return (
         <div className="space-y-5">
-            <PageBreadcrumb paths={['accounts']} pageTitle={t('admins.editTitle')} />
+            <PageBreadcrumb paths={[{ name: t('sidebar.admins', { defaultValue: 'Accounts' }), url: '/accounts' }]} pageTitle={t('admins.editTitle')} />
 
             <div className="rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800/50 p-5 lg:p-6">
                 <div className="mb-6">
@@ -162,7 +162,7 @@ export default function EditAccountPage() {
                                     { value: 'super_admin', label: t('admins.roles.super_admin') },
                                 ]}
                                 defaultValue={account.role}
-                                onChange={(value) => setAccount(prev => prev ? { ...prev, role: value } : null)}
+                                onChange={(value) => setAccount(prev => prev ? { ...prev, role: value as AdminRole } : null)}
                                 disabled={!canEditRole}
                                 required={true}
                             />

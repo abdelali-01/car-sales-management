@@ -126,7 +126,7 @@ export default function AddOfferPage() {
 
     return (
         <div className="space-y-5">
-            <PageBreadcrumb paths={['offers']} pageTitle={t('offers.addOffer')} />
+            <PageBreadcrumb paths={[{ name: t('offers.title'), url: '/offers' }]} pageTitle={t('offers.addOffer')} />
 
             {/* 2-Column Grid Layout */}
             <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">
@@ -141,7 +141,6 @@ export default function AddOfferPage() {
                         day={formData.day}
                         precision={datePrecision}
                         km={formData.km}
-                        location={formData.location}
                         region={formData.region}
                         originCountry={formData.originCountry}
                         description={description}

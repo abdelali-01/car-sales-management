@@ -1,6 +1,6 @@
 import { addToast } from "../toast/toastSlice";
 import { AppDispatch } from "../store";
-import { setClients, setCurrentClient, addClient as addClientAction, updateClientFinancials as updateClientFinancialsAction, setLoading, setError } from "./clientSlice";
+import { setClients, setCurrentClient, addClient as addClientAction, updateClientFinancials as updateClientFinancialsAction, removeClient, setLoading, setError } from "./clientSlice";
 import { Client } from "@/types/auto-sales";
 import api, { getErrorMessage } from "@/services/api";
 import { ENDPOINTS } from "@/services/endpoints";
@@ -123,5 +123,25 @@ export const updateClientFinancials = (clientId: number, data: { totalSpent?: nu
         console.error('Error updating client financials:', error);
         dispatch(addToast({ type: 'error', message }));
         throw error;
+    }
+};
+
+// Delete client
+export const deleteClient = (id: number) => async (dispatch: AppDispatch) => {
+    dispatch(setLoading(true));
+    try {
+        const res = await api.delete(ENDPOINTS.CLIENTS.BY_ID(id));
+
+        if (res.data.success) {
+            dispatch(removeClient(id));
+            dispatch(addToast({ type: 'success', message: 'Client deleted successfully' }));
+        }
+    } catch (error) {
+        const message = getErrorMessage(error);
+        console.error('Error deleting client:', error);
+        dispatch(addToast({ type: 'error', message }));
+        throw error;
+    } finally {
+        dispatch(setLoading(false));
     }
 };

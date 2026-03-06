@@ -109,7 +109,7 @@ export default function AddAccountPage() {
 
     return (
         <div className="space-y-5">
-            <PageBreadcrumb paths={['accounts']} pageTitle={t('admins.addTitle')} />
+            <PageBreadcrumb paths={[{ name: t('sidebar.admins', { defaultValue: 'Accounts' }), url: '/accounts' }]} pageTitle={t('admins.addTitle')} />
 
             <div className="rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800/50 p-5 lg:p-6">
                 <div className="mb-6">

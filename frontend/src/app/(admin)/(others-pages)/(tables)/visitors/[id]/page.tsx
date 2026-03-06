@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter, useParams } from 'next/navigation';
+import { useTranslation } from 'react-i18next';
 import PageBreadcrumb from '@/components/common/PageBreadCrumb';
 import VisitorInfoSection from '@/components/visitors/VisitorInfoSection';
 import VisitorInterestsSection from '@/components/visitors/VisitorInterestsSection';
@@ -17,6 +18,7 @@ export default function VisitorDetailPage() {
     const visitorId = Number(params.id);
     const dispatch = useDispatch<AppDispatch>();
     const router = useRouter();
+    const { t } = useTranslation('admin');
 
     const { currentVisitor, loading } = useSelector((state: RootState) => state.visitors);
     const { offers } = useSelector((state: RootState) => state.offers);
@@ -66,7 +68,7 @@ export default function VisitorDetailPage() {
 
     return (
         <div className="space-y-5">
-            <PageBreadcrumb paths={['visitors']} pageTitle={currentVisitor.name} />
+            <PageBreadcrumb paths={[{ name: t('visitors.title', { defaultValue: 'Visitors' }), url: '/visitors' }]} pageTitle={currentVisitor.name} />
 
             {/* 3-Column Grid Layout */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">

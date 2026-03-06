@@ -1,6 +1,6 @@
 import { addToast } from "../toast/toastSlice";
 import { AppDispatch } from "../store";
-import { setOrders, addOrder as addOrderAction, updateOrderStatus, updateOrder as updateOrderAction, setLoading, setError } from "./orderSlice";
+import { setOrders, addOrder as addOrderAction, updateOrderStatus, updateOrder as updateOrderAction, removeOrder, setLoading, setError } from "./orderSlice";
 import { Order } from "@/types/auto-sales";
 import api, { getErrorMessage } from "@/services/api";
 import { ENDPOINTS } from "@/services/endpoints";
@@ -133,5 +133,25 @@ export const cancelOrder = (orderId: number) => async (dispatch: AppDispatch) =>
         console.error('Error canceling order:', error);
         dispatch(addToast({ type: 'error', message }));
         throw error;
+    }
+};
+
+// Delete order
+export const deleteOrder = (id: number) => async (dispatch: AppDispatch) => {
+    dispatch(setLoading(true));
+    try {
+        const res = await api.delete(ENDPOINTS.ORDERS.BY_ID(id));
+
+        if (res.data.success) {
+            dispatch(removeOrder(id));
+            dispatch(addToast({ type: 'success', message: 'Order deleted successfully' }));
+        }
+    } catch (error) {
+        const message = getErrorMessage(error);
+        console.error('Error deleting order:', error);
+        dispatch(addToast({ type: 'error', message }));
+        throw error;
+    } finally {
+        dispatch(setLoading(false));
     }
 };
