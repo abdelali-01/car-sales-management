@@ -27,9 +27,9 @@ import { StatisticsModule } from './statistics/statistics.module';
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
-        ssl: {
-          rejectUnauthorized: false,
-        },
+        // ssl: {
+        //   rejectUnauthorized: false,
+        // },
         url: configService.get<string>('DATABASE_URL'),
         // host: configService.get<string>('DB_HOST'),
         // port: configService.get<number>('DB_PORT'),
