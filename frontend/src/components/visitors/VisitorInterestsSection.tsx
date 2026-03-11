@@ -155,13 +155,13 @@ export default function VisitorInterestsSection({ visitor, visitorId }: VisitorI
     const sortedInterests = [...localInterests].sort((a, b) => a.priority - b.priority);
 
     return (
-        <div className="rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800/50 p-6">
+        <div className="rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800/50 p-6 h-full flex flex-col">
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                 {t('visitors.details.interestsNotes', 'Interests & Notes')}
             </h2>
 
             {/* Interests List */}
-            <div className="mb-6">
+            <div className="mb-6 flex-1">
                 <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
                     {t('visitors.details.interestedOffers', 'Interested Offers')} ({sortedInterests.length})
                 </h3>
@@ -319,8 +319,8 @@ export default function VisitorInterestsSection({ visitor, visitorId }: VisitorI
                 )}
             </div>
 
-            {/* Notes Section */}
-            <div>
+            {/* Notes Section - Pushed to bottom */}
+            <div className="mt-auto pt-4 border-t border-gray-100 dark:border-gray-700/50">
                 <div className="flex items-center justify-between mb-3">
                     <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">
                         {t('visitors.details.notes', 'Notes')}

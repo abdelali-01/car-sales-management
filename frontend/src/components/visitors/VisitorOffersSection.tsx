@@ -21,6 +21,9 @@ export default function VisitorOffersSection({ offers, allOffers = [], visitor, 
     const router = useRouter();
     const { t } = useTranslation('admin');
     const [searchQuery, setSearchQuery] = useState('');
+    const [activeTab, setActiveTab] = useState<'matching' | 'all'>('matching');
+    const [currentPage, setCurrentPage] = useState(1);
+    const ITEMS_PER_PAGE = 2;
 
     const handleAddToInterests = async (e: React.MouseEvent, offerId: number) => {
         e.stopPropagation();
@@ -53,7 +56,9 @@ export default function VisitorOffersSection({ offers, allOffers = [], visitor, 
         return visitor.interests?.some(i => i.offerId === offerId) || false;
     };
 
-    const searchResults = allOffers.filter(offer => {
+    const baseOffers = activeTab === 'matching' ? offers : allOffers;
+
+    const searchResults = baseOffers.filter(offer => {
         if (offer.status !== 'available') return false;
 
         const searchLower = searchQuery.toLowerCase();
@@ -65,13 +70,49 @@ export default function VisitorOffersSection({ offers, allOffers = [], visitor, 
         );
     });
 
-    const displayedOffers = searchQuery.trim() !== '' ? searchResults : offers;
+    const displayedOffers = searchQuery.trim() !== '' ? searchResults : baseOffers;
+    
+    // Pagination logic
+    const totalPages = Math.ceil(displayedOffers.length / ITEMS_PER_PAGE);
+    const paginatedOffers = displayedOffers.slice(
+        (currentPage - 1) * ITEMS_PER_PAGE,
+        currentPage * ITEMS_PER_PAGE
+    );
+
+    // Reset pagination when changing tabs or searching
+    React.useEffect(() => {
+        setCurrentPage(1);
+    }, [activeTab, searchQuery]);
 
     return (
-        <div className="rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800/50 p-6">
+        <div className="rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800/50 p-6 h-full flex flex-col">
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                 {t('visitors.details.offersMayLike', 'Offers May Like')}
             </h2>
+
+            {/* Tabs */}
+            <div className="flex space-x-2 mb-4">
+                <button
+                    onClick={() => setActiveTab('matching')}
+                    className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+                        activeTab === 'matching'
+                            ? 'bg-brand-50 text-brand-700 dark:bg-brand-900/50 dark:text-brand-300'
+                            : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-800'
+                    }`}
+                >
+                    Matching Offers ({offers.length})
+                </button>
+                <button
+                    onClick={() => setActiveTab('all')}
+                    className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+                        activeTab === 'all'
+                            ? 'bg-brand-50 text-brand-700 dark:bg-brand-900/50 dark:text-brand-300'
+                            : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-800'
+                    }`}
+                >
+                    All Available ({allOffers.length})
+                </button>
+            </div>
 
             {/* Search Bar */}
             <div className="relative mb-4">
@@ -97,9 +138,10 @@ export default function VisitorOffersSection({ offers, allOffers = [], visitor, 
                     </p>
                 </div>
             ) : (
-                <div className="space-y-4">
-                    {displayedOffers.map((offer) => (
-                        <div
+                <>
+                    <div className="space-y-4">
+                        {paginatedOffers.map((offer) => (
+                            <div
                             key={offer.id}
                             onClick={() => router.push(`/offers/${offer.id}`)}
                             className="group border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden hover:shadow-md transition-all cursor-pointer"
@@ -178,7 +220,33 @@ export default function VisitorOffersSection({ offers, allOffers = [], visitor, 
                             </div>
                         </div>
                     ))}
-                </div>
+                    </div>
+
+                    {/* Pagination - Pushed to bottom */}
+                    <div className="mt-auto pt-6">
+                        {totalPages > 1 && (
+                            <div className="flex items-center justify-between border-t border-gray-200 dark:border-gray-700 pt-4">
+                                <button
+                                    onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                                    disabled={currentPage === 1}
+                                    className="px-3 py-1 text-sm rounded-lg border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                                >
+                                    Previous
+                                </button>
+                                <span className="text-sm text-gray-500 dark:text-gray-400">
+                                    Page {currentPage} of {totalPages}
+                                </span>
+                                <button
+                                    onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                                    disabled={currentPage === totalPages}
+                                    className="px-3 py-1 text-sm rounded-lg border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                                >
+                                    Next
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                </>
             )}
         </div>
     );

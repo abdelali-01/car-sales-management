@@ -73,19 +73,23 @@ export default function VisitorDetailPage() {
             {/* 3-Column Grid Layout */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
                 {/* Left Column - 2 sections */}
-                <div className="lg:col-span-2 space-y-5">
+                <div className="lg:col-span-2 flex flex-col gap-5 h-full">
                     {/* Visitor Information */}
-                    <VisitorInfoSection visitor={currentVisitor} visitorId={visitorId} />
+                    <div className="flex-none">
+                        <VisitorInfoSection visitor={currentVisitor} visitorId={visitorId} />
+                    </div>
 
                     {/* Interests & Notes */}
-                    <VisitorInterestsSection
-                        visitor={currentVisitor}
-                        visitorId={visitorId}
-                    />
+                    <div className="flex-1">
+                        <VisitorInterestsSection
+                            visitor={currentVisitor}
+                            visitorId={visitorId}
+                        />
+                    </div>
                 </div>
 
                 {/* Right Column - Offers */}
-                <div className="lg:col-span-1">
+                <div className="lg:col-span-1 h-full">
                     <VisitorOffersSection
                         offers={recommendedOffers}
                         allOffers={offers || []}
